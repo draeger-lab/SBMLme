@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2006/vcard/ns#">
+  <rdf:Description rdf:about=".">
+    <dcterms:creator>
+      <rdf:Bag>
+        <rdf:li rdf:parseType="Resource">
+          <vCard:n rdf:parseType="Resource">
+            <vCard:family-name>Voigt</vCard:family-name>
+            <vCard:given-name>Marc Alexander</vCard:given-name>
+          </vCard:n>
+          <vCard:email>marc-alexander.voigt@student.uni-tuebingen.de</vCard:email>
+          <vCard:org rdf:parseType="Resource">
+            <vCard:organization-name>University of Tübingen</vCard:organization-name>
+          </vCard:org>
+        </rdf:li>
+      </rdf:Bag>
+    </dcterms:creator>
+    <dcterms:created rdf:parseType="Resource">
+      <dcterms:W3CDTF>2018-01-23T21:33:16Z</dcterms:W3CDTF>
+    </dcterms:created>
+    <dcterms:modified rdf:parseType="Resource">
+      <dcterms:W3CDTF>2018-01-23T21:33:16Z</dcterms:W3CDTF>
+    </dcterms:modified>
+  </rdf:Description>
+  <rdf:Description rdf:about="/ExampleModel.sbml">
+    <dcterms:creator>
+      <rdf:Bag>
+        <rdf:li rdf:parseType="Resource">
+          <vCard:n rdf:parseType="Resource">
+            <vCard:family-name>Voigt</vCard:family-name>
+            <vCard:given-name>Marc Alexander</vCard:given-name>
+          </vCard:n>
+          <vCard:email>marc-alexander.voigt@student.uni-tuebingen.de</vCard:email>
+          <vCard:org rdf:parseType="Resource">
+            <vCard:organization-name>University of Tübingen</vCard:organization-name>
+          </vCard:org>
+        </rdf:li>
+      </rdf:Bag>
+    </dcterms:creator>
+    <dcterms:created rdf:parseType="Resource">
+      <dcterms:W3CDTF>2018-01-25T00:59:56Z</dcterms:W3CDTF>
+    </dcterms:created>
+    <dcterms:modified rdf:parseType="Resource">
+      <dcterms:W3CDTF>2018-01-25T00:59:56Z</dcterms:W3CDTF>
+    </dcterms:modified>
+  </rdf:Description>
+  <rdf:Description rdf:about="/ExampleModel.sbol">
+    <dcterms:creator>
+      <rdf:Bag>
+        <rdf:li rdf:parseType="Resource">
+          <vCard:n rdf:parseType="Resource">
+            <vCard:family-name>Voigt</vCard:family-name>
+            <vCard:given-name>Marc Alexander</vCard:given-name>
+          </vCard:n>
+          <vCard:email>marc-alexander.voigt@student.uni-tuebingen.de</vCard:email>
+          <vCard:org rdf:parseType="Resource">
+            <vCard:organization-name>University of Tübingen</vCard:organization-name>
+          </vCard:org>
+        </rdf:li>
+      </rdf:Bag>
+    </dcterms:creator>
+    <dcterms:created rdf:parseType="Resource">
+      <dcterms:W3CDTF>2018-01-25T00:59:56Z</dcterms:W3CDTF>
+    </dcterms:created>
+    <dcterms:modified rdf:parseType="Resource">
+      <dcterms:W3CDTF>2018-01-25T00:59:56Z</dcterms:W3CDTF>
+    </dcterms:modified>
+  </rdf:Description>
+</rdf:RDF>
