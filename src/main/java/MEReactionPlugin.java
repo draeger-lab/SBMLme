@@ -138,6 +138,25 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     if (lowerBound.matches("-?\\d+\\.?\\d*")) {
       lowerNumber = true;
     }
+    // set SBML conform Ids in case the bound is not a number
+    String upperId = "me_bound_" + upperBound.replaceAll("\\+", "__plus__");
+    upperId = upperId.replaceAll("\\-", "__minus__");
+    upperId = upperId.replaceAll("\\^", "__power__");
+    upperId = upperId.replaceAll("\\*", "__times__");
+    upperId = upperId.replaceAll("\\/", "__divide__");
+    upperId = upperId.replaceAll("\\(", "__open__");
+    upperId = upperId.replaceAll("\\)", "__close__");
+    upperId = upperId.replaceAll("\\.", "_");
+    upperId = upperId.replaceAll(" ", "");
+    String lowerId = "me_bound_" + lowerBound.replaceAll("\\+", "__plus__");
+    lowerId = lowerId.replaceAll("\\-", "__minus__");
+    lowerId = lowerId.replaceAll("\\^", "__power__");
+    lowerId = lowerId.replaceAll("\\*", "__times__");
+    lowerId = lowerId.replaceAll("\\/", "__divide__");
+    lowerId = lowerId.replaceAll("\\(", "__open__");
+    lowerId = lowerId.replaceAll("\\)", "__close__");
+    lowerId = lowerId.replaceAll("\\.", "_");
+    lowerId = lowerId.replaceAll(" ", "");
     // test if value already in a parameter
     for (int i = 0; i < listParameter.size(); i++) {
       if (upperNumber && !upperSet) {
@@ -148,8 +167,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
       } else if (!upperSet) {
         // test if bound equals an already known bound (either another bound or
         // an parameter used in other part of model
-        if (listParameter.get(i).getId().equals(
-          "me_bound_" + upperBound.replaceAll("[\\+\\-\\*\\/\\(\\)\\.]", "__"))
+        if (listParameter.get(i).getId().equals(upperId)
           || listParameter.get(i).getId().equals(upperBound)) {
           fbcTempReaction.setUpperFluxBound(listParameter.get(i));
           upperSet = true;
@@ -163,8 +181,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
       } else if (!lowerSet) {
         // test if bound equals an already known bound (either another bound or
         // an parameter used in other part of model
-        if (listParameter.get(i).getId().equals(
-          "me_bound_" + lowerBound.replaceAll("[\\+\\-\\*\\/\\(\\)\\.]", "__"))
+        if (listParameter.get(i).getId().equals(lowerId)
           || listParameter.get(i).getId().equals(lowerBound)) {
           fbcTempReaction.setLowerFluxBound(listParameter.get(i));
           lowerSet = true;
@@ -172,6 +189,20 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
       }
     }
     // if a bound is not set yet create a new parameter for it and set it
+    if ((!upperSet) && (!lowerSet)) {
+      // special case if both bounds are identical and not set
+      if (upperId.equals(lowerId)) {
+        Parameter upper = model.createParameter(upperId);
+        upper.setConstant(true);
+        InitialAssignment upperIA = model.createInitialAssignment();
+        upperIA.setMath(ASTNode.parseFormula(upperBound));
+        upperIA.setVariable(upper.getId());
+        fbcTempReaction.setUpperFluxBound(upper);
+        fbcTempReaction.setLowerFluxBound(upper);
+        upperSet = true;
+        lowerSet = true;
+      }
+    }
     if (!upperSet) {
       if (upperNumber) {
         Parameter upper = model.createParameter(
@@ -180,8 +211,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
         upper.setConstant(true);
         fbcTempReaction.setUpperFluxBound(upper);
       } else {
-        Parameter upper = model.createParameter(
-          "me_bound_" + upperBound.replaceAll("[\\+\\-\\*\\/\\(\\)\\.]", "__"));
+        Parameter upper = model.createParameter(upperId);
         upper.setConstant(true);
         InitialAssignment upperIA = model.createInitialAssignment();
         upperIA.setMath(ASTNode.parseFormula(upperBound));
@@ -192,13 +222,12 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     if (!lowerSet) {
       if (lowerNumber) {
         Parameter lower = model.createParameter(
-          "bound_" + lowerBound.replaceAll("[\\.]", "__"));
+          "me_bound_" + lowerBound.replaceAll("[\\.]", "__"));
         lower.setValue(Double.valueOf(lowerBound));
         lower.setConstant(true);
         fbcTempReaction.setLowerFluxBound(lower);
       } else {
-        Parameter lower = model.createParameter(
-          "me_bound_" + lowerBound.replaceAll("[\\+\\-\\*\\/\\(\\)\\.]", "__"));
+        Parameter lower = model.createParameter(lowerId);
         lower.setConstant(true);
         InitialAssignment lowerIA = model.createInitialAssignment();
         lowerIA.setMath(ASTNode.parseFormula(lowerBound));
@@ -231,6 +260,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     throws ParseException {
     Reaction tempReaction = model.createReaction(id);
     tempReaction.initDefaults(2, 4, true);
+    tempReaction.setReversible(false);
     tempReaction.setName(name);
     Group group = (Group) groups.getGroup("summaryVariable");
     if (group != null) {
@@ -277,6 +307,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     Reaction tempReaction = model.createReaction(id);
     tempReaction.setName(name);
     tempReaction.initDefaults(2, 4, true);
+    tempReaction.setReversible(false);
     Group group = (Group) groups.getGroup("genericFormationReaction");
     if (group != null) {
       group.createMemberWithIdRef(id);
@@ -357,6 +388,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     Reaction tempReaction = model.createReaction(id);
     tempReaction.setName(name);
     tempReaction.initDefaults(2, 4, true);
+    tempReaction.setReversible(false);
     // add reaction to group
     Group group = (Group) groups.getGroup("transcriptionReaction");
     if (group != null) {
@@ -428,6 +460,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     Reaction tempReaction = model.createReaction(id);
     tempReaction.setName(name);
     tempReaction.initDefaults(2, 4, true);
+    tempReaction.setReversible(false);
     // add reaction to group
     Group group = (Group) groups.getGroup("translationReaction");
     if (group != null) {
@@ -500,6 +533,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     Reaction tempReaction = model.createReaction(id);
     tempReaction.setName(name);
     tempReaction.initDefaults(2, 4, true);
+    tempReaction.setReversible(false);
     // add reaction to group
     Group group = (Group) groups.getGroup("tRNAChargingReaction");
     if (group != null) {
@@ -581,6 +615,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     Reaction tempReaction = model.createReaction(id);
     tempReaction.setName(name);
     tempReaction.initDefaults(2, 4, true);
+    tempReaction.setReversible(false);
     // add reaction to group
     Group group = (Group) groups.getGroup("postTranslationReaction");
     if (group != null) {
@@ -679,6 +714,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     Reaction tempReaction = model.createReaction(id);
     tempReaction.setName(name);
     tempReaction.initDefaults(2, 4, true);
+    tempReaction.setReversible(false);
     // add reaction to group
     Group group = (Group) groups.getGroup("postTranslationReaction");
     if (group != null) {
@@ -760,6 +796,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     Reaction tempReaction = model.createReaction(id);
     tempReaction.setName(name);
     tempReaction.initDefaults(2, 4, true);
+    tempReaction.setReversible(false);
     // add reaction to group
     Group group = (Group) groups.getGroup("postTranslationReaction");
     if (group != null) {
@@ -827,6 +864,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     Reaction tempReaction = model.createReaction(id);
     tempReaction.setName(name);
     tempReaction.initDefaults(2, 4, true);
+    tempReaction.setReversible(false);
     // add reaction to group
     Group group = (Group) groups.getGroup("postTranslationReaction");
     if (group != null) {
@@ -889,6 +927,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     Reaction tempReaction = model.createReaction(id);
     tempReaction.setName(name);
     tempReaction.initDefaults(2, 4, true);
+    tempReaction.setReversible(false);
     // add reaction to group
     Group group = (Group) groups.getGroup("postTranslationReaction");
     if (group != null) {
@@ -944,6 +983,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     Reaction tempReaction = model.createReaction(id);
     tempReaction.setName(name);
     tempReaction.initDefaults(2, 4, true);
+    tempReaction.setReversible(false);
     // add reaction to group
     Group group = (Group) groups.getGroup("postTranslationReaction");
     if (group != null) {
@@ -999,6 +1039,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     Reaction tempReaction = model.createReaction(id);
     tempReaction.setName(name);
     tempReaction.initDefaults(2, 4, true);
+    tempReaction.setReversible(false);
     // add reaction to group
     Group group = (Group) groups.getGroup("postTranslationReaction");
     if (group != null) {

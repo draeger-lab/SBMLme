@@ -16,7 +16,6 @@ import org.sbml.jsbml.Model;
 import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.SBMLException;
 import org.sbml.jsbml.TidySBMLWriter;
-import org.sbml.jsbml.UnitDefinition;
 import org.sbml.jsbml.ext.fbc.FBCConstants;
 import org.sbml.jsbml.ext.fbc.FBCModelPlugin;
 import org.sbml.jsbml.ext.fbc.Objective;
@@ -191,6 +190,14 @@ public class ExampleModel implements MEConstants {
     meSpeciesPlugin.createMESpecies(model, "cmp_c", "C9H12N3O8P", "CMP",
       cytosol, metabolite);
     meSpeciesPlugin.createMESpecies(model, "ctp_c", "C9H12N3O14P3", "CTP",
+      cytosol, metabolite);
+    meSpeciesPlugin.createMESpecies(model, "datp_c", "C10H12N5O12P3", "dATP",
+      cytosol, metabolite);
+    meSpeciesPlugin.createMESpecies(model, "dgtp_c", "C10H12N5O13P3", "dGTP",
+      cytosol, metabolite);
+    meSpeciesPlugin.createMESpecies(model, "dttp_c", "C10H13N2O14P3", "dTTP",
+      cytosol, metabolite);
+    meSpeciesPlugin.createMESpecies(model, "dctp_c", "C9H12N3O13P3", "dCTP",
       cytosol, metabolite);
     // forced to change id due to :
     meSpeciesPlugin.createMESpecies(model,
@@ -691,6 +698,17 @@ public class ExampleModel implements MEConstants {
       "peptidoglycan_biomass_to_biomass", "", "1000.00000000000", "0.0",
       Arrays.asList("peptidoglycan_biomass", "biomass"),
       Arrays.asList("-1", "1"), 0.0, "continuous");
+    meReactionPlugin.createSummaryVariableReaction(model, groups, objective,
+      "dna_replication", "",
+      "mu*(-0.125041790343836*mu**3.90364139015214/(mu**3.90364139015214 + 0.116858742296566) + 0.192933177925728)".replaceAll(
+        "\\*\\*", "\\^"),
+      "mu*(-0.125041790343836*mu**3.90364139015214/(mu**3.90364139015214 + 0.116858742296566) + 0.192933177925728)".replaceAll(
+        "\\*\\*", "\\^"),
+      Arrays.asList("datp_c", "ppi_c", "DNA_biomass", "dctp_c", "dgtp_c",
+        "dttp_c"),
+      Arrays.asList("-0.246051501452000", "1", "0.307433440943493",
+        "-0.253948498548000", "-0.253948498548000", "-0.246051501452000"),
+      0.0, "continuous");
     // set global info as parameter
     model.createParameter("global_info__m_nt");
     model.getParameter("global_info__m_nt").initDefaults(2, 4, true);
