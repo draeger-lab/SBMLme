@@ -40,10 +40,10 @@ public class TranslocationReference extends MEAbstractXMLNodePlugin
    * @param multiplier
    * @return
    */
-  public static TranslocationReference createTranslocationReference(String id,
+  public TranslocationReference createTranslocationReference(String id,
     String name, String translocation, Double multiplier) {
     TranslocationReference tr = new TranslocationReference();
-    tr.setId(id);
+    tr.setId(createSBMLConformId(id));
     tr.setName(name);
     tr.setTranslocation(translocation);
     tr.setMultiplier(Double.toString(multiplier));

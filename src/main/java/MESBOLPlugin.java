@@ -29,14 +29,14 @@ public class MESBOLPlugin {
     throws SBOLValidationException {
     URI encoding = null;
     URI type = null;
-    if ((role == "mRNA") || (role == "tRNA") || (role == "ncRNA")
-      || (role == "rRNA")) {
+    if ((role.equals("mRNA")) || (role.equals("tRNA")) || (role.equals("ncRNA"))
+      || (role.equals("rRNA"))) {
       encoding = Sequence.IUPAC_RNA;
       type = ComponentDefinition.RNA;
-    } else if (role == "DNA") {
+    } else if (role.equals("DNA")) {
       encoding = Sequence.IUPAC_DNA;
       type = ComponentDefinition.DNA;
-    } else if (role == "Protein") {
+    } else if (role.equals("Protein")) {
       encoding = Sequence.IUPAC_PROTEIN;
       type = ComponentDefinition.PROTEIN;
     }

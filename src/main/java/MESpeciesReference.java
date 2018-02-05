@@ -37,7 +37,7 @@ public class MESpeciesReference extends MEAbstractXMLNodePlugin
   public XMLNode createMESpeciesReference(String speciesReference,
     double stoichiometry) {
     MESpeciesReference speciesRef = new MESpeciesReference();
-    speciesRef.setSpecies(speciesReference);
+    speciesRef.setSpecies(createSBMLConformId(speciesReference));
     speciesRef.setStoichiometry(String.valueOf(stoichiometry));
     return speciesRef;
   }

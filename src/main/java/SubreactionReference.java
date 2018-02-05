@@ -45,7 +45,7 @@ public class SubreactionReference extends MEAbstractXMLNodePlugin
    */
   public XMLNode createSubreactionReference(String subreaction, int numUsage) {
     SubreactionReference temp = new SubreactionReference();
-    temp.setSubreaction(subreaction);
+    temp.setSubreaction(createSBMLConformId(subreaction));
     temp.setStoichiometry(String.valueOf(numUsage));
     return temp;
   }

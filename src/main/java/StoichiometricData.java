@@ -51,7 +51,7 @@ public class StoichiometricData extends MEAbstractXMLNodePlugin
     List<Double> listCoefficients, List<String> speciesReferences,
     List<Double> stoichiometries) {
     StoichiometricData stoichiometricData = new StoichiometricData();
-    stoichiometricData.setId(id);
+    stoichiometricData.setId(createSBMLConformId(id));
     stoichiometricData.setLowerFluxBound(String.valueOf(lowerFluxBound));
     stoichiometricData.setUpperFluxBound(String.valueOf(upperFluxBound));
     // create and add list of subreactions objects

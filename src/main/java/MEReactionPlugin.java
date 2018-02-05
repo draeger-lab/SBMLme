@@ -61,15 +61,17 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     if (coefficient.matches("-?\\d+\\.?\\d*")) {
       double tempCoefficient = Double.valueOf(coefficient);
       if (tempCoefficient < 0) {
-        SpeciesReference temp = reaction.createReactant(
-          reaction.getId() + "___" + speciesId + "___reactant", speciesId);
+        SpeciesReference temp = reaction.createReactant(reaction.getId() + "___"
+          + createSBMLConformId(speciesId) + "___reactant",
+          createSBMLConformId(speciesId));
         temp.setConstant(false);
         // need to convert value due to COBRAme only possessing one list for
         // both reactants & products
         temp.setStoichiometry(tempCoefficient * -1.0);
       } else {
-        SpeciesReference temp = reaction.createProduct(
-          reaction.getId() + "___" + speciesId + "___product", speciesId);
+        SpeciesReference temp = reaction.createProduct(reaction.getId() + "___"
+          + createSBMLConformId(speciesId) + "___product",
+          createSBMLConformId(speciesId));
         temp.setStoichiometry(tempCoefficient);
         temp.setConstant(false);
       }
@@ -91,8 +93,9 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
         }
       }
       if (coefficient.substring(0, 1).equals("-")) {
-        SpeciesReference temp = reaction.createReactant(
-          reaction.getId() + "___" + speciesId + "___reactant", speciesId);
+        SpeciesReference temp = reaction.createReactant(reaction.getId() + "___"
+          + createSBMLConformId(speciesId) + "___reactant",
+          createSBMLConformId(speciesId));
         temp.setConstant(false);
         ASTNode coefficientNode = ASTNode.parseFormula(coefficient);
         // need to convert value due to COBRAme only possessing one list for
@@ -103,8 +106,9 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
         speciesAssignment.setMath(coefficientNode.multiplyWith(convert));
         speciesAssignment.setVariable(temp.getId());
       } else {
-        SpeciesReference temp = reaction.createProduct(
-          reaction.getId() + "___" + speciesId + "___product", speciesId);
+        SpeciesReference temp = reaction.createProduct(reaction.getId() + "___"
+          + createSBMLConformId(speciesId) + "___product",
+          createSBMLConformId(speciesId));
         temp.setConstant(false);
         ASTNode coefficientNode = ASTNode.parseFormula(coefficient);
         InitialAssignment speciesAssignment = model.createInitialAssignment();
@@ -126,120 +130,95 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
    */
   public void setBounds(Model model, FBCReactionPlugin fbcTempReaction,
     String upperBound, String lowerBound) throws ParseException {
-    List<Parameter> listParameter = model.getListOfParameters();
-    boolean upperSet = false;
     boolean upperNumber = false;
-    boolean lowerSet = false;
     boolean lowerNumber = false;
-    // Are the values for the Bounds simple numbers or
+    // Are the values for the Bounds simple numbers?
     if (upperBound.matches("-?\\d+\\.?\\d*")) {
       upperNumber = true;
     }
     if (lowerBound.matches("-?\\d+\\.?\\d*")) {
       lowerNumber = true;
     }
-    // set SBML conform Ids in case the bound is not a number
-    String upperId = "me_bound_" + upperBound.replaceAll("\\+", "__plus__");
+    // set basic ids for bounds that apply if the bound is an int or double
+    String upperId = "me_bound_" + upperBound;
     upperId = upperId.replaceAll("\\-", "__minus__");
-    upperId = upperId.replaceAll("\\^", "__power__");
-    upperId = upperId.replaceAll("\\*", "__times__");
-    upperId = upperId.replaceAll("\\/", "__divide__");
-    upperId = upperId.replaceAll("\\(", "__open__");
-    upperId = upperId.replaceAll("\\)", "__close__");
-    upperId = upperId.replaceAll("\\.", "_");
-    upperId = upperId.replaceAll(" ", "");
-    String lowerId = "me_bound_" + lowerBound.replaceAll("\\+", "__plus__");
+    upperId = upperId.replaceAll("\\.", "__");
+    String lowerId = "me_bound_" + lowerBound;
     lowerId = lowerId.replaceAll("\\-", "__minus__");
-    lowerId = lowerId.replaceAll("\\^", "__power__");
-    lowerId = lowerId.replaceAll("\\*", "__times__");
-    lowerId = lowerId.replaceAll("\\/", "__divide__");
-    lowerId = lowerId.replaceAll("\\(", "__open__");
-    lowerId = lowerId.replaceAll("\\)", "__close__");
-    lowerId = lowerId.replaceAll("\\.", "_");
-    lowerId = lowerId.replaceAll(" ", "");
-    // test if value already in a parameter
-    for (int i = 0; i < listParameter.size(); i++) {
-      if (upperNumber && !upperSet) {
-        if (listParameter.get(i).getValue() == Double.valueOf(upperBound)) {
-          fbcTempReaction.setUpperFluxBound(listParameter.get(i));
-          upperSet = true;
-        }
-      } else if (!upperSet) {
-        // test if bound equals an already known bound (either another bound or
-        // an parameter used in other part of model
-        if (listParameter.get(i).getId().equals(upperId)
-          || listParameter.get(i).getId().equals(upperBound)) {
-          fbcTempReaction.setUpperFluxBound(listParameter.get(i));
-          upperSet = true;
-        }
-      }
-      if (lowerNumber && !lowerSet) {
-        if (listParameter.get(i).getValue() == Double.valueOf(lowerBound)) {
-          fbcTempReaction.setLowerFluxBound(listParameter.get(i));
-          lowerSet = true;
-        }
-      } else if (!lowerSet) {
-        // test if bound equals an already known bound (either another bound or
-        // an parameter used in other part of model
-        if (listParameter.get(i).getId().equals(lowerId)
-          || listParameter.get(i).getId().equals(lowerBound)) {
-          fbcTempReaction.setLowerFluxBound(listParameter.get(i));
-          lowerSet = true;
-        }
-      }
+    lowerId = lowerId.replaceAll("\\.", "__");
+    // change the id if the bound is a coplex expression to create a valid SBML
+    // id
+    if (!upperNumber) {
+      // change power operator from Pythons ** to ^ to make the value valid
+      upperBound = upperBound.replaceAll("\\*\\*", "\\^");
+      upperId = upperId.replaceAll("\\+", "__plus__");
+      upperId = upperId.replaceAll("\\*\\*", "__power__");
+      upperId = upperId.replaceAll("\\^", "__power__");
+      upperId = upperId.replaceAll("\\*", "__times__");
+      upperId = upperId.replaceAll("\\/", "__divide__");
+      upperId = upperId.replaceAll("\\(", "__open__");
+      upperId = upperId.replaceAll("\\)", "__close__");
+      upperId = upperId.replaceAll(" ", "");
     }
-    // if a bound is not set yet create a new parameter for it and set it
-    if ((!upperSet) && (!lowerSet)) {
-      // special case if both bounds are identical and not set
-      if (upperId.equals(lowerId)) {
-        Parameter upper = model.createParameter(upperId);
-        upper.setConstant(true);
-        InitialAssignment upperIA = model.createInitialAssignment();
-        upperIA.setMath(ASTNode.parseFormula(upperBound));
-        upperIA.setVariable(upper.getId());
-        fbcTempReaction.setUpperFluxBound(upper);
-        fbcTempReaction.setLowerFluxBound(upper);
-        upperSet = true;
-        lowerSet = true;
-      }
+    if (!lowerNumber) {
+      // change power operator from Pythons ** to ^ to make the value valid
+      lowerBound = lowerBound.replaceAll("\\*\\*", "\\^");
+      lowerId = lowerId.replaceAll("\\+", "__plus__");
+      lowerId = lowerId.replaceAll("\\*\\*", "__power__");
+      lowerId = lowerId.replaceAll("\\^", "__power__");
+      lowerId = lowerId.replaceAll("\\*", "__times__");
+      lowerId = lowerId.replaceAll("\\/", "__divide__");
+      lowerId = lowerId.replaceAll("\\(", "__open__");
+      lowerId = lowerId.replaceAll("\\)", "__close__");
+      lowerId = lowerId.replaceAll(" ", "");
     }
-    if (!upperSet) {
-      if (upperNumber) {
-        Parameter upper = model.createParameter(
-          "me_bound_" + upperBound.replaceAll("[\\.]", "__"));
-        upper.setValue(Double.valueOf(upperBound));
-        upper.setConstant(true);
-        fbcTempReaction.setUpperFluxBound(upper);
-      } else {
-        Parameter upper = model.createParameter(upperId);
-        upper.setConstant(true);
-        InitialAssignment upperIA = model.createInitialAssignment();
-        upperIA.setMath(ASTNode.parseFormula(upperBound));
-        upperIA.setVariable(upper.getId());
-        fbcTempReaction.setUpperFluxBound(upper);
-      }
+    // test if parameter already set
+    if (model.getParameter(upperId) != null) {
+      // case parameter already in model
+      fbcTempReaction.setUpperFluxBound(upperId);
+    } else if (upperNumber) {
+      // case parameter not in model but is a double or int
+      Parameter upper = model.createParameter(upperId);
+      upper.setConstant(true);
+      upper.setValue(Double.valueOf(upperBound));
+      fbcTempReaction.setUpperFluxBound(upper);
+    } else {
+      // case parameter not in model and is a complex expression that may be
+      // dependent on other parameters
+      Parameter upper = model.createParameter(upperId);
+      upper.setConstant(true);
+      InitialAssignment upperIA = model.createInitialAssignment();
+      upperIA.setMath(ASTNode.parseFormula(upperBound));
+      upperIA.setVariable(upper.getId());
+      fbcTempReaction.setUpperFluxBound(upper);
     }
-    if (!lowerSet) {
-      if (lowerNumber) {
-        Parameter lower = model.createParameter(
-          "me_bound_" + lowerBound.replaceAll("[\\.]", "__"));
-        lower.setValue(Double.valueOf(lowerBound));
-        lower.setConstant(true);
-        fbcTempReaction.setLowerFluxBound(lower);
-      } else {
-        Parameter lower = model.createParameter(lowerId);
-        lower.setConstant(true);
-        InitialAssignment lowerIA = model.createInitialAssignment();
-        lowerIA.setMath(ASTNode.parseFormula(lowerBound));
-        lowerIA.setVariable(lower.getId());
-        fbcTempReaction.setUpperFluxBound(lower);
-      }
+    // test if parameter already set
+    if (model.getParameter(lowerId) != null) {
+      // case parameter already in model
+      fbcTempReaction.setLowerFluxBound(lowerId);
+    } else if (lowerNumber) {
+      // case parameter not in model but is a double or int
+      Parameter lower = model.createParameter(lowerId);
+      lower.setConstant(true);
+      lower.setValue(Double.valueOf(lowerBound));
+      fbcTempReaction.setLowerFluxBound(lower);
+    } else {
+      // case parameter not in model and is a complex expression that may be
+      // dependent on other parameters
+      Parameter lower = model.createParameter(lowerId);
+      lower.setConstant(true);
+      InitialAssignment lowerIA = model.createInitialAssignment();
+      lowerIA.setMath(ASTNode.parseFormula(lowerBound));
+      lowerIA.setVariable(lower.getId());
+      fbcTempReaction.setLowerFluxBound(lower);
     }
   }
 
 
   // Functions for correctly setting COBRAme compliant reactions
   /**
+   * create and adds a SummaryVariable Reaction to the model.
+   * 
    * @param model
    * @param groups
    * @param objective
@@ -258,15 +237,16 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     String upperBound, String lowerBound, List<String> speciesIds,
     List<String> coefficients, double objectiveCoefficient, String variableKind)
     throws ParseException {
+    id = createSBMLConformId(id);
     Reaction tempReaction = model.createReaction(id);
     tempReaction.initDefaults(2, 4, true);
     tempReaction.setReversible(false);
     tempReaction.setName(name);
-    Group group = (Group) groups.getGroup("summaryVariable");
+    Group group = (Group) groups.getGroup("SummaryVariable");
     if (group != null) {
       group.createMemberWithIdRef(id);
     } else {
-      group = groups.createGroup("summaryVariable");
+      group = groups.createGroup("SummaryVariable");
       group.setKind(Group.Kind.classification);
       group.createMemberWithIdRef(id);
     }
@@ -286,6 +266,10 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
 
 
   /**
+   * create and add a formation reaction which transforms a species into a
+   * generic Component
+   * and add the reactant to the group of the generic component
+   * 
    * @param model
    * @param groups
    * @param objective
@@ -304,15 +288,16 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     double upperBound, double lowerBound, List<String> speciesIds,
     List<String> coefficients, double objectiveCoefficient, String variableKind)
     throws ParseException {
+    id = createSBMLConformId(id);
     Reaction tempReaction = model.createReaction(id);
     tempReaction.setName(name);
     tempReaction.initDefaults(2, 4, true);
     tempReaction.setReversible(false);
-    Group group = (Group) groups.getGroup("genericFormationReaction");
+    Group group = (Group) groups.getGroup("GenericFormationReaction");
     if (group != null) {
       group.createMemberWithIdRef(id);
     } else {
-      group = groups.createGroup("genericFormationReaction");
+      group = groups.createGroup("GenericFormationReaction");
       group.setKind(Group.Kind.classification);
       group.createMemberWithIdRef(id);
     }
@@ -329,18 +314,22 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
       double tempCoefficient = Double.valueOf(coefficients.get(i));
       if (tempCoefficient < 0) {
         SpeciesReference temp = tempReaction.createReactant(
-          id + "___" + speciesIds.get(i) + "___reactant", speciesIds.get(i));
+          id + "___" + createSBMLConformId(speciesIds.get(i)) + "___reactant",
+          createSBMLConformId(speciesIds.get(i)));
         // need to convert value due to COBRAme only possessing one list for
         // both reactants & products
         temp.setStoichiometry(tempCoefficient * -1.0);
         temp.setConstant(false);
-        metabolite = speciesIds.get(i);
+        metabolite = createSBMLConformId(speciesIds.get(i));
       } else {
+        // each GenericFormationReaction only possesses one reactant and one
+        // product therefore the generic id can be used as group name
         SpeciesReference temp = tempReaction.createProduct(
-          id + "___" + speciesIds.get(i) + "___product", speciesIds.get(i));
+          id + "___" + createSBMLConformId(speciesIds.get(i)) + "___product",
+          createSBMLConformId(speciesIds.get(i)));
         temp.setStoichiometry(tempCoefficient);
         temp.setConstant(false);
-        generic = "genericData___" + speciesIds.get(i);
+        generic = "genericData___" + createSBMLConformId(speciesIds.get(i));
       }
     }
     // test if group already exists
@@ -359,6 +348,8 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
 
 
   /**
+   * create a transcription reaction
+   * 
    * @param model
    * @param sbol
    * @param groups
@@ -385,16 +376,18 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     double objectiveCoefficient, String variableKind, String sequence,
     List<String> subreactions, List<Integer> subreactionCoefficients)
     throws ParseException, SBOLValidationException {
+    id = createSBMLConformId(id);
+    dataId = createSBMLConformId(dataId);
     Reaction tempReaction = model.createReaction(id);
     tempReaction.setName(name);
     tempReaction.initDefaults(2, 4, true);
     tempReaction.setReversible(false);
     // add reaction to group
-    Group group = (Group) groups.getGroup("transcriptionReaction");
+    Group group = (Group) groups.getGroup("TranscriptionReaction");
     if (group != null) {
       group.createMemberWithIdRef(id);
     } else {
-      group = groups.createGroup("transcriptionReaction");
+      group = groups.createGroup("TranscriptionReaction");
       group.setKind(Group.Kind.classification);
       group.createMemberWithIdRef(id);
     }
@@ -419,11 +412,19 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     }
     // add sequence to SBOL document
     MESBOLPlugin meSBOL = new MESBOLPlugin();
-    meSBOL.createSBOL(sbol, dataId, sequence, "DNA");
-    // add ME exclusive data to annotation
     MEReactionPlugin meReaction = new MEReactionPlugin();
+    // test if dataId is also a species id which is valid in COBRAme but would
+    // not work in SBOL because ids must be globally unique here
+    if (model.getSpecies(dataId) != null) {
+      meSBOL.createSBOL(sbol, dataId + "__REACTION", sequence, "DNA");
+      meReaction.setSequence(
+        sbol.getDefaultURIprefix() + dataId + "__REACTION");
+    } else {
+      meSBOL.createSBOL(sbol, dataId, sequence, "DNA");
+      meReaction.setSequence(sbol.getDefaultURIprefix() + dataId);
+    }
+    // add ME exclusive data to annotation
     meReaction.setVariableKind(variableKind);
-    meReaction.setSequence(sbol.getDefaultURIprefix() + dataId);
     meReaction.setDataId(dataId);
     meReaction.addChild(listSubRef);
     tempReaction.appendAnnotation(meReaction);
@@ -431,6 +432,8 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
 
 
   /**
+   * create a translation reaction
+   * 
    * @param model
    * @param sbol
    * @param groups
@@ -457,16 +460,18 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     double objectiveCoefficient, String variableKind, String sequence,
     List<String> subreactions, List<Integer> subreactionCoefficients)
     throws ParseException, SBOLValidationException {
+    id = createSBMLConformId(id);
+    dataId = createSBMLConformId(dataId);
     Reaction tempReaction = model.createReaction(id);
     tempReaction.setName(name);
     tempReaction.initDefaults(2, 4, true);
     tempReaction.setReversible(false);
     // add reaction to group
-    Group group = (Group) groups.getGroup("translationReaction");
+    Group group = (Group) groups.getGroup("TranslationReaction");
     if (group != null) {
       group.createMemberWithIdRef(id);
     } else {
-      group = groups.createGroup("translationReaction");
+      group = groups.createGroup("TranslationReaction");
       group.setKind(Group.Kind.classification);
       group.createMemberWithIdRef(id);
     }
@@ -491,11 +496,19 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     }
     // add sequence to SBOL document
     MESBOLPlugin meSBOL = new MESBOLPlugin();
-    meSBOL.createSBOL(sbol, dataId, sequence, "mRNA");
-    // add ME exclusive data to annotation
     MEReactionPlugin meReaction = new MEReactionPlugin();
+    // test if dataId is also a species id which is valid in COBRAme but would
+    // not work in SBOL because ids must be globally unique here
+    if (model.getSpecies(dataId) != null) {
+      meSBOL.createSBOL(sbol, dataId + "__REACTION", sequence, "mRNA");
+      meReaction.setSequence(
+        sbol.getDefaultURIprefix() + dataId + "__REACTION");
+    } else {
+      meSBOL.createSBOL(sbol, dataId, sequence, "mRNA");
+      meReaction.setSequence(sbol.getDefaultURIprefix() + dataId);
+    }
+    // add ME exclusive data to annotation
     meReaction.setVariableKind(variableKind);
-    meReaction.setSequence(sbol.getDefaultURIprefix() + dataId);
     meReaction.setDataId(dataId);
     meReaction.addChild(listSubRef);
     tempReaction.appendAnnotation(meReaction);
@@ -503,6 +516,8 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
 
 
   /**
+   * create a tRNA charging reaction
+   * 
    * @param model
    * @param groups
    * @param objective
@@ -530,6 +545,8 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     List<String> subreactions, List<Integer> subreactionCoefficients,
     String synthetase, String codon)
     throws ParseException, SBOLValidationException {
+    id = createSBMLConformId(id);
+    dataId = createSBMLConformId(dataId);
     Reaction tempReaction = model.createReaction(id);
     tempReaction.setName(name);
     tempReaction.initDefaults(2, 4, true);
@@ -575,6 +592,8 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
 
 
   /**
+   * create a post translation reaction
+   * 
    * @param model
    * @param groups
    * @param objective
@@ -594,8 +613,8 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
    * @param translocation
    * @param multipliers
    * @param propensityScaling
-   * @param saOuter
-   * @param saInner
+   * @param surfaceArea
+   * @param surfaceAreaValue
    * @param keqFolding
    * @param keqValues
    * @param kFolding
@@ -609,19 +628,22 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     double objectiveCoefficient, String variableKind, List<String> subreactions,
     List<Integer> subreactionCoefficients, double aggregationPropensity,
     List<String> translocation, List<Double> multipliers,
-    double propensityScaling, double saOuter, double saInner,
-    List<String> keqFolding, List<Double> keqValues, List<String> kFolding,
-    List<Double> kValues) throws ParseException {
+    double propensityScaling, List<String> surfaceArea,
+    List<Double> surfaceAreaValue, List<String> keqFolding,
+    List<Double> keqValues, List<String> kFolding, List<Double> kValues)
+    throws ParseException {
+    id = createSBMLConformId(id);
+    dataId = createSBMLConformId(dataId);
     Reaction tempReaction = model.createReaction(id);
     tempReaction.setName(name);
     tempReaction.initDefaults(2, 4, true);
     tempReaction.setReversible(false);
     // add reaction to group
-    Group group = (Group) groups.getGroup("postTranslationReaction");
+    Group group = (Group) groups.getGroup("PostTranslationReaction");
     if (group != null) {
       group.createMemberWithIdRef(id);
     } else {
-      group = groups.createGroup("postTranslationReaction");
+      group = groups.createGroup("PostTranslationReaction");
       group.setKind(Group.Kind.classification);
       group.createMemberWithIdRef(id);
     }
@@ -637,14 +659,16 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
       addCOBRAmeSpeciesToReaction(model, tempReaction, speciesIds.get(i),
         coefficients.get(i));
     }
-    // add subreaction references to annotations
-    SubreactionReference subReference = new SubreactionReference();
-    XMLNode listSubRef = subReference.ListOfSubreactionReference();
-    for (int i = 0; i < subreactions.size(); i++) {
-      listSubRef.addChild(subReference.createSubreactionReference(
-        subreactions.get(i), subreactionCoefficients.get(i)));
+    if (subreactions != null) {
+      // add subreaction references to annotations
+      SubreactionReference subReference = new SubreactionReference();
+      XMLNode listSubRef = subReference.ListOfSubreactionReference();
+      for (int i = 0; i < subreactions.size(); i++) {
+        listSubRef.addChild(subReference.createSubreactionReference(
+          subreactions.get(i), subreactionCoefficients.get(i)));
+      }
+      tempReaction.appendAnnotation(listSubRef);
     }
-    tempReaction.appendAnnotation(listSubRef);
     // add ME exclusive data to annotation
     MEReactionPlugin meReaction = new MEReactionPlugin();
     meReaction.setVariableKind(variableKind);
@@ -661,184 +685,47 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     }
     meReaction.addChild(listTranslocations);
     meReaction.setPropensityScaling(String.valueOf(propensityScaling));
-    meReaction.setSurfaceAreaInner(String.valueOf(saInner));
-    meReaction.setSurfaceAreaOuter(String.valueOf(saOuter));
+    // surfaceArea can only have two entries: "SA_inner_membrane" and
+    // "SA_outer_membrane"
+    if (surfaceArea != null) {
+      if (!surfaceArea.isEmpty()) {
+        if (surfaceArea.get(0).equals("SA_inner_membrane")) {
+          meReaction.setSurfaceAreaInner(
+            String.valueOf(surfaceAreaValue.get(0)));
+          meReaction.setSurfaceAreaOuter(
+            String.valueOf(surfaceAreaValue.get(1)));
+        } else {
+          meReaction.setSurfaceAreaInner(
+            String.valueOf(surfaceAreaValue.get(1)));
+          meReaction.setSurfaceAreaOuter(
+            String.valueOf(surfaceAreaValue.get(0)));
+        }
+      }
+    }
     RateConstants rateConstants = new RateConstants();
-    XMLNode listKeq = rateConstants.ListOfEquilibriumConstants();
-    XMLNode listK = rateConstants.ListOfRateConstants();
-    for (int i = 0; i < keqFolding.size(); i++) {
-      listKeq.addChild(
-        rateConstants.createRateConstant(keqFolding.get(i), keqValues.get(i)));
+    if (keqFolding != null) {
+      XMLNode listKeq = rateConstants.ListOfEquilibriumConstants();
+      for (int i = 0; i < keqFolding.size(); i++) {
+        listKeq.addChild(rateConstants.createRateConstant(keqFolding.get(i),
+          keqValues.get(i)));
+      }
+      meReaction.addChild(listKeq);
     }
-    for (int i = 0; i < kFolding.size(); i++) {
-      listK.addChild(
-        rateConstants.createRateConstant(kFolding.get(i), kValues.get(i)));
+    if (kFolding != null) {
+      XMLNode listK = rateConstants.ListOfRateConstants();
+      for (int i = 0; i < kFolding.size(); i++) {
+        listK.addChild(
+          rateConstants.createRateConstant(kFolding.get(i), kValues.get(i)));
+      }
+      meReaction.addChild(listK);
     }
-    meReaction.addChild(listKeq);
-    meReaction.addChild(listK);
     tempReaction.appendAnnotation(meReaction);
   }
 
 
   /**
-   * reduced PostTranslationReaction without surface Area and rate constants
+   * create a complex formation reaction
    * 
-   * @param model
-   * @param groups
-   * @param objective
-   * @param id
-   * @param name
-   * @param dataId
-   * @param upperBound
-   * @param lowerBound
-   * @param speciesIds
-   * @param coefficients
-   * @param objectiveCoefficient
-   * @param variableKind
-   * @param subreactions
-   * @param subreactionCoefficients
-   * @param aggregationPropensity
-   * @param translocation
-   * @param multipliers
-   * @param propensityScaling
-   * @throws ParseException
-   */
-  public void createPostTranslationReaction(Model model,
-    GroupsModelPlugin groups, Objective objective, String id, String name,
-    String dataId, double upperBound, double lowerBound,
-    List<String> speciesIds, List<String> coefficients,
-    double objectiveCoefficient, String variableKind, List<String> subreactions,
-    List<Integer> subreactionCoefficients, double aggregationPropensity,
-    List<String> translocation, List<Double> multipliers,
-    double propensityScaling) throws ParseException {
-    Reaction tempReaction = model.createReaction(id);
-    tempReaction.setName(name);
-    tempReaction.initDefaults(2, 4, true);
-    tempReaction.setReversible(false);
-    // add reaction to group
-    Group group = (Group) groups.getGroup("postTranslationReaction");
-    if (group != null) {
-      group.createMemberWithIdRef(id);
-    } else {
-      group = groups.createGroup("postTranslationReaction");
-      group.setKind(Group.Kind.classification);
-      group.createMemberWithIdRef(id);
-    }
-    // set fbc data
-    FBCReactionPlugin fbcTempReaction =
-      (FBCReactionPlugin) tempReaction.getPlugin(FBCConstants.shortLabel);
-    setBounds(model, fbcTempReaction, String.valueOf(upperBound),
-      String.valueOf(lowerBound));
-    objective.createFluxObjective(id + "_coefficient", "", objectiveCoefficient,
-      model.getReaction(id));
-    // add species to reaction
-    for (int i = 0; i < speciesIds.size(); i++) {
-      addCOBRAmeSpeciesToReaction(model, tempReaction, speciesIds.get(i),
-        coefficients.get(i));
-    }
-    // add subreaction references to annotations
-    SubreactionReference subReference = new SubreactionReference();
-    XMLNode listSubRef = subReference.ListOfSubreactionReference();
-    for (int i = 0; i < subreactions.size(); i++) {
-      listSubRef.addChild(subReference.createSubreactionReference(
-        subreactions.get(i), subreactionCoefficients.get(i)));
-    }
-    tempReaction.appendAnnotation(listSubRef);
-    // add ME exclusive data to annotation
-    MEReactionPlugin meReaction = new MEReactionPlugin();
-    meReaction.setVariableKind(variableKind);
-    meReaction.setDataId(dataId);
-    meReaction.setAggregationPropensity(String.valueOf(aggregationPropensity));
-    TranslocationReference transloc = new TranslocationReference();
-    // create and add combined list of translocations, elements with multipliers
-    // not zero refer to COBRAme list of translocation multipliers while the
-    // rest refer to the list of translocations
-    XMLNode listTranslocations = transloc.ListOfTranslocationReference();
-    for (int i = 0; i < translocation.size(); i++) {
-      listTranslocations.addChild(transloc.createTranslocationReference(
-        translocation.get(i), multipliers.get(i)));
-    }
-    meReaction.addChild(listTranslocations);
-    meReaction.setPropensityScaling(String.valueOf(propensityScaling));
-    tempReaction.appendAnnotation(meReaction);
-  }
-
-
-  /**
-   * reduced PostTranslationReaction without surface area, rate constants and
-   * subreactions
-   * 
-   * @param model
-   * @param groups
-   * @param objective
-   * @param id
-   * @param name
-   * @param dataId
-   * @param upperBound
-   * @param lowerBound
-   * @param speciesIds
-   * @param coefficients
-   * @param objectiveCoefficient
-   * @param variableKind
-   * @param aggregationPropensity
-   * @param translocation
-   * @param multipliers
-   * @param propensityScaling
-   * @throws ParseException
-   */
-  public void createPostTranslationReaction(Model model,
-    GroupsModelPlugin groups, Objective objective, String id, String name,
-    String dataId, double upperBound, double lowerBound,
-    List<String> speciesIds, List<String> coefficients,
-    double objectiveCoefficient, String variableKind,
-    double aggregationPropensity, List<String> translocation,
-    List<Double> multipliers, double propensityScaling) throws ParseException {
-    Reaction tempReaction = model.createReaction(id);
-    tempReaction.setName(name);
-    tempReaction.initDefaults(2, 4, true);
-    tempReaction.setReversible(false);
-    // add reaction to group
-    Group group = (Group) groups.getGroup("postTranslationReaction");
-    if (group != null) {
-      group.createMemberWithIdRef(id);
-    } else {
-      group = groups.createGroup("postTranslationReaction");
-      group.setKind(Group.Kind.classification);
-      group.createMemberWithIdRef(id);
-    }
-    // set fbc data
-    FBCReactionPlugin fbcTempReaction =
-      (FBCReactionPlugin) tempReaction.getPlugin(FBCConstants.shortLabel);
-    setBounds(model, fbcTempReaction, String.valueOf(upperBound),
-      String.valueOf(lowerBound));
-    objective.createFluxObjective(id + "_coefficient", "", objectiveCoefficient,
-      model.getReaction(id));
-    // add species to reaction
-    for (int i = 0; i < speciesIds.size(); i++) {
-      addCOBRAmeSpeciesToReaction(model, tempReaction, speciesIds.get(i),
-        coefficients.get(i));
-    }
-    // add ME exclusive data to annotation
-    MEReactionPlugin meReaction = new MEReactionPlugin();
-    meReaction.setVariableKind(variableKind);
-    meReaction.setDataId(dataId);
-    meReaction.setAggregationPropensity(String.valueOf(aggregationPropensity));
-    TranslocationReference transloc = new TranslocationReference();
-    // create and add combined list of translocations, elements with multipliers
-    // not zero refer to COBRAme list of translocation multipliers while the
-    // rest refer to the list of translocations
-    XMLNode listTranslocations = transloc.ListOfTranslocationReference();
-    for (int i = 0; i < translocation.size(); i++) {
-      listTranslocations.addChild(transloc.createTranslocationReference(
-        translocation.get(i), multipliers.get(i)));
-    }
-    meReaction.addChild(listTranslocations);
-    meReaction.setPropensityScaling(String.valueOf(propensityScaling));
-    tempReaction.appendAnnotation(meReaction);
-  }
-
-
-  /**
    * @param model
    * @param groups
    * @param objective
@@ -861,16 +748,18 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     List<String> speciesIds, List<String> coefficients,
     double objectiveCoefficient, String variableKind, List<String> subreactions,
     List<Integer> subreactionCoefficients) throws ParseException {
+    id = createSBMLConformId(id);
+    dataId = createSBMLConformId(dataId);
     Reaction tempReaction = model.createReaction(id);
     tempReaction.setName(name);
     tempReaction.initDefaults(2, 4, true);
     tempReaction.setReversible(false);
     // add reaction to group
-    Group group = (Group) groups.getGroup("postTranslationReaction");
+    Group group = (Group) groups.getGroup("ComplexFormationReaction");
     if (group != null) {
       group.createMemberWithIdRef(id);
     } else {
-      group = groups.createGroup("postTranslationReaction");
+      group = groups.createGroup("ComplexFormationReaction");
       group.setKind(Group.Kind.classification);
       group.createMemberWithIdRef(id);
     }
@@ -886,14 +775,16 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
       addCOBRAmeSpeciesToReaction(model, tempReaction, speciesIds.get(i),
         coefficients.get(i));
     }
-    // add subreaction references to annotations
-    SubreactionReference subReference = new SubreactionReference();
-    XMLNode listSubRef = subReference.ListOfSubreactionReference();
-    for (int i = 0; i < subreactions.size(); i++) {
-      listSubRef.addChild(subReference.createSubreactionReference(
-        subreactions.get(i), subreactionCoefficients.get(i)));
+    if (subreactions != null) {
+      // add subreaction references to annotations
+      SubreactionReference subReference = new SubreactionReference();
+      XMLNode listSubRef = subReference.ListOfSubreactionReference();
+      for (int i = 0; i < subreactions.size(); i++) {
+        listSubRef.addChild(subReference.createSubreactionReference(
+          subreactions.get(i), subreactionCoefficients.get(i)));
+      }
+      tempReaction.appendAnnotation(listSubRef);
     }
-    tempReaction.appendAnnotation(listSubRef);
     // add ME exclusive data to annotation
     MEReactionPlugin meReaction = new MEReactionPlugin();
     meReaction.setVariableKind(variableKind);
@@ -903,61 +794,8 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
 
 
   /**
-   * create reduced ComplexFormationReaction without subreactions
+   * create a metabolic reaction based on the M-model
    * 
-   * @param model
-   * @param groups
-   * @param objective
-   * @param id
-   * @param name
-   * @param dataId
-   * @param upperBound
-   * @param lowerBound
-   * @param speciesIds
-   * @param coefficients
-   * @param objectiveCoefficient
-   * @param variableKind
-   * @throws ParseException
-   */
-  public void createComplexFormationReaction(Model model,
-    GroupsModelPlugin groups, Objective objective, String id, String name,
-    String dataId, double upperBound, double lowerBound,
-    List<String> speciesIds, List<String> coefficients,
-    double objectiveCoefficient, String variableKind) throws ParseException {
-    Reaction tempReaction = model.createReaction(id);
-    tempReaction.setName(name);
-    tempReaction.initDefaults(2, 4, true);
-    tempReaction.setReversible(false);
-    // add reaction to group
-    Group group = (Group) groups.getGroup("postTranslationReaction");
-    if (group != null) {
-      group.createMemberWithIdRef(id);
-    } else {
-      group = groups.createGroup("postTranslationReaction");
-      group.setKind(Group.Kind.classification);
-      group.createMemberWithIdRef(id);
-    }
-    // set fbc data
-    FBCReactionPlugin fbcTempReaction =
-      (FBCReactionPlugin) tempReaction.getPlugin(FBCConstants.shortLabel);
-    setBounds(model, fbcTempReaction, String.valueOf(upperBound),
-      String.valueOf(lowerBound));
-    objective.createFluxObjective(id + "_coefficient", "", objectiveCoefficient,
-      model.getReaction(id));
-    // add species to reaction
-    for (int i = 0; i < speciesIds.size(); i++) {
-      addCOBRAmeSpeciesToReaction(model, tempReaction, speciesIds.get(i),
-        coefficients.get(i));
-    }
-    // add ME exclusive data to annotation
-    MEReactionPlugin meReaction = new MEReactionPlugin();
-    meReaction.setVariableKind(variableKind);
-    meReaction.setDataId(dataId);
-    tempReaction.appendAnnotation(meReaction);
-  }
-
-
-  /**
    * @param model
    * @param groups
    * @param objective
@@ -980,16 +818,18 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     double upperBound, double lowerBound, List<String> speciesIds,
     List<String> coefficients, double objectiveCoefficient, String variableKind,
     double keff, boolean reverse, String complexDataId) throws ParseException {
+    id = createSBMLConformId(id);
+    dataId = createSBMLConformId(dataId);
     Reaction tempReaction = model.createReaction(id);
     tempReaction.setName(name);
     tempReaction.initDefaults(2, 4, true);
     tempReaction.setReversible(false);
     // add reaction to group
-    Group group = (Group) groups.getGroup("postTranslationReaction");
+    Group group = (Group) groups.getGroup("MetabolicReaction");
     if (group != null) {
       group.createMemberWithIdRef(id);
     } else {
-      group = groups.createGroup("postTranslationReaction");
+      group = groups.createGroup("MetabolicReaction");
       group.setKind(Group.Kind.classification);
       group.createMemberWithIdRef(id);
     }
@@ -1011,13 +851,17 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     meReaction.setDataId(dataId);
     meReaction.setKeff(String.valueOf(keff));
     meReaction.setReverse(String.valueOf(reverse));
-    meReaction.setComplexId(complexDataId);
+    // set optional ComplexDataId if not null
+    if (complexDataId != null) {
+      complexDataId = createSBMLConformId(complexDataId);
+      meReaction.setComplexId(complexDataId);
+    }
     tempReaction.appendAnnotation(meReaction);
   }
 
 
   /**
-   * alternative if not all attributes are set in json
+   * create a ME exclusive reaction
    * 
    * @param model
    * @param groups
@@ -1032,20 +876,21 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
    * @param variableKind
    * @throws ParseException
    */
-  public void createMetabolicReaction(Model model, GroupsModelPlugin groups,
+  public void createMEReaction(Model model, GroupsModelPlugin groups,
     Objective objective, String id, String name, double upperBound,
     double lowerBound, List<String> speciesIds, List<String> coefficients,
     double objectiveCoefficient, String variableKind) throws ParseException {
+    id = createSBMLConformId(id);
     Reaction tempReaction = model.createReaction(id);
     tempReaction.setName(name);
     tempReaction.initDefaults(2, 4, true);
     tempReaction.setReversible(false);
     // add reaction to group
-    Group group = (Group) groups.getGroup("postTranslationReaction");
+    Group group = (Group) groups.getGroup("MEReaction");
     if (group != null) {
       group.createMemberWithIdRef(id);
     } else {
-      group = groups.createGroup("postTranslationReaction");
+      group = groups.createGroup("MEReaction");
       group.setKind(Group.Kind.classification);
       group.createMemberWithIdRef(id);
     }

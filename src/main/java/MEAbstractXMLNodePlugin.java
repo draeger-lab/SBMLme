@@ -33,6 +33,23 @@ public class MEAbstractXMLNodePlugin extends XMLNode implements MEConstants {
 
 
   /**
+   * turn COBRA id into a SBML conform id
+   * 
+   * @param id
+   * @return
+   */
+  public String createSBMLConformId(String id) {
+    id = id.replaceAll(":", "__meCOLONme__");
+    id = id.replaceAll("-", "__meMINUSme__");
+    id = id.replaceAll("/", "__meSLASHme__");
+    if (id.matches("^\\d.*")) {
+      id = "__meSTARTme__" + id;
+    }
+    return id;
+  }
+
+
+  /**
    * @param key
    * @param value
    * @return

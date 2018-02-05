@@ -47,20 +47,6 @@ public class MEProcessData extends MEAbstractXMLNodePlugin
    * create and add a new SubreactionData object to the list of SubreactionData
    */
   public void addSubreactionData(MEProcessData processData, String id,
-    double keff, List<String> enzymeReferences, List<String> speciesReferences,
-    List<Integer> stoichiometries) {
-    SubreactionData nodeToBeAdded = new SubreactionData();
-    // get first child of the MEProcessData object which should be the list of
-    // SubreactionData
-    processData.getChild(0).addChild(nodeToBeAdded.createSubreactionData(id,
-      keff, enzymeReferences, speciesReferences, stoichiometries));
-  }
-
-
-  /**
-   * create and add a new SubreactionData object to the list of SubreactionData
-   */
-  public void addSubreactionData(MEProcessData processData, String id,
     double keff, List<String> enzymeReferences, List<String> elements,
     List<Integer> contribution, List<String> speciesReferences,
     List<Integer> stoichiometries) {

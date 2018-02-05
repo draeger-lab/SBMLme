@@ -44,7 +44,7 @@ public class EnzymeInformation extends MEAbstractXMLNodePlugin
   public XMLNode createEnzymeInformation(String enzymeReference) {
     XMLNode list = ListOfEnzymeInformations();
     EnzymeInformation reference = new EnzymeInformation();
-    reference.setEnzymeRef(enzymeReference);
+    reference.setEnzymeRef(createSBMLConformId(enzymeReference));
     list.addChild(reference);
     return list;
   }
@@ -63,7 +63,7 @@ public class EnzymeInformation extends MEAbstractXMLNodePlugin
     boolean fixedKeff, boolean lengthDependent) {
     XMLNode list = ListOfEnzymeInformations();
     EnzymeInformation reference = new EnzymeInformation();
-    reference.setEnzymeRef(enzymeReference);
+    reference.setEnzymeRef(createSBMLConformId(enzymeReference));
     reference.setFixedKeff(String.valueOf(fixedKeff));
     reference.setLengthDependent(String.valueOf(lengthDependent));
     list.addChild(reference);
@@ -82,7 +82,7 @@ public class EnzymeInformation extends MEAbstractXMLNodePlugin
     XMLNode list = ListOfEnzymeInformations();
     for (int i = 0; i < enzymeReferences.size(); i++) {
       EnzymeInformation reference = new EnzymeInformation();
-      reference.setEnzymeRef(enzymeReferences.get(i));
+      reference.setEnzymeRef(createSBMLConformId(enzymeReferences.get(i)));
       list.addChild(reference);
     }
     return list;
@@ -103,7 +103,7 @@ public class EnzymeInformation extends MEAbstractXMLNodePlugin
     XMLNode list = ListOfEnzymeInformations();
     for (int i = 0; i < enzymeReferences.size(); i++) {
       EnzymeInformation reference = new EnzymeInformation();
-      reference.setEnzymeRef(enzymeReferences.get(i));
+      reference.setEnzymeRef(createSBMLConformId(enzymeReferences.get(i)));
       reference.setFixedKeff(String.valueOf(fixedKeff.get(i)));
       reference.setLengthDependent(String.valueOf(lengthDependent.get(i)));
       list.addChild(reference);

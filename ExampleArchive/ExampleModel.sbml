@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" fbc:required="false" groups:required="false" level="3" version="1" xmlns:cobrame="http://cobramens.url/sbml" xmlns:fbc="http://www.sbml.org/sbml/level3/version1/fbc/version2" xmlns:groups="http://www.sbml.org/sbml/level3/version1/groups/version1">
-  <model areaUnits="area" fbc:strict="false" id="example_model" lengthUnits="length" substanceUnits="substance" timeUnits="time" volumeUnits="volume">
+  <model fbc:strict="false" id="example_model">
     <annotation>
       <cobrame:MEProcessData>
         <cobrame:ListOfSubreactionData>
@@ -9,10 +9,10 @@
               <cobrame:enzymeInformation enzymeReference="generic_TUF" />
             </cobrame:ListOfEnzymeInformation>
             <cobrame:ListOfReactants>
-              <cobrame:meSpeciesReference species="generic_tRNA_AUG_met__L_c" stoichiometry="-1.0" />
-              <cobrame:meSpeciesReference species="h2o_c" stoichiometry="-2.0" />
-              <cobrame:meSpeciesReference species="atp_c" stoichiometry="-1.0" />
-              <cobrame:meSpeciesReference species="gtp_c" stoichiometry="-1.0" />
+              <cobrame:meSpeciesReference species="generic_tRNA_AUG_met__L_c" stoichiometry="1.0" />
+              <cobrame:meSpeciesReference species="h2o_c" stoichiometry="2.0" />
+              <cobrame:meSpeciesReference species="atp_c" stoichiometry="1.0" />
+              <cobrame:meSpeciesReference species="gtp_c" stoichiometry="1.0" />
             </cobrame:ListOfReactants>
             <cobrame:ListOfProducts>
               <cobrame:meSpeciesReference species="gdp_c" stoichiometry="1.0" />
@@ -24,7 +24,7 @@
           </cobrame:subreactionData>
           <cobrame:subreactionData id="sec_addition_at_UGA" keff="65.0">
             <cobrame:ListOfEnzymeInformation>
-              <cobrame:enzymeInformation enzymeReference="SelA_deca_mod_10:pydx5p" />
+              <cobrame:enzymeInformation enzymeReference="SelA_deca_mod_10__meCOLONme__pydx5p" />
               <cobrame:enzymeInformation enzymeReference="SelB_mono" />
             </cobrame:ListOfEnzymeInformation>
             <cobrame:ListOfElementContributions>
@@ -169,47 +169,6 @@
           <groups:member groups:idRef="val__L_c" />
         </groups:listOfMembers>
       </groups:group>
-      <groups:group groups:id="genericComponent" groups:kind="classification">
-        <groups:listOfMembers>
-          <groups:member groups:idRef="generic_RF" />
-          <groups:member groups:idRef="generic_Dus" />
-          <groups:member groups:idRef="generic_Tuf" />
-        </groups:listOfMembers>
-      </groups:group>
-      <groups:group groups:id="generictRNA" groups:kind="classification">
-        <groups:listOfMembers>
-          <groups:member groups:idRef="generic_tRNA_AAA_lys__L_c" />
-          <groups:member groups:idRef="generic_tRNA_AAC_asn__L_c" />
-          <groups:member groups:idRef="generic_tRNA_AAG_lys__L_c" />
-          <groups:member groups:idRef="generic_tRNA_AAU_asn__L_c" />
-          <groups:member groups:idRef="generic_tRNA_ACC_thr__L_c" />
-          <groups:member groups:idRef="generic_tRNA_ACU_thr__L_c" />
-          <groups:member groups:idRef="generic_tRNA_AUG_met__L_c" />
-          <groups:member groups:idRef="generic_tRNA_CAA_gln__L_c" />
-          <groups:member groups:idRef="generic_tRNA_CAC_his__L_c" />
-          <groups:member groups:idRef="generic_tRNA_CAG_gln__L_c" />
-          <groups:member groups:idRef="generic_tRNA_CCG_pro__L_c" />
-          <groups:member groups:idRef="generic_tRNA_CGU_arg__L_c" />
-          <groups:member groups:idRef="generic_tRNA_CGC_arg__L_c" />
-          <groups:member groups:idRef="generic_tRNA_CUG_leu__L_c" />
-          <groups:member groups:idRef="generic_tRNA_GCA_ala__L_c" />
-          <groups:member groups:idRef="generic_tRNA_GCU_ala__L_c" />
-          <groups:member groups:idRef="generic_tRNA_GGC_gly_c" />
-          <groups:member groups:idRef="generic_tRNA_GGU_gly_c" />
-          <groups:member groups:idRef="generic_tRNA_GUA_val__L_c" />
-          <groups:member groups:idRef="generic_tRNA_GUU_val__L_c" />
-          <groups:member groups:idRef="generic_tRNA_START_met__L_c" />
-          <groups:member groups:idRef="generic_tRNA_UCU_ser__L_c" />
-          <groups:member groups:idRef="generic_tRNA_UGA_cys__L_c" />
-          <groups:member groups:idRef="generic_tRNA_UUC_phe__L_c" />
-          <groups:member groups:idRef="generic_tRNA_UUU_phe__L_c" />
-        </groups:listOfMembers>
-      </groups:group>
-      <groups:group groups:id="translatedGene" groups:kind="classification">
-        <groups:listOfMembers>
-          <groups:member groups:idRef="protein_b0002" />
-        </groups:listOfMembers>
-      </groups:group>
       <groups:group groups:id="complex" groups:kind="classification">
         <groups:listOfMembers>
           <groups:member groups:idRef="Asn_RS_dim" />
@@ -259,9 +218,62 @@
           <groups:member groups:idRef="YrdC_mono" />
         </groups:listOfMembers>
       </groups:group>
-      <groups:group groups:id="ribosome__group" groups:kind="classification">
+      <groups:group groups:id="generic" groups:kind="classification">
+        <groups:listOfMembers>
+          <groups:member groups:idRef="generic_RF" />
+          <groups:member groups:idRef="generic_Dus" />
+          <groups:member groups:idRef="generic_Tuf" />
+        </groups:listOfMembers>
+      </groups:group>
+      <groups:group groups:id="tRNA" groups:kind="classification">
+        <groups:listOfMembers>
+          <groups:member groups:idRef="generic_tRNA_AAA_lys__L_c" />
+          <groups:member groups:idRef="generic_tRNA_AAC_asn__L_c" />
+          <groups:member groups:idRef="generic_tRNA_AAG_lys__L_c" />
+          <groups:member groups:idRef="generic_tRNA_AAU_asn__L_c" />
+          <groups:member groups:idRef="generic_tRNA_ACC_thr__L_c" />
+          <groups:member groups:idRef="generic_tRNA_ACU_thr__L_c" />
+          <groups:member groups:idRef="generic_tRNA_AUG_met__L_c" />
+          <groups:member groups:idRef="generic_tRNA_CAA_gln__L_c" />
+          <groups:member groups:idRef="generic_tRNA_CAC_his__L_c" />
+          <groups:member groups:idRef="generic_tRNA_CAG_gln__L_c" />
+          <groups:member groups:idRef="generic_tRNA_CCG_pro__L_c" />
+          <groups:member groups:idRef="generic_tRNA_CGU_arg__L_c" />
+          <groups:member groups:idRef="generic_tRNA_CGC_arg__L_c" />
+          <groups:member groups:idRef="generic_tRNA_CUG_leu__L_c" />
+          <groups:member groups:idRef="generic_tRNA_GCA_ala__L_c" />
+          <groups:member groups:idRef="generic_tRNA_GCU_ala__L_c" />
+          <groups:member groups:idRef="generic_tRNA_GGC_gly_c" />
+          <groups:member groups:idRef="generic_tRNA_GGU_gly_c" />
+          <groups:member groups:idRef="generic_tRNA_GUA_val__L_c" />
+          <groups:member groups:idRef="generic_tRNA_GUU_val__L_c" />
+          <groups:member groups:idRef="generic_tRNA_START_met__L_c" />
+          <groups:member groups:idRef="generic_tRNA_UCU_ser__L_c" />
+          <groups:member groups:idRef="generic_tRNA_UGA_cys__L_c" />
+          <groups:member groups:idRef="generic_tRNA_UUC_phe__L_c" />
+          <groups:member groups:idRef="generic_tRNA_UUU_phe__L_c" />
+        </groups:listOfMembers>
+      </groups:group>
+      <groups:group groups:id="translated" groups:kind="classification">
+        <groups:listOfMembers>
+          <groups:member groups:idRef="protein_b0002" />
+        </groups:listOfMembers>
+      </groups:group>
+      <groups:group groups:id="processed" groups:kind="classification">
+        <groups:listOfMembers>
+          <groups:member groups:idRef="protein_b0002_Inner_Membrane" />
+        </groups:listOfMembers>
+      </groups:group>
+      <groups:group groups:id="Ribosome" groups:kind="classification">
         <groups:listOfMembers>
           <groups:member groups:idRef="ribosome" />
+        </groups:listOfMembers>
+      </groups:group>
+      <groups:group groups:id="transcribed" groups:kind="classification">
+        <groups:listOfMembers>
+          <groups:member groups:idRef="RNA_b0001" />
+          <groups:member groups:idRef="RNA_b0002" />
+          <groups:member groups:idRef="RNA_b0003" />
         </groups:listOfMembers>
       </groups:group>
       <groups:group groups:id="RNAP" groups:kind="classification">
@@ -269,31 +281,15 @@
           <groups:member groups:idRef="RNAP70_CPLX" />
         </groups:listOfMembers>
       </groups:group>
-      <groups:group groups:id="processedProtein" groups:kind="classification">
-        <groups:listOfMembers>
-          <groups:member groups:idRef="protein_b0002_Inner_Membrane" />
-        </groups:listOfMembers>
-      </groups:group>
-      <groups:group groups:id="transcribedGene" groups:kind="classification">
-        <groups:listOfMembers>
-          <groups:member groups:idRef="RNA_b0001" />
-          <groups:member groups:idRef="RNA_b0002" />
-          <groups:member groups:idRef="RNA_b0003" />
-        </groups:listOfMembers>
-      </groups:group>
-      <groups:group groups:id="transcriptionReaction" groups:kind="classification">
+      <groups:group groups:id="TranscriptionReaction" groups:kind="classification">
         <groups:listOfMembers>
           <groups:member groups:idRef="transcription_TU0001_from_RpoD_mono" />
           <groups:member groups:idRef="transcription_TU0002_from_RpoD_mono" />
         </groups:listOfMembers>
       </groups:group>
-      <groups:group groups:id="postTranslationReaction" groups:kind="classification">
+      <groups:group groups:id="MEReaction" groups:kind="classification">
         <groups:listOfMembers>
           <groups:member groups:idRef="DM_RNA_b0001" />
-          <groups:member groups:idRef="translocation_b0002" />
-          <groups:member groups:idRef="formation_RpmH_mono" />
-          <groups:member groups:idRef="ADEt2rpp_REV_YICE_MONOMER" />
-          <groups:member groups:idRef="ADEt2rpp_FWD_YICE_MONOMER" />
         </groups:listOfMembers>
       </groups:group>
       <groups:group groups:id="tRNAChargingReaction" groups:kind="classification">
@@ -301,12 +297,28 @@
           <groups:member groups:idRef="charging_tRNA_b10001_AAC" />
         </groups:listOfMembers>
       </groups:group>
-      <groups:group groups:id="translationReaction" groups:kind="classification">
+      <groups:group groups:id="TranslationReaction" groups:kind="classification">
         <groups:listOfMembers>
           <groups:member groups:idRef="translation_b0002" />
         </groups:listOfMembers>
       </groups:group>
-      <groups:group groups:id="genericFormationReaction" groups:kind="classification">
+      <groups:group groups:id="PostTranslationReaction" groups:kind="classification">
+        <groups:listOfMembers>
+          <groups:member groups:idRef="translocation_b0002" />
+        </groups:listOfMembers>
+      </groups:group>
+      <groups:group groups:id="ComplexFormationReaction" groups:kind="classification">
+        <groups:listOfMembers>
+          <groups:member groups:idRef="formation_RpmH_mono" />
+        </groups:listOfMembers>
+      </groups:group>
+      <groups:group groups:id="MetabolicReaction" groups:kind="classification">
+        <groups:listOfMembers>
+          <groups:member groups:idRef="ADEt2rpp_REV_YICE_MONOMER" />
+          <groups:member groups:idRef="ADEt2rpp_FWD_YICE_MONOMER" />
+        </groups:listOfMembers>
+      </groups:group>
+      <groups:group groups:id="GenericFormationReaction" groups:kind="classification">
         <groups:listOfMembers>
           <groups:member groups:idRef="PrfA_mono_to_generic_RF" />
           <groups:member groups:idRef="PrfB_mono_to_generic_RF" />
@@ -318,7 +330,7 @@
           <groups:member groups:idRef="PrfB_mono" />
         </groups:listOfMembers>
       </groups:group>
-      <groups:group groups:id="summaryVariable" groups:kind="classification">
+      <groups:group groups:id="SummaryVariable" groups:kind="classification">
         <groups:listOfMembers>
           <groups:member groups:idRef="biomass_dilution" />
           <groups:member groups:idRef="protein_biomass_to_biomass" />
@@ -335,16 +347,9 @@
         </groups:listOfMembers>
       </groups:group>
     </groups:listOfGroups>
-    <listOfUnitDefinitions>
-      <unitDefinition id="time"></unitDefinition>
-      <unitDefinition id="area"></unitDefinition>
-      <unitDefinition id="length"></unitDefinition>
-      <unitDefinition id="substance"></unitDefinition>
-      <unitDefinition id="volume"></unitDefinition>
-    </listOfUnitDefinitions>
     <listOfCompartments>
-      <compartment constant="false" id="cytosol" size="1" spatialDimensions="3" />
-      <compartment constant="false" id="plasmamembrane" size="1" spatialDimensions="3" />
+      <compartment constant="false" id="cytosol" spatialDimensions="3" />
+      <compartment constant="false" id="plasmamembrane" spatialDimensions="3" />
     </listOfCompartments>
     <listOfSpecies>
       <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="biomass" />
@@ -500,9 +505,11 @@
     </listOfSpecies>
     <listOfParameters>
       <parameter constant="true" id="me_bound_1000__0" value="1000" />
-      <parameter constant="true" id="bound_0__0" value="0" />
+      <parameter constant="true" id="me_bound_0__0" value="0" />
       <parameter constant="false" id="mu" />
-      <parameter constant="true" id="me_bound_mu__times____open____minus__0_125041790343836__times__mu__power__3_90364139015214__divide____open__mu__power__3_90364139015214__plus__0_116858742296566__close____plus__0_192933177925728__close__" />
+      <parameter constant="true" id="me_bound_mu" />
+      <parameter constant="true" id="me_bound_1000__00000000000" value="1000" />
+      <parameter constant="true" id="me_bound_mu__times____open____minus__0__125041790343836__times__mu__power__3__90364139015214__divide____open__mu__power__3__90364139015214__plus__0__116858742296566__close____plus__0__192933177925728__close__" />
       <parameter constant="true" id="global_info__m_nt" value="0.324" />
       <parameter constant="true" id="global_info__r0" value="0.087" />
       <parameter constant="true" id="global_info__temperature" value="37" />
@@ -2160,7 +2167,12 @@
           </apply>
         </math>
       </initialAssignment>
-      <initialAssignment symbol="me_bound_mu__times____open____minus__0_125041790343836__times__mu__power__3_90364139015214__divide____open__mu__power__3_90364139015214__plus__0_116858742296566__close____plus__0_192933177925728__close__">
+      <initialAssignment symbol="me_bound_mu">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <ci>mu</ci>
+        </math>
+      </initialAssignment>
+      <initialAssignment symbol="me_bound_mu__times____open____minus__0__125041790343836__times__mu__power__3__90364139015214__divide____open__mu__power__3__90364139015214__plus__0__116858742296566__close____plus__0__192933177925728__close__">
         <math xmlns="http://www.w3.org/1998/Math/MathML">
           <apply>
             <times />
@@ -2198,9 +2210,9 @@
       </initialAssignment>
     </listOfInitialAssignments>
     <listOfReactions>
-      <reaction fast="false" fbc:lowerFluxBound="bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="transcription_TU0001_from_RpoD_mono" reversible="false">
+      <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="transcription_TU0001_from_RpoD_mono" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin variableKind="continuous" sequence="http://cobramens.url/sbol/TU0001_from_RpoD_mono" dataId="TU0001_from_RpoD_mono">
+          <cobrame:meReactionPlugin sequence="http://cobramens.url/sbol/TU0001_from_RpoD_mono" variableKind="continuous" dataId="TU0001_from_RpoD_mono">
             <cobrame:ListOfSubreactionReferences>
               <cobrame:subreactionReference subreaction="monocistronic_excision" stoichiometry="2" />
               <cobrame:subreactionReference subreaction="Transcription_stable_rho_dependent" stoichiometry="1" />
@@ -2245,7 +2257,7 @@
           <speciesReference constant="false" id="transcription_TU0001_from_RpoD_mono___pi_c___product" species="pi_c" stoichiometry="5" />
         </listOfProducts>
       </reaction>
-      <reaction fast="false" fbc:lowerFluxBound="bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="DM_RNA_b0001" reversible="false">
+      <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="DM_RNA_b0001" reversible="false">
         <annotation>
           <cobrame:meReactionPlugin variableKind="continuous" />
         </annotation>
@@ -2254,7 +2266,7 @@
           <speciesReference constant="false" id="DM_RNA_b0001___tRNA_biomass___reactant" species="tRNA_biomass" stoichiometry="24.334014" />
         </listOfReactants>
       </reaction>
-      <reaction fast="false" fbc:lowerFluxBound="bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="charging_tRNA_b10001_AAC" reversible="false">
+      <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="charging_tRNA_b10001_AAC" reversible="false">
         <annotation>
           <cobrame:meReactionPlugin variableKind="continuous" dataId="tRNA_b0001_AAC" codon="AAC" keff="65.0" synthetase="Asn_RS_dim">
             <cobrame:ListOfSubreactionReferences>
@@ -2308,9 +2320,9 @@
           <speciesReference constant="false" id="charging_tRNA_b10001_AAC___generic_tRNA_AAC_asn__L_c___product" species="generic_tRNA_AAC_asn__L_c" stoichiometry="1" />
         </listOfProducts>
       </reaction>
-      <reaction fast="false" fbc:lowerFluxBound="bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="transcription_TU0002_from_RpoD_mono" reversible="false">
+      <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="transcription_TU0002_from_RpoD_mono" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin variableKind="continuous" sequence="http://cobramens.url/sbol/TU0002_from_RpoD_mono" dataId="TU0002_from_RpoD_mono">
+          <cobrame:meReactionPlugin sequence="http://cobramens.url/sbol/TU0002_from_RpoD_mono" variableKind="continuous" dataId="TU0002_from_RpoD_mono">
             <cobrame:ListOfSubreactionReferences>
               <cobrame:subreactionReference subreaction="Transcription_normal_rho_dependent" stoichiometry="1" />
             </cobrame:ListOfSubreactionReferences>
@@ -2341,9 +2353,9 @@
           <speciesReference constant="false" id="transcription_TU0002_from_RpoD_mono___pi_c___product" species="pi_c" stoichiometry="3" />
         </listOfProducts>
       </reaction>
-      <reaction fast="false" fbc:lowerFluxBound="bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="translation_b0002" reversible="false">
+      <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="translation_b0002" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin variableKind="continuous" sequence="http://cobramens.url/sbol/b0002" dataId="b0002">
+          <cobrame:meReactionPlugin sequence="http://cobramens.url/sbol/b0002" variableKind="continuous" dataId="b0002">
             <cobrame:ListOfSubreactionReferences>
               <cobrame:subreactionReference subreaction="lys_addition_at_AAA" stoichiometry="3" />
               <cobrame:subreactionReference subreaction="asn_addition_at_AAU" stoichiometry="1" />
@@ -2456,7 +2468,7 @@
           <speciesReference constant="false" id="translation_b0002___amp_c___product" species="amp_c" />
         </listOfProducts>
       </reaction>
-      <reaction fast="false" fbc:lowerFluxBound="bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="translocation_b0002" reversible="false">
+      <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="translocation_b0002" reversible="false">
         <annotation>
           <cobrame:meReactionPlugin variableKind="continuous" dataId="translocation_protein_b0002" aggregationPropensity="0.0" propensityScaling="1.0">
             <cobrame:ListOfTranslocationReferences>
@@ -2481,7 +2493,7 @@
           <speciesReference constant="false" id="translocation_b0002___pi_c___product" species="pi_c" stoichiometry="1" />
         </listOfProducts>
       </reaction>
-      <reaction fast="false" fbc:lowerFluxBound="bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="formation_RpmH_mono" reversible="false">
+      <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="formation_RpmH_mono" reversible="false">
         <annotation>
           <cobrame:meReactionPlugin variableKind="continuous" dataId="RpmH_mono" />
         </annotation>
@@ -2492,7 +2504,7 @@
           <speciesReference constant="false" id="formation_RpmH_mono___RpmH_mono___product" species="RpmH_mono" stoichiometry="1" />
         </listOfProducts>
       </reaction>
-      <reaction fast="false" fbc:lowerFluxBound="bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="ADEt2rpp_REV_YICE_MONOMER" reversible="false">
+      <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="ADEt2rpp_REV_YICE_MONOMER" reversible="false">
         <annotation>
           <cobrame:meReactionPlugin variableKind="continuous" dataId="ADEt2rpp" keff="38.86687550524414" reverse="true" complexId="YICE_MONOMER" />
         </annotation>
@@ -2506,7 +2518,7 @@
           <speciesReference constant="false" id="ADEt2rpp_REV_YICE_MONOMER___h_p___product" species="h_p" stoichiometry="1" />
         </listOfProducts>
       </reaction>
-      <reaction fast="false" fbc:lowerFluxBound="bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="ADEt2rpp_FWD_YICE_MONOMER" reversible="false">
+      <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="ADEt2rpp_FWD_YICE_MONOMER" reversible="false">
         <annotation>
           <cobrame:meReactionPlugin variableKind="continuous" dataId="ADEt2rpp" keff="38.86687550524414" reverse="false" complexId="YICE_MONOMER" />
         </annotation>
@@ -2520,7 +2532,7 @@
           <speciesReference constant="false" id="ADEt2rpp_FWD_YICE_MONOMER___h_c___product" species="h_c" stoichiometry="1" />
         </listOfProducts>
       </reaction>
-      <reaction fast="false" fbc:lowerFluxBound="bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="PrfA_mono_to_generic_RF" reversible="false">
+      <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="PrfA_mono_to_generic_RF" reversible="false">
         <annotation>
           <cobrame:meReactionPlugin variableKind="continuous" />
         </annotation>
@@ -2531,7 +2543,7 @@
           <speciesReference constant="false" id="PrfA_mono_to_generic_RF___generic_RF___product" species="generic_RF" stoichiometry="1" />
         </listOfProducts>
       </reaction>
-      <reaction fast="false" fbc:lowerFluxBound="bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="PrfB_mono_to_generic_RF" reversible="false">
+      <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="PrfB_mono_to_generic_RF" reversible="false">
         <annotation>
           <cobrame:meReactionPlugin variableKind="continuous" />
         </annotation>
@@ -2542,7 +2554,7 @@
           <speciesReference constant="false" id="PrfB_mono_to_generic_RF___generic_RF___product" species="generic_RF" stoichiometry="1" />
         </listOfProducts>
       </reaction>
-      <reaction fast="false" fbc:lowerFluxBound="mu" fbc:upperFluxBound="mu" id="biomass_dilution" reversible="false">
+      <reaction fast="false" fbc:lowerFluxBound="me_bound_mu" fbc:upperFluxBound="me_bound_mu" id="biomass_dilution" reversible="false">
         <annotation>
           <cobrame:meReactionPlugin variableKind="continuous" />
         </annotation>
@@ -2550,7 +2562,7 @@
           <speciesReference constant="false" id="biomass_dilution___biomass___reactant" species="biomass" stoichiometry="1" />
         </listOfReactants>
       </reaction>
-      <reaction fast="false" fbc:lowerFluxBound="bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="protein_biomass_to_biomass" reversible="false">
+      <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__00000000000" id="protein_biomass_to_biomass" reversible="false">
         <annotation>
           <cobrame:meReactionPlugin variableKind="continuous" />
         </annotation>
@@ -2562,7 +2574,7 @@
           <speciesReference constant="false" id="protein_biomass_to_biomass___biomass___product" species="biomass" stoichiometry="1.5625" />
         </listOfProducts>
       </reaction>
-      <reaction fast="false" fbc:lowerFluxBound="bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="mRNA_biomass_to_biomass" reversible="false">
+      <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__00000000000" id="mRNA_biomass_to_biomass" reversible="false">
         <annotation>
           <cobrame:meReactionPlugin variableKind="continuous" />
         </annotation>
@@ -2573,7 +2585,7 @@
           <speciesReference constant="false" id="mRNA_biomass_to_biomass___biomass___product" species="biomass" stoichiometry="1" />
         </listOfProducts>
       </reaction>
-      <reaction fast="false" fbc:lowerFluxBound="bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="tRNA_biomass_to_biomass" reversible="false">
+      <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__00000000000" id="tRNA_biomass_to_biomass" reversible="false">
         <annotation>
           <cobrame:meReactionPlugin variableKind="continuous" />
         </annotation>
@@ -2584,7 +2596,7 @@
           <speciesReference constant="false" id="tRNA_biomass_to_biomass___biomass___product" species="biomass" stoichiometry="1" />
         </listOfProducts>
       </reaction>
-      <reaction fast="false" fbc:lowerFluxBound="bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="rRNA_biomass_to_biomass" reversible="false">
+      <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__00000000000" id="rRNA_biomass_to_biomass" reversible="false">
         <annotation>
           <cobrame:meReactionPlugin variableKind="continuous" />
         </annotation>
@@ -2595,7 +2607,7 @@
           <speciesReference constant="false" id="rRNA_biomass_to_biomass___biomass___product" species="biomass" stoichiometry="1" />
         </listOfProducts>
       </reaction>
-      <reaction fast="false" fbc:lowerFluxBound="bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="ncRNA_biomass_to_biomass" reversible="false">
+      <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__00000000000" id="ncRNA_biomass_to_biomass" reversible="false">
         <annotation>
           <cobrame:meReactionPlugin variableKind="continuous" />
         </annotation>
@@ -2606,7 +2618,7 @@
           <speciesReference constant="false" id="ncRNA_biomass_to_biomass___biomass___product" species="biomass" stoichiometry="1" />
         </listOfProducts>
       </reaction>
-      <reaction fast="false" fbc:lowerFluxBound="bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="DNA_biomass_to_biomass" reversible="false">
+      <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__00000000000" id="DNA_biomass_to_biomass" reversible="false">
         <annotation>
           <cobrame:meReactionPlugin variableKind="continuous" />
         </annotation>
@@ -2617,7 +2629,7 @@
           <speciesReference constant="false" id="DNA_biomass_to_biomass___biomass___product" species="biomass" stoichiometry="1" />
         </listOfProducts>
       </reaction>
-      <reaction fast="false" fbc:lowerFluxBound="bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="lipid_biomass_to_biomass" reversible="false">
+      <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__00000000000" id="lipid_biomass_to_biomass" reversible="false">
         <annotation>
           <cobrame:meReactionPlugin variableKind="continuous" />
         </annotation>
@@ -2628,7 +2640,7 @@
           <speciesReference constant="false" id="lipid_biomass_to_biomass___biomass___product" species="biomass" stoichiometry="1" />
         </listOfProducts>
       </reaction>
-      <reaction fast="false" fbc:lowerFluxBound="bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="constituent_biomass_to_biomass" reversible="false">
+      <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__00000000000" id="constituent_biomass_to_biomass" reversible="false">
         <annotation>
           <cobrame:meReactionPlugin variableKind="continuous" />
         </annotation>
@@ -2639,7 +2651,7 @@
           <speciesReference constant="false" id="constituent_biomass_to_biomass___biomass___product" species="biomass" stoichiometry="1" />
         </listOfProducts>
       </reaction>
-      <reaction fast="false" fbc:lowerFluxBound="bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="prosthetic_group_biomass_to_biomass" reversible="false">
+      <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__00000000000" id="prosthetic_group_biomass_to_biomass" reversible="false">
         <annotation>
           <cobrame:meReactionPlugin variableKind="continuous" />
         </annotation>
@@ -2650,7 +2662,7 @@
           <speciesReference constant="false" id="prosthetic_group_biomass_to_biomass___biomass___product" species="biomass" stoichiometry="1" />
         </listOfProducts>
       </reaction>
-      <reaction fast="false" fbc:lowerFluxBound="bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="peptidoglycan_biomass_to_biomass" reversible="false">
+      <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__00000000000" id="peptidoglycan_biomass_to_biomass" reversible="false">
         <annotation>
           <cobrame:meReactionPlugin variableKind="continuous" />
         </annotation>
@@ -2661,7 +2673,7 @@
           <speciesReference constant="false" id="peptidoglycan_biomass_to_biomass___biomass___product" species="biomass" stoichiometry="1" />
         </listOfProducts>
       </reaction>
-      <reaction fast="false" fbc:lowerFluxBound="me_bound_mu__times____open____minus__0_125041790343836__times__mu__power__3_90364139015214__divide____open__mu__power__3_90364139015214__plus__0_116858742296566__close____plus__0_192933177925728__close__" fbc:upperFluxBound="me_bound_mu__times____open____minus__0_125041790343836__times__mu__power__3_90364139015214__divide____open__mu__power__3_90364139015214__plus__0_116858742296566__close____plus__0_192933177925728__close__" id="dna_replication" reversible="false">
+      <reaction fast="false" fbc:lowerFluxBound="me_bound_mu__times____open____minus__0__125041790343836__times__mu__power__3__90364139015214__divide____open__mu__power__3__90364139015214__plus__0__116858742296566__close____plus__0__192933177925728__close__" fbc:upperFluxBound="me_bound_mu__times____open____minus__0__125041790343836__times__mu__power__3__90364139015214__divide____open__mu__power__3__90364139015214__plus__0__116858742296566__close____plus__0__192933177925728__close__" id="dna_replication" reversible="false">
         <annotation>
           <cobrame:meReactionPlugin variableKind="continuous" />
         </annotation>

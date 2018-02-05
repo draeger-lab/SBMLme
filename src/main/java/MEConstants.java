@@ -6,6 +6,8 @@ public interface MEConstants {
   public static final String ns                    =
     "http://cobramens.url/sbml";
   public static final String prefix                = "cobrame";
+  public static final String sbolURI               =
+    "http://cobramens.url/sbol/";
   public static final String key                   = "key";
   // General Attributes
   public static final String id                    = "id";

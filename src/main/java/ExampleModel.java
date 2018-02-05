@@ -19,8 +19,6 @@ import org.sbml.jsbml.TidySBMLWriter;
 import org.sbml.jsbml.ext.fbc.FBCConstants;
 import org.sbml.jsbml.ext.fbc.FBCModelPlugin;
 import org.sbml.jsbml.ext.fbc.Objective;
-import org.sbml.jsbml.ext.groups.Group;
-import org.sbml.jsbml.ext.groups.Group.Kind;
 import org.sbml.jsbml.ext.groups.GroupsConstants;
 import org.sbml.jsbml.ext.groups.GroupsModelPlugin;
 import org.sbml.jsbml.text.parser.ParseException;
@@ -69,6 +67,8 @@ public class ExampleModel implements MEConstants {
    * create example model and write content to file
    * the example model is very incomplete and only shows how each kind of
    * Species/Reaction/ProcessData will be created and represented in SBML/SBOL
+   * TODO:
+   * - maybe change to Lac operon?
    * 
    * @throws SBMLException
    * @throws XMLStreamException
@@ -94,18 +94,11 @@ public class ExampleModel implements MEConstants {
     sbol.setDefaultURIprefix("http://cobramens.url/sbol/");
     // Create a new SBML model, and add compartments to it.
     Model model = doc.createModel("example_model");
-    model.setTimeUnits(model.createUnitDefinition("time"));
-    model.setAreaUnits(model.createUnitDefinition("area"));
-    model.setLengthUnits(model.createUnitDefinition("length"));
-    model.setSubstanceUnits(model.createUnitDefinition("substance"));
-    model.setVolumeUnits(model.createUnitDefinition("volume"));
     model.initDefaults(2, 4);
     Compartment cytosol = model.createCompartment("cytosol");
-    cytosol.setSize(1d);
     cytosol.initDefaults(2, 4, true);
     cytosol.setConstant(false);
     Compartment plasmamembran = model.createCompartment("plasmamembrane");
-    plasmamembran.setSize(1d);
     plasmamembran.initDefaults(2, 4, true);
     plasmamembran.setConstant(false);
     // create basic objective
@@ -120,324 +113,309 @@ public class ExampleModel implements MEConstants {
     // basic groups package Implementation
     GroupsModelPlugin groups =
       (GroupsModelPlugin) model.getPlugin(GroupsConstants.shortLabel);
-    // Groups for Species types
-    Group constraint = groups.createGroup("constraint");
-    Group metabolite = groups.createGroup("metabolite");
-    Group generic = groups.createGroup("genericComponent");
-    Group tRNA = groups.createGroup("generictRNA");
-    Group translated = groups.createGroup("translatedGene");
-    Group complex = groups.createGroup("complex");
-    // changed due to id overlap
-    Group ribosome = groups.createGroup("ribosome__group");
-    Group rnap = groups.createGroup("RNAP");
-    Group processed = groups.createGroup("processedProtein");
-    Group transcribed = groups.createGroup("transcribedGene");
-    // set Kind for all groups
-    for (int i = 0; i < groups.getNumGroups(); i++) {
-      groups.getGroup(i).setKind(Kind.classification);
-    }
     // add species to model
     MESpeciesPlugin meSpeciesPlugin = new MESpeciesPlugin();
-    meSpeciesPlugin.createMESpecies(model, "biomass", null, "", cytosol,
-      constraint);
-    meSpeciesPlugin.createMESpecies(model, "protein_biomass", null, "", cytosol,
-      constraint);
-    meSpeciesPlugin.createMESpecies(model, "mRNA_biomass", null, "", cytosol,
-      constraint);
-    meSpeciesPlugin.createMESpecies(model, "tRNA_biomass", null, "", cytosol,
-      constraint);
-    meSpeciesPlugin.createMESpecies(model, "rRNA_biomass", null, "", cytosol,
-      constraint);
-    meSpeciesPlugin.createMESpecies(model, "ncRNA_biomass", null, "", cytosol,
-      constraint);
-    meSpeciesPlugin.createMESpecies(model, "DNA_biomass", null, "", cytosol,
-      constraint);
-    meSpeciesPlugin.createMESpecies(model, "lipid_biomass", null, "", cytosol,
-      constraint);
-    meSpeciesPlugin.createMESpecies(model, "constituent_biomass", null, "",
-      cytosol, constraint);
-    meSpeciesPlugin.createMESpecies(model, "prosthetic_group_biomass", null, "",
-      cytosol, constraint);
-    meSpeciesPlugin.createMESpecies(model, "peptidoglycan_biomass", null, "",
-      cytosol, constraint);
-    meSpeciesPlugin.createMESpecies(model, "unmodeled_protein_biomass", null,
-      "", cytosol, constraint);
+    meSpeciesPlugin.createMESpecies(model, "biomass", "", "", cytosol, groups,
+      "constraint");
+    meSpeciesPlugin.createMESpecies(model, "protein_biomass", "", "", cytosol,
+      groups, "constraint");
+    meSpeciesPlugin.createMESpecies(model, "mRNA_biomass", "", "", cytosol,
+      groups, "constraint");
+    meSpeciesPlugin.createMESpecies(model, "tRNA_biomass", "", "", cytosol,
+      groups, "constraint");
+    meSpeciesPlugin.createMESpecies(model, "rRNA_biomass", "", "", cytosol,
+      groups, "constraint");
+    meSpeciesPlugin.createMESpecies(model, "ncRNA_biomass", "", "", cytosol,
+      groups, "constraint");
+    meSpeciesPlugin.createMESpecies(model, "DNA_biomass", "", "", cytosol,
+      groups, "constraint");
+    meSpeciesPlugin.createMESpecies(model, "lipid_biomass", "", "", cytosol,
+      groups, "constraint");
+    meSpeciesPlugin.createMESpecies(model, "constituent_biomass", "", "",
+      cytosol, groups, "constraint");
+    meSpeciesPlugin.createMESpecies(model, "prosthetic_group_biomass", "", "",
+      cytosol, groups, "constraint");
+    meSpeciesPlugin.createMESpecies(model, "peptidoglycan_biomass", "", "",
+      cytosol, groups, "constraint");
+    meSpeciesPlugin.createMESpecies(model, "unmodeled_protein_biomass", "", "",
+      cytosol, groups, "constraint");
     // forced to add string for turning COBRAme id in SBML conform id
     meSpeciesPlugin.createMESpecies(model, "SBML__" + "10fthf_c", "C20H21N7O7",
-      "10-Formyltetrahydrofolate", cytosol, metabolite);
+      "10-Formyltetrahydrofolate", cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "adp_c", "C10H12N5O10P2", "ADP",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "ade_c", "C5H5N5", "Adenine",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "ade_p", "C5H5N5", "Adenine",
-      plasmamembran, metabolite);
+      plasmamembran, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "ahcys_c", "C14H20N6O5S",
-      "S-Adenosyl-L-homocysteine", cytosol, metabolite);
+      "S-Adenosyl-L-homocysteine", cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "amet_c", "C15H23N6O5S",
-      "S-Adenosyl-L-methionine", cytosol, metabolite);
+      "S-Adenosyl-L-methionine", cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "ala__L_c", "C3H7NO2", "L-Alanine",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "amp_c", "C10H12N5O7P", "AMP",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "arg__L_c", "C6H15N4O2",
-      "L-Arginine", cytosol, metabolite);
+      "L-Arginine", cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "asn__L_c", "C4H8N2O3",
-      "L-Asparagine", cytosol, metabolite);
+      "L-Asparagine", cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "Asn_RS_dim",
-      "C4698H7210N1284O1396S26", "", cytosol, complex);
+      "C4698H7210N1284O1396S26", "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "atp_c", "C10H12N5O13P3", "ATP",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "cmp_c", "C9H12N3O8P", "CMP",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "ctp_c", "C9H12N3O14P3", "CTP",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "datp_c", "C10H12N5O12P3", "dATP",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "dgtp_c", "C10H12N5O13P3", "dGTP",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "dttp_c", "C10H13N2O14P3", "dTTP",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "dctp_c", "C9H12N3O13P3", "dCTP",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     // forced to change id due to :
     meSpeciesPlugin.createMESpecies(model,
       "Def_mono_mod_1:fe2".replace(":", "__SBML__"), "C844FeH1394N241O255S6",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "FusA_mono",
-      "C3429H5418N942O1049S25", "", cytosol, complex);
+      "C3429H5418N942O1049S25", "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "Fmt_mono_mod_mg2_mod_k",
-      "C1517H2442KMgN414O450S11", "", cytosol, complex);
+      "C1517H2442KMgN414O450S11", "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "for_c", "CH1O2", "Formate", cytosol,
-      metabolite);
+      groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "gdp_c", "C10H12N5O11P2", "GDP",
-      cytosol, metabolite);
-    meSpeciesPlugin.createMESpecies(model, "generic_RF", null, "", cytosol,
-      generic);
-    meSpeciesPlugin.createMESpecies(model, "generic_Dus", null, "", cytosol,
-      generic);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_AAA_lys__L_c", null,
-      "", cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_AAC_asn__L_c", null,
-      "", cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_AAG_lys__L_c", null,
-      "", cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_AAU_asn__L_c", null,
-      "", cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_ACC_thr__L_c", null,
-      "", cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_ACU_thr__L_c", null,
-      "", cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_AUG_met__L_c", null,
-      "", cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_CAA_gln__L_c", null,
-      "", cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_CAC_his__L_c", null,
-      "", cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_CAG_gln__L_c", null,
-      "", cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_CCG_pro__L_c", null,
-      "", cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_CGU_arg__L_c", null,
-      "", cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_CGC_arg__L_c", null,
-      "", cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_CUG_leu__L_c", null,
-      "", cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_GCA_ala__L_c", null,
-      "", cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_GCU_ala__L_c", null,
-      "", cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_GGC_gly_c", null, "",
-      cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_GGU_gly_c", null, "",
-      cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_GUA_val__L_c", null,
-      "", cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_GUU_val__L_c", null,
-      "", cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_START_met__L_c", null,
-      "", cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_UCU_ser__L_c", null,
-      "", cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_UGA_cys__L_c", null,
-      "", cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_UUC_phe__L_c", null,
-      "", cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_UUU_phe__L_c", null,
-      "", cytosol, tRNA);
-    meSpeciesPlugin.createMESpecies(model, "generic_Tuf", null, "", cytosol,
-      generic);
+      cytosol, groups, "metabolite");
+    meSpeciesPlugin.createMESpecies(model, "generic_RF", "", "", cytosol,
+      groups, "generic");
+    meSpeciesPlugin.createMESpecies(model, "generic_Dus", "", "", cytosol,
+      groups, "generic");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_AAA_lys__L_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_AAC_asn__L_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_AAG_lys__L_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_AAU_asn__L_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_ACC_thr__L_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_ACU_thr__L_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_AUG_met__L_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_CAA_gln__L_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_CAC_his__L_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_CAG_gln__L_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_CCG_pro__L_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_CGU_arg__L_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_CGC_arg__L_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_CUG_leu__L_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_GCA_ala__L_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_GCU_ala__L_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_GGC_gly_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_GGU_gly_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_GUA_val__L_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_GUU_val__L_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_START_met__L_c", "",
+      "", cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_UCU_ser__L_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_UGA_cys__L_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_UUC_phe__L_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_tRNA_UUU_phe__L_c", "", "",
+      cytosol, groups, "tRNA");
+    meSpeciesPlugin.createMESpecies(model, "generic_Tuf", "", "", cytosol,
+      groups, "generic");
     meSpeciesPlugin.createMESpecies(model, "gln__L_c", "C5H10N2O3",
-      "L-Glutamine", cytosol, metabolite);
+      "L-Glutamine", cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "gly_c", "C2H5NO2", "Glycine",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "gmp_c", "C10H12N5O8P", "GMP",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "gtp_c", "C10H12N5O14P3", "GTP",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "gua_c", "C5H5N5O", "Guanine",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "GreA_mono", "C772H1241N215O248S4",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "GreB_mono", "C833H1304N228O245S3",
-      "", cytosol, complex);
-    meSpeciesPlugin.createMESpecies(model, "h_c", "H", "H+", cytosol,
-      metabolite);
+      "", cytosol, groups, "complex");
+    meSpeciesPlugin.createMESpecies(model, "h_c", "H", "H+", cytosol, groups,
+      "metabolite");
     meSpeciesPlugin.createMESpecies(model, "h_p", "H", "H+", plasmamembran,
-      metabolite);
+      groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "h2o_c", "H2O", "H2O", cytosol,
-      metabolite);
+      groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "hco3_c", "CHO3", "Bicarbonate",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "his__L_c", "C6H9N3O2",
-      "L-Histidine", cytosol, metabolite);
+      "L-Histidine", cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "InfA_mono", "C356H589N103O107S3",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "InfB_mono",
-      "C4180H6891N1264O1357S24", "", cytosol, complex);
+      "C4180H6891N1264O1357S24", "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "InfC_mono", "C897H1507N263O267S6",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     // forced to replace id due to :
     meSpeciesPlugin.createMESpecies(model,
       "IscS_mod_2:pydx5p".replaceAll(":", "__SBML__"),
-      "C3980H6334N1130O1210P2S38", "", cytosol, complex);
+      "C3980H6334N1130O1210P2S38", "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model,
       "IscS_mod_2:pydx5p_mod_1:SH".replaceAll(":", "__SBML__"),
-      "C3980H6334N1130O1210P2S39", "", cytosol, complex);
+      "C3980H6334N1130O1210P2S39", "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "leu__L_c", "C6H13NO2", "L-Leucine",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "lys__L_c", "C6H15N2O2", "L-Lysine",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "met__L_c", "C5H11NO2S",
-      "L-Methionine", cytosol, metabolite);
+      "L-Methionine", cytosol, groups, "metabolite");
     // forced to replace id due to :
     meSpeciesPlugin.createMESpecies(model,
       "Mfd_mono_mod_1:mg2".replaceAll(":", "__SBML__"),
-      "C5779H9165MgN1640O1697S37", "", cytosol, complex);
+      "C5779H9165MgN1640O1697S37", "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "monocistronic_excision_machinery",
-      "C24670H38124Mg2N7775O9308P377S75Zn2", "", cytosol, complex);
+      "C24670H38124Mg2N7775O9308P377S75Zn2", "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "nadp_c", "C21H25N7O17P3",
-      "Nicotinamide adenine dinucleotide phosphate", cytosol, metabolite);
+      "Nicotinamide adenine dinucleotide phosphate", cytosol, groups,
+      "metabolite");
     meSpeciesPlugin.createMESpecies(model, "nadph_c", "C21H26N7O17P3",
-      "Nicotinamide adenine dinucleotide phosphate - reduced", cytosol,
-      metabolite);
+      "Nicotinamide adenine dinucleotide phosphate - reduced", cytosol, groups,
+      "metabolite");
     meSpeciesPlugin.createMESpecies(model, "NusA_mono", "C2396H3836N669O775S13",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "NusB_mono", "C705H1130N191O207S3",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "NusG_mono", "C908H1430N255O266S7",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "phe__L_c", "C9H11NO2",
-      "L-Phenylalanine", cytosol, metabolite);
+      "L-Phenylalanine", cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "pi_c", "HO4P", "Phosphate", cytosol,
-      metabolite);
+      groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "ppi_c", "HO7P2", "Diphosphate",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "preq1_c", "C7H10N5O",
-      "7-aminomethyl-7-deazaguanine", cytosol, metabolite);
+      "7-aminomethyl-7-deazaguanine", cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "PrfA_mono", "C1737H2775N526O564S14",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "PrfB_mono", "C1783H2797N507O596S11",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "PrfC_mono", "C2637H4165N727O792S22",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "pro__L_c", "C5H9NO2", "L-Proline",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "protein_b0002", "C228H419N90O57S2",
-      "", cytosol, translated);
+      "", cytosol, groups, "translated");
     meSpeciesPlugin.createMESpecies(model, "protein_b0002_Inner_Membrane",
-      "C228H419N90O57S2", "", cytosol, processed);
+      "C228H419N90O57S2", "", cytosol, groups, "processed");
     meSpeciesPlugin.createMESpecies(model, "QueA_mono", "C1767H2742N472O529S11",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "QueG_mono", "C1929H3065N539O543S18",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     // replace id due to -
     meSpeciesPlugin.createMESpecies(model,
       "RED-THIOREDOXIN-MONOMER".replace("-", "_"), "C528H833N132O159S3", "",
-      cytosol, complex);
+      cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model,
       "RED-THIOREDOXIN-MONOMER_mod_Oxidized".replace("-", "_"),
-      "C528H831N132O159S3", "", cytosol, complex);
+      "C528H831N132O159S3", "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "ribosome",
-      "C38487H64147Mg171N11545O11295P3S201", "", cytosol, ribosome);
+      "C38487H64147Mg171N11545O11295P3S201", "", cytosol, groups, "Ribosome");
     // replace id due to :
     meSpeciesPlugin.createMESpecies(model,
       "Rho_hexa_mod_3:mg2".replaceAll(":", "__SBML__"),
-      "C12444H20268Mg3N3516O3726S102", "", cytosol, complex);
+      "C12444H20268Mg3N3516O3726S102", "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "RpmH_mono", "C228H419N90O57S2", "",
-      cytosol, complex);
+      cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model,
       "RpoZ_mono_mod_1:mg2".replaceAll(":", "__SBML__"), "C430H722MgN136O142S",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESequenceSpecies(model, "RNA_b0001", "", cytosol,
       "C722H820N288O528P76", sbol,
       "TCCTCTGTAGTTCAGTCGGTAGAACGGCGGACTGTTAATCCGTATGTCACTGGTTCGAGTCCAGTCAGAGGAGCCA",
-      "tRNA", "+", 2042572, transcribed);
+      "tRNA", "+", 2042572, groups, "transcribed");
     meSpeciesPlugin.createMESequenceSpecies(model, "RNA_b0002", "", cytosol,
       "C1346H1521N547O979P141", sbol,
       "ATGAAACGCACTTTTCAACCGTCTGTACTGAAGCGCAACCGTTCTCACGGCTTCCGTGCTCGTATGGCTACTAAAAATGGTCGTCAGGTTCTGGCACGTCGTCGTGCTAAAGGCCGCGCTCGTCTGACCGTTTCTAAGTAA",
-      "mRNA", "+", 3882358, transcribed);
+      "mRNA", "+", 3882358, groups, "transcribed");
     meSpeciesPlugin.createMESequenceSpecies(model, "RNA_b0003", "", cytosol,
       "C722H820N288O528P76", sbol,
       "GTGGTTAAGCTCGCATTTCCCAGGGAGTTACGCTTGTTAACTCCCAGTCAATTCACATTCGTCTTCCAGCAGCCACAACGGGCTGGCACGCCGCAAATTACCATTCTCGGCCGCCTGAATTCGCTGGGGCATCCCCGTATCGGTCTTACAGTCGCCAAGAAAAACGTTCGACGCGCCCATGAACGCAATCGGATTAAACGTCTGACGCGTGAAAGCTTCCGTCTGCGCCAACATGAACTCCCGGCTATGGATTTCGTGGTGGTGGCGAAAAAAGGGGTTGCCGACCTCGATAACCGTGCTCTCTCGGAAGCGTTGGAAAAATTATGGCGCCGCCACTGTCGCCTGGCTCGCGGGTCCTGA",
-      "mRNA", "+", 3882515, transcribed);
+      "mRNA", "+", 3882515, groups, "transcribed");
     meSpeciesPlugin.createMESpecies(model, "RNA_degradosome",
-      "C40683H65406Mg6N11875O12685S200Zn2", "", cytosol, complex);
+      "C40683H65406Mg6N11875O12685S200Zn2", "", cytosol, groups, "complex");
     // replace id due to -
     meSpeciesPlugin.createMESpecies(model, "RNAP70-CPLX".replace("-", "_"),
-      "C19713H31813Mg2N5539O6126S141Zn", "", cytosol, rnap);
+      "C19713H31813Mg2N5539O6126S141Zn", "", cytosol, groups, "RNAP");
     meSpeciesPlugin.createMESpecies(model, "RplC_mono", "C979H1617N288O294S4",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "RplD_mono", "C974H1620N283O290S5",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "RpsD_mono", "C1026H1710N315O298S4",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "RpsJ_mono", "C514H866N158O151S2",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "RplM_mono", "C714H1163N212O199S4",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "Rrf_mono", "C888H1494N263O287S6",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     // replace id due to -
     meSpeciesPlugin.createMESpecies(model, "Sec-CPLX".replace("-", "_"),
-      "C7955H12880N2101O2234S58", "", cytosol, complex);
+      "C7955H12880N2101O2234S58", "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "selnp_c", "H2O3PSe",
-      "Selenophosphate", cytosol, metabolite);
+      "Selenophosphate", cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "ser__L_c", "C3H7NO3", "L-Serine",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "SRP-CPLX".replace("-", "_"),
-      "C3258H4875N1059O1439P114S29", "", cytosol, complex);
+      "C3258H4875N1059O1439P114S29", "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model,
       "Tgt_hexa_mod_6:zn2".replaceAll(":", "__SBML__"),
-      "C11316H17628N3186O3312S132Zn6", "", cytosol, complex);
+      "C11316H17628N3186O3312S132Zn6", "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "ThiI_mono", "C2453H3913N686O719S14",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "thf_c", "C19H21N7O6",
-      "5,6,7,8-Tetrahydrofolate", cytosol, metabolite);
+      "5,6,7,8-Tetrahydrofolate", cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "thr__L_c", "C4H9NO3", "L-Threonine",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "TrmA_mono", "C1859H2925N517O554S18",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "TruA_dim", "C2720H4222N782O772S18",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "TruB_mono", "C1545H2485N439O470S11",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "Tsf_mono", "C1331H2170N363O417S11",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "ump_c", "C9H11N2O9P", "UMP",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "utp_c", "C9H11N2O15P3", "UTP",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "val__L_c", "C5H11NO2", "L-Valine",
-      cytosol, metabolite);
+      cytosol, groups, "metabolite");
     meSpeciesPlugin.createMESpecies(model, "YggH_mono", "C1215H1886N348O343S14",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "YICE-MONOMER".replace("-", "_"),
-      "C2231H3611N562O612S24", "", cytosol, complex);
+      "C2231H3611N562O612S24", "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "YidC_MONOMER",
-      "C2805H4331N715O795S23", "", cytosol, complex);
+      "C2805H4331N715O795S23", "", cytosol, groups, "complex");
     meSpeciesPlugin.createMESpecies(model, "YrdC_mono", "C926H1464N254O276S6",
-      "", cytosol, complex);
+      "", cytosol, groups, "complex");
     // create ProcessData
     MEProcessData meProcessData = new MEProcessData();
     meProcessData = meProcessData.createMEProcessData();
@@ -450,7 +428,7 @@ public class ExampleModel implements MEConstants {
       1000.0, null, null, Arrays.asList("ade_p", "ade_c", "h_c", "h_p"),
       Arrays.asList(-1.0, 1.0, 1.0, -1.0));
     meProcessData.addSubreactionData(meProcessData, "met_addition_at_AUG", 65.0,
-      Arrays.asList("generic_TUF"),
+      Arrays.asList("generic_TUF"), null, null,
       Arrays.asList("generic_tRNA_AUG_met__L_c", "h2o_c", "gdp_c", "atp_c",
         "ppi_c", "gtp_c", "h_c", "pi_c", "amp_c"),
       Arrays.asList(-1, -2, 1, -1, 1, -1, 2, 1, 1));
@@ -487,9 +465,9 @@ public class ExampleModel implements MEConstants {
         "Transcription_stable_rho_dependent", "RNA_degradation_machine",
         "RNA_degradation_atp_requirement"),
       Arrays.asList(2, 1, 2, 8));
-    meReactionPlugin.createMetabolicReaction(model, groups, objective,
-      "DM_RNA_b0001", "", Double.valueOf("1000.00000000000"),
-      Double.valueOf("0.0"), Arrays.asList("RNA_b0001", "tRNA_biomass"),
+    meReactionPlugin.createMEReaction(model, groups, objective, "DM_RNA_b0001",
+      "", Double.valueOf("1000.00000000000"), Double.valueOf("0.0"),
+      Arrays.asList("RNA_b0001", "tRNA_biomass"),
       Arrays.asList("-1", "-24.3340140000000"), 0.0, "continuous");
     meReactionPlugin.createtRNAChargingReaction(model, groups, objective,
       "charging_tRNA_b10001_AAC", "", "tRNA_b0001_AAC",
@@ -626,14 +604,14 @@ public class ExampleModel implements MEConstants {
       Arrays.asList("-1.0", "1.0", "-0.00661111111111111*mu", "1.0", "-1.0",
         "-1.0", "1.0", "1.0", "-0.00661111111111111*mu",
         "-0.00661111111111111*mu"),
-      0.0, "continuous", 0.0,
+      0.0, "continuous", null, null, 0.0,
       Arrays.asList("TatE_MONOMER", "TatA_MONOMER", "srp_yidC_translocation"),
-      Arrays.asList(21.0, 21.0, 0.0), 1.0);
+      Arrays.asList(21.0, 21.0, 0.0), 1.0, null, null, null, null, null, null);
     meReactionPlugin.createComplexFormationReaction(model, groups, objective,
       "formation_RpmH_mono", "", "RpmH_mono",
       Double.valueOf("1000.00000000000"), Double.valueOf("0.0"),
       Arrays.asList("RpmH_mono", "protein_b0002_Inner_Membrane"),
-      Arrays.asList("1", "-1.0"), 0.0, "continuous");
+      Arrays.asList("1", "-1.0"), 0.0, "continuous", null, null);
     meReactionPlugin.createMetabolicReaction(model, groups, objective,
       "ADEt2rpp_REV_YICE_MONOMER", "", "ADEt2rpp", 1000.0, 0.0,
       Arrays.asList("ade_p", "YICE_MONOMER", "ade_c", "h_c", "h_p"),

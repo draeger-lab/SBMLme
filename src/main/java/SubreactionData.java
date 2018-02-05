@@ -50,15 +50,19 @@ public class SubreactionData extends MEAbstractXMLNodePlugin
     List<Integer> contribution, List<String> speciesReferences,
     List<Integer> stoichiometries) {
     SubreactionData subreactionData = new SubreactionData();
-    subreactionData.setId(id);
+    subreactionData.setId(createSBMLConformId(id));
     subreactionData.setKeff(String.valueOf(keff));
-    EnzymeInformation listEnzymeReferences = new EnzymeInformation();
-    subreactionData.addChild(
-      listEnzymeReferences.createEnzymeInformationList(enzymeReferences));
-    ElementContribution listElementContributions = new ElementContribution();
-    subreactionData.addChild(
-      listElementContributions.createListOfElementContributions(elements,
-        contribution));
+    if (enzymeReferences != null) {
+      EnzymeInformation listEnzymeReferences = new EnzymeInformation();
+      subreactionData.addChild(
+        listEnzymeReferences.createEnzymeInformationList(enzymeReferences));
+    }
+    if (elements != null) {
+      ElementContribution listElementContributions = new ElementContribution();
+      subreactionData.addChild(
+        listElementContributions.createListOfElementContributions(elements,
+          contribution));
+    }
     MESpeciesReference meSpecies = new MESpeciesReference();
     XMLNode listReactants = meSpecies.ListOfMEReactants();
     XMLNode listProducts = meSpecies.ListOfMEProducts();
@@ -80,6 +84,7 @@ public class SubreactionData extends MEAbstractXMLNodePlugin
 
   /**
    * create SubreactionData object without ElementContributions
+   * outdated
    * 
    * @param id
    * @param keff
@@ -133,7 +138,7 @@ public class SubreactionData extends MEAbstractXMLNodePlugin
     List<Boolean> listLengthDependent, List<String> speciesReferences,
     List<Double> stoichiometries, boolean lengthDependentEnergy) {
     SubreactionData subreactionData = new SubreactionData();
-    subreactionData.setId(id);
+    subreactionData.setId(createSBMLConformId(id));
     subreactionData.setKeff(String.valueOf(keff));
     subreactionData.setLengthDependent(String.valueOf(lengthDependentEnergy));
     EnzymeInformation listEnzymeReferences = new EnzymeInformation();

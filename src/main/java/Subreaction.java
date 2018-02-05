@@ -45,7 +45,8 @@ public class Subreaction extends MEAbstractXMLNodePlugin
     XMLNode list = ListOfSubreactions();
     for (int i = 0; i < listSubreactionReferences.size(); i++) {
       Subreaction temp = new Subreaction();
-      temp.setSubreaction(listSubreactionReferences.get(i));
+      temp.setSubreaction(
+        createSBMLConformId(listSubreactionReferences.get(i)));
       temp.setCoefficient(String.valueOf(listCoefficients.get(i)));
       list.addChild(temp);
     }

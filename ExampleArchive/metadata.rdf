@@ -16,10 +16,10 @@
       </rdf:Bag>
     </dcterms:creator>
     <dcterms:created rdf:parseType="Resource">
-      <dcterms:W3CDTF>2018-01-23T21:33:16Z</dcterms:W3CDTF>
+      <dcterms:W3CDTF>2018-02-05T15:34:28Z</dcterms:W3CDTF>
     </dcterms:created>
     <dcterms:modified rdf:parseType="Resource">
-      <dcterms:W3CDTF>2018-01-23T21:33:16Z</dcterms:W3CDTF>
+      <dcterms:W3CDTF>2018-02-05T15:34:28Z</dcterms:W3CDTF>
     </dcterms:modified>
   </rdf:Description>
   <rdf:Description rdf:about="/ExampleModel.sbml">
@@ -38,10 +38,10 @@
       </rdf:Bag>
     </dcterms:creator>
     <dcterms:created rdf:parseType="Resource">
-      <dcterms:W3CDTF>2018-01-25T20:12:01Z</dcterms:W3CDTF>
+      <dcterms:W3CDTF>2018-02-05T15:34:28Z</dcterms:W3CDTF>
     </dcterms:created>
     <dcterms:modified rdf:parseType="Resource">
-      <dcterms:W3CDTF>2018-01-25T20:12:01Z</dcterms:W3CDTF>
+      <dcterms:W3CDTF>2018-02-05T15:34:28Z</dcterms:W3CDTF>
     </dcterms:modified>
   </rdf:Description>
   <rdf:Description rdf:about="/ExampleModel.sbol">
@@ -60,10 +60,10 @@
       </rdf:Bag>
     </dcterms:creator>
     <dcterms:created rdf:parseType="Resource">
-      <dcterms:W3CDTF>2018-01-25T20:12:01Z</dcterms:W3CDTF>
+      <dcterms:W3CDTF>2018-02-05T15:34:28Z</dcterms:W3CDTF>
     </dcterms:created>
     <dcterms:modified rdf:parseType="Resource">
-      <dcterms:W3CDTF>2018-01-25T20:12:01Z</dcterms:W3CDTF>
+      <dcterms:W3CDTF>2018-02-05T15:34:28Z</dcterms:W3CDTF>
     </dcterms:modified>
   </rdf:Description>
 </rdf:RDF>
