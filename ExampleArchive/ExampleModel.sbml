@@ -1,77 +1,77 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
-<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" fbc:required="false" groups:required="false" level="3" version="1" xmlns:cobrame="http://cobramens.url/sbml" xmlns:fbc="http://www.sbml.org/sbml/level3/version1/fbc/version2" xmlns:groups="http://www.sbml.org/sbml/level3/version1/groups/version1">
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" fbc:required="false" groups:required="false" level="3" version="1" xmlns:fbc="http://www.sbml.org/sbml/level3/version1/fbc/version2" xmlns:groups="http://www.sbml.org/sbml/level3/version1/groups/version1" xmlns:sbmlme="http://sbmlme.url/ns/SBML">
   <model fbc:strict="false" id="example_model">
     <annotation>
-      <cobrame:MEProcessData>
-        <cobrame:ListOfSubreactionData>
-          <cobrame:subreactionData id="met_addition_at_AUG" keff="65.0">
-            <cobrame:ListOfEnzymeInformation>
-              <cobrame:enzymeInformation enzymeReference="generic_TUF" />
-            </cobrame:ListOfEnzymeInformation>
-            <cobrame:ListOfReactants>
-              <cobrame:meSpeciesReference species="generic_tRNA_AUG_met__L_c" stoichiometry="1.0" />
-              <cobrame:meSpeciesReference species="h2o_c" stoichiometry="2.0" />
-              <cobrame:meSpeciesReference species="atp_c" stoichiometry="1.0" />
-              <cobrame:meSpeciesReference species="gtp_c" stoichiometry="1.0" />
-            </cobrame:ListOfReactants>
-            <cobrame:ListOfProducts>
-              <cobrame:meSpeciesReference species="gdp_c" stoichiometry="1.0" />
-              <cobrame:meSpeciesReference species="ppi_c" stoichiometry="1.0" />
-              <cobrame:meSpeciesReference species="h_c" stoichiometry="2.0" />
-              <cobrame:meSpeciesReference species="pi_c" stoichiometry="1.0" />
-              <cobrame:meSpeciesReference species="amp_c" stoichiometry="1.0" />
-            </cobrame:ListOfProducts>
-          </cobrame:subreactionData>
-          <cobrame:subreactionData id="sec_addition_at_UGA" keff="65.0">
-            <cobrame:ListOfEnzymeInformation>
-              <cobrame:enzymeInformation enzymeReference="SelA_deca_mod_10__meCOLONme__pydx5p" />
-              <cobrame:enzymeInformation enzymeReference="SelB_mono" />
-            </cobrame:ListOfEnzymeInformation>
-            <cobrame:ListOfElementContributions>
-              <cobrame:elementContribution element="O" value="-1" />
-              <cobrame:elementContribution element="Se" value="1" />
-            </cobrame:ListOfElementContributions>
-            <cobrame:ListOfReactants>
-              <cobrame:meSpeciesReference species="generic_tRNA_UGA_cys__L_c" stoichiometry="1.0" />
-              <cobrame:meSpeciesReference species="selnp_c" stoichiometry="1.0" />
-            </cobrame:ListOfReactants>
-            <cobrame:ListOfProducts>
-              <cobrame:meSpeciesReference species="pi_c" stoichiometry="1.0" />
-              <cobrame:meSpeciesReference species="h_c" stoichiometry="1.0" />
-            </cobrame:ListOfProducts>
-          </cobrame:subreactionData>
-        </cobrame:ListOfSubreactionData>
-        <cobrame:ListOfTranslocationData>
-          <cobrame:subreactionData id="srp_yidC_translocation" keff="20.0" lengthDependentEnergy="false">
-            <cobrame:ListOfEnzymeInformation>
-              <cobrame:enzymeInformation enzymeReference="SRP_CPLX" fixedKeff="false" lengthDependentEnergy="true" />
-              <cobrame:enzymeInformation enzymeReference="Sec_CPLX" fixedKeff="false" lengthDependentEnergy="true" />
-              <cobrame:enzymeInformation enzymeReference="YidC_MONOMER" fixedKeff="false" lengthDependentEnergy="true" />
-            </cobrame:ListOfEnzymeInformation>
-            <cobrame:ListOfReactants>
-              <cobrame:meSpeciesReference species="gtp_c" stoichiometry="-1.0" />
-              <cobrame:meSpeciesReference species="h2o_c" stoichiometry="-1.0" />
-            </cobrame:ListOfReactants>
-            <cobrame:ListOfProducts>
-              <cobrame:meSpeciesReference species="pi_c" stoichiometry="1.0" />
-              <cobrame:meSpeciesReference species="gdp_c" stoichiometry="1.0" />
-              <cobrame:meSpeciesReference species="h_c" stoichiometry="1.0" />
-            </cobrame:ListOfProducts>
-          </cobrame:subreactionData>
-        </cobrame:ListOfTranslocationData>
-        <cobrame:ListOfStoichiometricData>
-          <cobrame:stoichiometricData id="ADEt2rpp" lowerFluxBound="-1000.0" upperFluxBound="1000.0">
-            <cobrame:ListOfReactants>
-              <cobrame:meSpeciesReference species="ade_p" stoichiometry="-1.0" />
-              <cobrame:meSpeciesReference species="h_p" stoichiometry="-1.0" />
-            </cobrame:ListOfReactants>
-            <cobrame:ListOfProducts>
-              <cobrame:meSpeciesReference species="ade_c" stoichiometry="1.0" />
-              <cobrame:meSpeciesReference species="h_c" stoichiometry="1.0" />
-            </cobrame:ListOfProducts>
-          </cobrame:stoichiometricData>
-        </cobrame:ListOfStoichiometricData>
-      </cobrame:MEProcessData>
+      <sbmlme:MEProcessData>
+        <sbmlme:ListOfSubreactionData>
+          <sbmlme:subreactionData id="met_addition_at_AUG" keff="65.0">
+            <sbmlme:ListOfEnzymeInformation>
+              <sbmlme:enzymeInformation enzymeReference="generic_TUF" />
+            </sbmlme:ListOfEnzymeInformation>
+            <sbmlme:ListOfReactants>
+              <sbmlme:meSpeciesReference species="generic_tRNA_AUG_met__L_c" stoichiometry="1.0" />
+              <sbmlme:meSpeciesReference species="h2o_c" stoichiometry="2.0" />
+              <sbmlme:meSpeciesReference species="atp_c" stoichiometry="1.0" />
+              <sbmlme:meSpeciesReference species="gtp_c" stoichiometry="1.0" />
+            </sbmlme:ListOfReactants>
+            <sbmlme:ListOfProducts>
+              <sbmlme:meSpeciesReference species="gdp_c" stoichiometry="1.0" />
+              <sbmlme:meSpeciesReference species="ppi_c" stoichiometry="1.0" />
+              <sbmlme:meSpeciesReference species="h_c" stoichiometry="2.0" />
+              <sbmlme:meSpeciesReference species="pi_c" stoichiometry="1.0" />
+              <sbmlme:meSpeciesReference species="amp_c" stoichiometry="1.0" />
+            </sbmlme:ListOfProducts>
+          </sbmlme:subreactionData>
+          <sbmlme:subreactionData id="sec_addition_at_UGA" keff="65.0">
+            <sbmlme:ListOfEnzymeInformation>
+              <sbmlme:enzymeInformation enzymeReference="SelA_deca_mod_10__meCOLONme__pydx5p" />
+              <sbmlme:enzymeInformation enzymeReference="SelB_mono" />
+            </sbmlme:ListOfEnzymeInformation>
+            <sbmlme:ListOfElementContributions>
+              <sbmlme:elementContribution element="O" value="-1" />
+              <sbmlme:elementContribution element="Se" value="1" />
+            </sbmlme:ListOfElementContributions>
+            <sbmlme:ListOfReactants>
+              <sbmlme:meSpeciesReference species="generic_tRNA_UGA_cys__L_c" stoichiometry="1.0" />
+              <sbmlme:meSpeciesReference species="selnp_c" stoichiometry="1.0" />
+            </sbmlme:ListOfReactants>
+            <sbmlme:ListOfProducts>
+              <sbmlme:meSpeciesReference species="pi_c" stoichiometry="1.0" />
+              <sbmlme:meSpeciesReference species="h_c" stoichiometry="1.0" />
+            </sbmlme:ListOfProducts>
+          </sbmlme:subreactionData>
+        </sbmlme:ListOfSubreactionData>
+        <sbmlme:ListOfTranslocationData>
+          <sbmlme:subreactionData id="srp_yidC_translocation" keff="20.0" lengthDependentEnergy="false">
+            <sbmlme:ListOfEnzymeInformation>
+              <sbmlme:enzymeInformation enzymeReference="SRP_CPLX" fixedKeff="false" lengthDependentEnergy="true" />
+              <sbmlme:enzymeInformation enzymeReference="Sec_CPLX" fixedKeff="false" lengthDependentEnergy="true" />
+              <sbmlme:enzymeInformation enzymeReference="YidC_MONOMER" fixedKeff="false" lengthDependentEnergy="true" />
+            </sbmlme:ListOfEnzymeInformation>
+            <sbmlme:ListOfReactants>
+              <sbmlme:meSpeciesReference species="gtp_c" stoichiometry="-1.0" />
+              <sbmlme:meSpeciesReference species="h2o_c" stoichiometry="-1.0" />
+            </sbmlme:ListOfReactants>
+            <sbmlme:ListOfProducts>
+              <sbmlme:meSpeciesReference species="pi_c" stoichiometry="1.0" />
+              <sbmlme:meSpeciesReference species="gdp_c" stoichiometry="1.0" />
+              <sbmlme:meSpeciesReference species="h_c" stoichiometry="1.0" />
+            </sbmlme:ListOfProducts>
+          </sbmlme:subreactionData>
+        </sbmlme:ListOfTranslocationData>
+        <sbmlme:ListOfStoichiometricData>
+          <sbmlme:stoichiometricData id="ADEt2rpp" lowerFluxBound="-1000.0" upperFluxBound="1000.0">
+            <sbmlme:ListOfReactants>
+              <sbmlme:meSpeciesReference species="ade_p" stoichiometry="-1.0" />
+              <sbmlme:meSpeciesReference species="h_p" stoichiometry="-1.0" />
+            </sbmlme:ListOfReactants>
+            <sbmlme:ListOfProducts>
+              <sbmlme:meSpeciesReference species="ade_c" stoichiometry="1.0" />
+              <sbmlme:meSpeciesReference species="h_c" stoichiometry="1.0" />
+            </sbmlme:ListOfProducts>
+          </sbmlme:stoichiometricData>
+        </sbmlme:ListOfStoichiometricData>
+      </sbmlme:MEProcessData>
     </annotation>
     <fbc:listOfObjectives xmlns:fbc="http://www.sbml.org/sbml/level3/version1/fbc/version2" fbc:activeObjective="objOne">
       <fbc:objective fbc:id="objOne" fbc:type="maximize">
@@ -348,160 +348,160 @@
       </groups:group>
     </groups:listOfGroups>
     <listOfCompartments>
-      <compartment constant="false" id="cytosol" spatialDimensions="3" />
-      <compartment constant="false" id="plasmamembrane" spatialDimensions="3" />
+      <compartment constant="false" id="c" spatialDimensions="3" />
+      <compartment constant="false" id="p" spatialDimensions="3" />
     </listOfCompartments>
     <listOfSpecies>
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="biomass" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="protein_biomass" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="mRNA_biomass" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="tRNA_biomass" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="rRNA_biomass" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="ncRNA_biomass" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="DNA_biomass" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="lipid_biomass" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="constituent_biomass" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="prosthetic_group_biomass" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="peptidoglycan_biomass" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="unmodeled_protein_biomass" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C20H21N7O7" hasOnlySubstanceUnits="false" id="SBML__10fthf_c" name="10-Formyltetrahydrofolate" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C10H12N5O10P2" hasOnlySubstanceUnits="false" id="adp_c" name="ADP" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C5H5N5" hasOnlySubstanceUnits="false" id="ade_c" name="Adenine" />
-      <species boundaryCondition="false" compartment="plasmamembrane" constant="false" fbc:chemicalFormula="C5H5N5" hasOnlySubstanceUnits="false" id="ade_p" name="Adenine" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C14H20N6O5S" hasOnlySubstanceUnits="false" id="ahcys_c" name="S-Adenosyl-L-homocysteine" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C15H23N6O5S" hasOnlySubstanceUnits="false" id="amet_c" name="S-Adenosyl-L-methionine" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C3H7NO2" hasOnlySubstanceUnits="false" id="ala__L_c" name="L-Alanine" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C10H12N5O7P" hasOnlySubstanceUnits="false" id="amp_c" name="AMP" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C6H15N4O2" hasOnlySubstanceUnits="false" id="arg__L_c" name="L-Arginine" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C4H8N2O3" hasOnlySubstanceUnits="false" id="asn__L_c" name="L-Asparagine" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C4698H7210N1284O1396S26" hasOnlySubstanceUnits="false" id="Asn_RS_dim" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C10H12N5O13P3" hasOnlySubstanceUnits="false" id="atp_c" name="ATP" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C9H12N3O8P" hasOnlySubstanceUnits="false" id="cmp_c" name="CMP" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C9H12N3O14P3" hasOnlySubstanceUnits="false" id="ctp_c" name="CTP" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C10H12N5O12P3" hasOnlySubstanceUnits="false" id="datp_c" name="dATP" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C10H12N5O13P3" hasOnlySubstanceUnits="false" id="dgtp_c" name="dGTP" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C10H13N2O14P3" hasOnlySubstanceUnits="false" id="dttp_c" name="dTTP" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C9H12N3O13P3" hasOnlySubstanceUnits="false" id="dctp_c" name="dCTP" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C844FeH1394N241O255S6" hasOnlySubstanceUnits="false" id="Def_mono_mod_1__SBML__fe2" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C3429H5418N942O1049S25" hasOnlySubstanceUnits="false" id="FusA_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C1517H2442KMgN414O450S11" hasOnlySubstanceUnits="false" id="Fmt_mono_mod_mg2_mod_k" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="CH1O2" hasOnlySubstanceUnits="false" id="for_c" name="Formate" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C10H12N5O11P2" hasOnlySubstanceUnits="false" id="gdp_c" name="GDP" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_RF" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_Dus" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_AAA_lys__L_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_AAC_asn__L_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_AAG_lys__L_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_AAU_asn__L_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_ACC_thr__L_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_ACU_thr__L_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_AUG_met__L_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_CAA_gln__L_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_CAC_his__L_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_CAG_gln__L_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_CCG_pro__L_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_CGU_arg__L_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_CGC_arg__L_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_CUG_leu__L_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_GCA_ala__L_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_GCU_ala__L_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_GGC_gly_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_GGU_gly_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_GUA_val__L_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_GUU_val__L_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_START_met__L_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_UCU_ser__L_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_UGA_cys__L_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_UUC_phe__L_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_UUU_phe__L_c" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" hasOnlySubstanceUnits="false" id="generic_Tuf" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C5H10N2O3" hasOnlySubstanceUnits="false" id="gln__L_c" name="L-Glutamine" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C2H5NO2" hasOnlySubstanceUnits="false" id="gly_c" name="Glycine" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C10H12N5O8P" hasOnlySubstanceUnits="false" id="gmp_c" name="GMP" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C10H12N5O14P3" hasOnlySubstanceUnits="false" id="gtp_c" name="GTP" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C5H5N5O" hasOnlySubstanceUnits="false" id="gua_c" name="Guanine" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C772H1241N215O248S4" hasOnlySubstanceUnits="false" id="GreA_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C833H1304N228O245S3" hasOnlySubstanceUnits="false" id="GreB_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="H" hasOnlySubstanceUnits="false" id="h_c" name="H+" />
-      <species boundaryCondition="false" compartment="plasmamembrane" constant="false" fbc:chemicalFormula="H" hasOnlySubstanceUnits="false" id="h_p" name="H+" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="H2O" hasOnlySubstanceUnits="false" id="h2o_c" name="H2O" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="CHO3" hasOnlySubstanceUnits="false" id="hco3_c" name="Bicarbonate" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C6H9N3O2" hasOnlySubstanceUnits="false" id="his__L_c" name="L-Histidine" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C356H589N103O107S3" hasOnlySubstanceUnits="false" id="InfA_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C4180H6891N1264O1357S24" hasOnlySubstanceUnits="false" id="InfB_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C897H1507N263O267S6" hasOnlySubstanceUnits="false" id="InfC_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C3980H6334N1130O1210P2S38" hasOnlySubstanceUnits="false" id="IscS_mod_2__SBML__pydx5p" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C3980H6334N1130O1210P2S39" hasOnlySubstanceUnits="false" id="IscS_mod_2__SBML__pydx5p_mod_1__SBML__SH" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C6H13NO2" hasOnlySubstanceUnits="false" id="leu__L_c" name="L-Leucine" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C6H15N2O2" hasOnlySubstanceUnits="false" id="lys__L_c" name="L-Lysine" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C5H11NO2S" hasOnlySubstanceUnits="false" id="met__L_c" name="L-Methionine" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C5779H9165MgN1640O1697S37" hasOnlySubstanceUnits="false" id="Mfd_mono_mod_1__SBML__mg2" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C24670H38124Mg2N7775O9308P377S75Zn2" hasOnlySubstanceUnits="false" id="monocistronic_excision_machinery" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C21H25N7O17P3" hasOnlySubstanceUnits="false" id="nadp_c" name="Nicotinamide adenine dinucleotide phosphate" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C21H26N7O17P3" hasOnlySubstanceUnits="false" id="nadph_c" name="Nicotinamide adenine dinucleotide phosphate - reduced" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C2396H3836N669O775S13" hasOnlySubstanceUnits="false" id="NusA_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C705H1130N191O207S3" hasOnlySubstanceUnits="false" id="NusB_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C908H1430N255O266S7" hasOnlySubstanceUnits="false" id="NusG_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C9H11NO2" hasOnlySubstanceUnits="false" id="phe__L_c" name="L-Phenylalanine" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="HO4P" hasOnlySubstanceUnits="false" id="pi_c" name="Phosphate" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="HO7P2" hasOnlySubstanceUnits="false" id="ppi_c" name="Diphosphate" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C7H10N5O" hasOnlySubstanceUnits="false" id="preq1_c" name="7-aminomethyl-7-deazaguanine" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C1737H2775N526O564S14" hasOnlySubstanceUnits="false" id="PrfA_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C1783H2797N507O596S11" hasOnlySubstanceUnits="false" id="PrfB_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C2637H4165N727O792S22" hasOnlySubstanceUnits="false" id="PrfC_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C5H9NO2" hasOnlySubstanceUnits="false" id="pro__L_c" name="L-Proline" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C228H419N90O57S2" hasOnlySubstanceUnits="false" id="protein_b0002" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C228H419N90O57S2" hasOnlySubstanceUnits="false" id="protein_b0002_Inner_Membrane" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C1767H2742N472O529S11" hasOnlySubstanceUnits="false" id="QueA_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C1929H3065N539O543S18" hasOnlySubstanceUnits="false" id="QueG_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C528H833N132O159S3" hasOnlySubstanceUnits="false" id="RED_THIOREDOXIN_MONOMER" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C528H831N132O159S3" hasOnlySubstanceUnits="false" id="RED_THIOREDOXIN_MONOMER_mod_Oxidized" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C38487H64147Mg171N11545O11295P3S201" hasOnlySubstanceUnits="false" id="ribosome" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C12444H20268Mg3N3516O3726S102" hasOnlySubstanceUnits="false" id="Rho_hexa_mod_3__SBML__mg2" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C228H419N90O57S2" hasOnlySubstanceUnits="false" id="RpmH_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C430H722MgN136O142S" hasOnlySubstanceUnits="false" id="RpoZ_mono_mod_1__SBML__mg2" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C722H820N288O528P76" hasOnlySubstanceUnits="false" id="RNA_b0001">
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="biomass" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="protein_biomass" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="mRNA_biomass" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="tRNA_biomass" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="rRNA_biomass" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="ncRNA_biomass" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="DNA_biomass" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="lipid_biomass" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="constituent_biomass" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="prosthetic_group_biomass" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="peptidoglycan_biomass" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="unmodeled_protein_biomass" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C20H21N7O7" hasOnlySubstanceUnits="false" id="SBML__10fthf_c" name="10-Formyltetrahydrofolate" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C10H12N5O10P2" hasOnlySubstanceUnits="false" id="adp_c" name="ADP" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C5H5N5" hasOnlySubstanceUnits="false" id="ade_c" name="Adenine" />
+      <species boundaryCondition="false" compartment="p" constant="false" fbc:chemicalFormula="C5H5N5" hasOnlySubstanceUnits="false" id="ade_p" name="Adenine" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C14H20N6O5S" hasOnlySubstanceUnits="false" id="ahcys_c" name="S-Adenosyl-L-homocysteine" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C15H23N6O5S" hasOnlySubstanceUnits="false" id="amet_c" name="S-Adenosyl-L-methionine" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C3H7NO2" hasOnlySubstanceUnits="false" id="ala__L_c" name="L-Alanine" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C10H12N5O7P" hasOnlySubstanceUnits="false" id="amp_c" name="AMP" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C6H15N4O2" hasOnlySubstanceUnits="false" id="arg__L_c" name="L-Arginine" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C4H8N2O3" hasOnlySubstanceUnits="false" id="asn__L_c" name="L-Asparagine" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C4698H7210N1284O1396S26" hasOnlySubstanceUnits="false" id="Asn_RS_dim" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C10H12N5O13P3" hasOnlySubstanceUnits="false" id="atp_c" name="ATP" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C9H12N3O8P" hasOnlySubstanceUnits="false" id="cmp_c" name="CMP" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C9H12N3O14P3" hasOnlySubstanceUnits="false" id="ctp_c" name="CTP" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C10H12N5O12P3" hasOnlySubstanceUnits="false" id="datp_c" name="dATP" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C10H12N5O13P3" hasOnlySubstanceUnits="false" id="dgtp_c" name="dGTP" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C10H13N2O14P3" hasOnlySubstanceUnits="false" id="dttp_c" name="dTTP" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C9H12N3O13P3" hasOnlySubstanceUnits="false" id="dctp_c" name="dCTP" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C844FeH1394N241O255S6" hasOnlySubstanceUnits="false" id="Def_mono_mod_1__SBML__fe2" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C3429H5418N942O1049S25" hasOnlySubstanceUnits="false" id="FusA_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C1517H2442KMgN414O450S11" hasOnlySubstanceUnits="false" id="Fmt_mono_mod_mg2_mod_k" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="CH1O2" hasOnlySubstanceUnits="false" id="for_c" name="Formate" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C10H12N5O11P2" hasOnlySubstanceUnits="false" id="gdp_c" name="GDP" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_RF" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_Dus" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_AAA_lys__L_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_AAC_asn__L_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_AAG_lys__L_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_AAU_asn__L_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_ACC_thr__L_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_ACU_thr__L_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_AUG_met__L_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_CAA_gln__L_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_CAC_his__L_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_CAG_gln__L_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_CCG_pro__L_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_CGU_arg__L_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_CGC_arg__L_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_CUG_leu__L_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_GCA_ala__L_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_GCU_ala__L_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_GGC_gly_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_GGU_gly_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_GUA_val__L_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_GUU_val__L_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_START_met__L_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_UCU_ser__L_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_UGA_cys__L_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_UUC_phe__L_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_tRNA_UUU_phe__L_c" />
+      <species boundaryCondition="false" compartment="c" constant="false" hasOnlySubstanceUnits="false" id="generic_Tuf" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C5H10N2O3" hasOnlySubstanceUnits="false" id="gln__L_c" name="L-Glutamine" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C2H5NO2" hasOnlySubstanceUnits="false" id="gly_c" name="Glycine" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C10H12N5O8P" hasOnlySubstanceUnits="false" id="gmp_c" name="GMP" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C10H12N5O14P3" hasOnlySubstanceUnits="false" id="gtp_c" name="GTP" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C5H5N5O" hasOnlySubstanceUnits="false" id="gua_c" name="Guanine" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C772H1241N215O248S4" hasOnlySubstanceUnits="false" id="GreA_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C833H1304N228O245S3" hasOnlySubstanceUnits="false" id="GreB_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="H" hasOnlySubstanceUnits="false" id="h_c" name="H+" />
+      <species boundaryCondition="false" compartment="p" constant="false" fbc:chemicalFormula="H" hasOnlySubstanceUnits="false" id="h_p" name="H+" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="H2O" hasOnlySubstanceUnits="false" id="h2o_c" name="H2O" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="CHO3" hasOnlySubstanceUnits="false" id="hco3_c" name="Bicarbonate" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C6H9N3O2" hasOnlySubstanceUnits="false" id="his__L_c" name="L-Histidine" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C356H589N103O107S3" hasOnlySubstanceUnits="false" id="InfA_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C4180H6891N1264O1357S24" hasOnlySubstanceUnits="false" id="InfB_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C897H1507N263O267S6" hasOnlySubstanceUnits="false" id="InfC_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C3980H6334N1130O1210P2S38" hasOnlySubstanceUnits="false" id="IscS_mod_2__SBML__pydx5p" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C3980H6334N1130O1210P2S39" hasOnlySubstanceUnits="false" id="IscS_mod_2__SBML__pydx5p_mod_1__SBML__SH" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C6H13NO2" hasOnlySubstanceUnits="false" id="leu__L_c" name="L-Leucine" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C6H15N2O2" hasOnlySubstanceUnits="false" id="lys__L_c" name="L-Lysine" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C5H11NO2S" hasOnlySubstanceUnits="false" id="met__L_c" name="L-Methionine" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C5779H9165MgN1640O1697S37" hasOnlySubstanceUnits="false" id="Mfd_mono_mod_1__SBML__mg2" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C24670H38124Mg2N7775O9308P377S75Zn2" hasOnlySubstanceUnits="false" id="monocistronic_excision_machinery" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C21H25N7O17P3" hasOnlySubstanceUnits="false" id="nadp_c" name="Nicotinamide adenine dinucleotide phosphate" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C21H26N7O17P3" hasOnlySubstanceUnits="false" id="nadph_c" name="Nicotinamide adenine dinucleotide phosphate - reduced" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C2396H3836N669O775S13" hasOnlySubstanceUnits="false" id="NusA_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C705H1130N191O207S3" hasOnlySubstanceUnits="false" id="NusB_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C908H1430N255O266S7" hasOnlySubstanceUnits="false" id="NusG_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C9H11NO2" hasOnlySubstanceUnits="false" id="phe__L_c" name="L-Phenylalanine" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="HO4P" hasOnlySubstanceUnits="false" id="pi_c" name="Phosphate" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="HO7P2" hasOnlySubstanceUnits="false" id="ppi_c" name="Diphosphate" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C7H10N5O" hasOnlySubstanceUnits="false" id="preq1_c" name="7-aminomethyl-7-deazaguanine" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C1737H2775N526O564S14" hasOnlySubstanceUnits="false" id="PrfA_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C1783H2797N507O596S11" hasOnlySubstanceUnits="false" id="PrfB_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C2637H4165N727O792S22" hasOnlySubstanceUnits="false" id="PrfC_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C5H9NO2" hasOnlySubstanceUnits="false" id="pro__L_c" name="L-Proline" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C228H419N90O57S2" hasOnlySubstanceUnits="false" id="protein_b0002" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C228H419N90O57S2" hasOnlySubstanceUnits="false" id="protein_b0002_Inner_Membrane" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C1767H2742N472O529S11" hasOnlySubstanceUnits="false" id="QueA_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C1929H3065N539O543S18" hasOnlySubstanceUnits="false" id="QueG_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C528H833N132O159S3" hasOnlySubstanceUnits="false" id="RED_THIOREDOXIN_MONOMER" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C528H831N132O159S3" hasOnlySubstanceUnits="false" id="RED_THIOREDOXIN_MONOMER_mod_Oxidized" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C38487H64147Mg171N11545O11295P3S201" hasOnlySubstanceUnits="false" id="ribosome" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C12444H20268Mg3N3516O3726S102" hasOnlySubstanceUnits="false" id="Rho_hexa_mod_3__SBML__mg2" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C228H419N90O57S2" hasOnlySubstanceUnits="false" id="RpmH_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C430H722MgN136O142S" hasOnlySubstanceUnits="false" id="RpoZ_mono_mod_1__SBML__mg2" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C722H820N288O528P76" hasOnlySubstanceUnits="false" id="RNA_b0001">
         <annotation>
-          <cobrame:meSpeciesPlugin sequence="http://cobramens.url/sbol/RNA_b0001" genomePosition="2042572" />
+          <sbmlme:meSpeciesPlugin sequence="http://cobramens.url/sbol/RNA_b0001" genomePosition="2042572" />
         </annotation>
       </species>
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C1346H1521N547O979P141" hasOnlySubstanceUnits="false" id="RNA_b0002">
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C1346H1521N547O979P141" hasOnlySubstanceUnits="false" id="RNA_b0002">
         <annotation>
-          <cobrame:meSpeciesPlugin sequence="http://cobramens.url/sbol/RNA_b0002" genomePosition="3882358" />
+          <sbmlme:meSpeciesPlugin sequence="http://cobramens.url/sbol/RNA_b0002" genomePosition="3882358" />
         </annotation>
       </species>
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C722H820N288O528P76" hasOnlySubstanceUnits="false" id="RNA_b0003">
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C722H820N288O528P76" hasOnlySubstanceUnits="false" id="RNA_b0003">
         <annotation>
-          <cobrame:meSpeciesPlugin sequence="http://cobramens.url/sbol/RNA_b0003" genomePosition="3882515" />
+          <sbmlme:meSpeciesPlugin sequence="http://cobramens.url/sbol/RNA_b0003" genomePosition="3882515" />
         </annotation>
       </species>
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C40683H65406Mg6N11875O12685S200Zn2" hasOnlySubstanceUnits="false" id="RNA_degradosome" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C19713H31813Mg2N5539O6126S141Zn" hasOnlySubstanceUnits="false" id="RNAP70_CPLX" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C979H1617N288O294S4" hasOnlySubstanceUnits="false" id="RplC_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C974H1620N283O290S5" hasOnlySubstanceUnits="false" id="RplD_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C1026H1710N315O298S4" hasOnlySubstanceUnits="false" id="RpsD_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C514H866N158O151S2" hasOnlySubstanceUnits="false" id="RpsJ_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C714H1163N212O199S4" hasOnlySubstanceUnits="false" id="RplM_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C888H1494N263O287S6" hasOnlySubstanceUnits="false" id="Rrf_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C7955H12880N2101O2234S58" hasOnlySubstanceUnits="false" id="Sec_CPLX" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="H2O3PSe" hasOnlySubstanceUnits="false" id="selnp_c" name="Selenophosphate" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C3H7NO3" hasOnlySubstanceUnits="false" id="ser__L_c" name="L-Serine" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C3258H4875N1059O1439P114S29" hasOnlySubstanceUnits="false" id="SRP_CPLX" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C11316H17628N3186O3312S132Zn6" hasOnlySubstanceUnits="false" id="Tgt_hexa_mod_6__SBML__zn2" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C2453H3913N686O719S14" hasOnlySubstanceUnits="false" id="ThiI_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C19H21N7O6" hasOnlySubstanceUnits="false" id="thf_c" name="5,6,7,8-Tetrahydrofolate" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C4H9NO3" hasOnlySubstanceUnits="false" id="thr__L_c" name="L-Threonine" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C1859H2925N517O554S18" hasOnlySubstanceUnits="false" id="TrmA_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C2720H4222N782O772S18" hasOnlySubstanceUnits="false" id="TruA_dim" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C1545H2485N439O470S11" hasOnlySubstanceUnits="false" id="TruB_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C1331H2170N363O417S11" hasOnlySubstanceUnits="false" id="Tsf_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C9H11N2O9P" hasOnlySubstanceUnits="false" id="ump_c" name="UMP" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C9H11N2O15P3" hasOnlySubstanceUnits="false" id="utp_c" name="UTP" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C5H11NO2" hasOnlySubstanceUnits="false" id="val__L_c" name="L-Valine" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C1215H1886N348O343S14" hasOnlySubstanceUnits="false" id="YggH_mono" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C2231H3611N562O612S24" hasOnlySubstanceUnits="false" id="YICE_MONOMER" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C2805H4331N715O795S23" hasOnlySubstanceUnits="false" id="YidC_MONOMER" />
-      <species boundaryCondition="false" compartment="cytosol" constant="false" fbc:chemicalFormula="C926H1464N254O276S6" hasOnlySubstanceUnits="false" id="YrdC_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C40683H65406Mg6N11875O12685S200Zn2" hasOnlySubstanceUnits="false" id="RNA_degradosome" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C19713H31813Mg2N5539O6126S141Zn" hasOnlySubstanceUnits="false" id="RNAP70_CPLX" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C979H1617N288O294S4" hasOnlySubstanceUnits="false" id="RplC_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C974H1620N283O290S5" hasOnlySubstanceUnits="false" id="RplD_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C1026H1710N315O298S4" hasOnlySubstanceUnits="false" id="RpsD_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C514H866N158O151S2" hasOnlySubstanceUnits="false" id="RpsJ_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C714H1163N212O199S4" hasOnlySubstanceUnits="false" id="RplM_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C888H1494N263O287S6" hasOnlySubstanceUnits="false" id="Rrf_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C7955H12880N2101O2234S58" hasOnlySubstanceUnits="false" id="Sec_CPLX" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="H2O3PSe" hasOnlySubstanceUnits="false" id="selnp_c" name="Selenophosphate" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C3H7NO3" hasOnlySubstanceUnits="false" id="ser__L_c" name="L-Serine" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C3258H4875N1059O1439P114S29" hasOnlySubstanceUnits="false" id="SRP_CPLX" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C11316H17628N3186O3312S132Zn6" hasOnlySubstanceUnits="false" id="Tgt_hexa_mod_6__SBML__zn2" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C2453H3913N686O719S14" hasOnlySubstanceUnits="false" id="ThiI_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C19H21N7O6" hasOnlySubstanceUnits="false" id="thf_c" name="5,6,7,8-Tetrahydrofolate" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C4H9NO3" hasOnlySubstanceUnits="false" id="thr__L_c" name="L-Threonine" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C1859H2925N517O554S18" hasOnlySubstanceUnits="false" id="TrmA_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C2720H4222N782O772S18" hasOnlySubstanceUnits="false" id="TruA_dim" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C1545H2485N439O470S11" hasOnlySubstanceUnits="false" id="TruB_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C1331H2170N363O417S11" hasOnlySubstanceUnits="false" id="Tsf_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C9H11N2O9P" hasOnlySubstanceUnits="false" id="ump_c" name="UMP" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C9H11N2O15P3" hasOnlySubstanceUnits="false" id="utp_c" name="UTP" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C5H11NO2" hasOnlySubstanceUnits="false" id="val__L_c" name="L-Valine" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C1215H1886N348O343S14" hasOnlySubstanceUnits="false" id="YggH_mono" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C2231H3611N562O612S24" hasOnlySubstanceUnits="false" id="YICE_MONOMER" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C2805H4331N715O795S23" hasOnlySubstanceUnits="false" id="YidC_MONOMER" />
+      <species boundaryCondition="false" compartment="c" constant="false" fbc:chemicalFormula="C926H1464N254O276S6" hasOnlySubstanceUnits="false" id="YrdC_mono" />
     </listOfSpecies>
     <listOfParameters>
       <parameter constant="true" id="me_bound_1000__0" value="1000" />
@@ -2212,14 +2212,14 @@
     <listOfReactions>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="transcription_TU0001_from_RpoD_mono" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin sequence="http://cobramens.url/sbol/TU0001_from_RpoD_mono" variableKind="continuous" dataId="TU0001_from_RpoD_mono">
-            <cobrame:ListOfSubreactionReferences>
-              <cobrame:subreactionReference subreaction="monocistronic_excision" stoichiometry="2" />
-              <cobrame:subreactionReference subreaction="Transcription_stable_rho_dependent" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="RNA_degradation_machine" stoichiometry="2" />
-              <cobrame:subreactionReference subreaction="RNA_degradation_atp_requirement" stoichiometry="8" />
-            </cobrame:ListOfSubreactionReferences>
-          </cobrame:meReactionPlugin>
+          <sbmlme:meReactionPlugin sequence="http://cobramens.url/sbol/TU0001_from_RpoD_mono" variableKind="continuous" dataId="TU0001_from_RpoD_mono">
+            <sbmlme:ListOfSubreactionReferences>
+              <sbmlme:subreactionReference subreaction="monocistronic_excision" stoichiometry="2" />
+              <sbmlme:subreactionReference subreaction="Transcription_stable_rho_dependent" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="RNA_degradation_machine" stoichiometry="2" />
+              <sbmlme:subreactionReference subreaction="RNA_degradation_atp_requirement" stoichiometry="8" />
+            </sbmlme:ListOfSubreactionReferences>
+          </sbmlme:meReactionPlugin>
         </annotation>
         <listOfReactants>
           <speciesReference constant="false" id="transcription_TU0001_from_RpoD_mono___utp_c___reactant" species="utp_c" stoichiometry="19" />
@@ -2259,7 +2259,7 @@
       </reaction>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="DM_RNA_b0001" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin variableKind="continuous" />
+          <sbmlme:meReactionPlugin variableKind="continuous" />
         </annotation>
         <listOfReactants>
           <speciesReference constant="false" id="DM_RNA_b0001___RNA_b0001___reactant" species="RNA_b0001" stoichiometry="1" />
@@ -2268,19 +2268,19 @@
       </reaction>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="charging_tRNA_b10001_AAC" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin variableKind="continuous" dataId="tRNA_b0001_AAC" codon="AAC" keff="65.0" synthetase="Asn_RS_dim">
-            <cobrame:ListOfSubreactionReferences>
-              <cobrame:subreactionReference subreaction="D_at_16" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="s4U_at_8" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="m7G_at_46" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="t6A_at_37" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="Y_at_39" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="D_at_20" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="Y_at_55" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="Q_at_34" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="m5U_at_54" stoichiometry="1" />
-            </cobrame:ListOfSubreactionReferences>
-          </cobrame:meReactionPlugin>
+          <sbmlme:meReactionPlugin variableKind="continuous" dataId="tRNA_b0001_AAC" codon="AAC" keff="65.0" synthetase="Asn_RS_dim" aminoAcid="asn__L_c">
+            <sbmlme:ListOfSubreactionReferences>
+              <sbmlme:subreactionReference subreaction="D_at_16" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="s4U_at_8" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="m7G_at_46" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="t6A_at_37" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="Y_at_39" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="D_at_20" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="Y_at_55" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="Q_at_34" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="m5U_at_54" stoichiometry="1" />
+            </sbmlme:ListOfSubreactionReferences>
+          </sbmlme:meReactionPlugin>
         </annotation>
         <listOfReactants>
           <speciesReference constant="false" id="charging_tRNA_b10001_AAC___YrdC_mono___reactant" species="YrdC_mono" />
@@ -2322,11 +2322,11 @@
       </reaction>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="transcription_TU0002_from_RpoD_mono" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin sequence="http://cobramens.url/sbol/TU0002_from_RpoD_mono" variableKind="continuous" dataId="TU0002_from_RpoD_mono">
-            <cobrame:ListOfSubreactionReferences>
-              <cobrame:subreactionReference subreaction="Transcription_normal_rho_dependent" stoichiometry="1" />
-            </cobrame:ListOfSubreactionReferences>
-          </cobrame:meReactionPlugin>
+          <sbmlme:meReactionPlugin sequence="http://cobramens.url/sbol/TU0002_from_RpoD_mono" variableKind="continuous" dataId="TU0002_from_RpoD_mono">
+            <sbmlme:ListOfSubreactionReferences>
+              <sbmlme:subreactionReference subreaction="Transcription_normal_rho_dependent" stoichiometry="1" />
+            </sbmlme:ListOfSubreactionReferences>
+          </sbmlme:meReactionPlugin>
         </annotation>
         <listOfReactants>
           <speciesReference constant="false" id="transcription_TU0002_from_RpoD_mono___Rho_hexa_mod_3__SBML__mg2___reactant" species="Rho_hexa_mod_3__SBML__mg2" />
@@ -2355,43 +2355,43 @@
       </reaction>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="translation_b0002" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin sequence="http://cobramens.url/sbol/b0002" variableKind="continuous" dataId="b0002">
-            <cobrame:ListOfSubreactionReferences>
-              <cobrame:subreactionReference subreaction="lys_addition_at_AAA" stoichiometry="3" />
-              <cobrame:subreactionReference subreaction="asn_addition_at_AAU" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="arg_addition_at_CGU" stoichiometry="8" />
-              <cobrame:subreactionReference subreaction="phe_addition_at_UUU" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="peptide_chain_release" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="Translation_initiation_factor_InfC" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="Translation_initiation_factor_InfA" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="asn_addition_at_AAC" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="pro_addition_at_CCG" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="ser_addition_at_UCU" stoichiometry="3" />
-              <cobrame:subreactionReference subreaction="arg_addition_at_CGC" stoichiometry="3" />
-              <cobrame:subreactionReference subreaction="phe_addition_at_UUC" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="lys_addition_at_AAG" stoichiometry="2" />
-              <cobrame:subreactionReference subreaction="val_addition_at_GUU" stoichiometry="2" />
-              <cobrame:subreactionReference subreaction="Translation_gtp_initiation_factor_InfB" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="ala_addition_at_GCA" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="FusA_mono_elongation" stoichiometry="45" />
-              <cobrame:subreactionReference subreaction="val_addition_at_GUA" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="his_addition_at_CAC" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="peptide_deformylase_processing" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="leu_addition_at_CUG" stoichiometry="3" />
-              <cobrame:subreactionReference subreaction="UAA_generic_RF_mediated_termination" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="Tuf_gtp_regeneration" stoichiometry="45" />
-              <cobrame:subreactionReference subreaction="ala_addition_at_GCU" stoichiometry="4" />
-              <cobrame:subreactionReference subreaction="gln_addition_at_CAA" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="met_addition_at_AUG" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="gln_addition_at_CAG" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="thr_addition_at_ACC" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="gly_addition_at_GGU" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="ribosome_recycler" stoichiometry="1" />
-              <cobrame:subreactionReference subreaction="thr_addition_at_ACU" stoichiometry="2" />
-              <cobrame:subreactionReference subreaction="gly_addition_at_GGC" stoichiometry="2" />
-              <cobrame:subreactionReference subreaction="fmet_addition_at_START" stoichiometry="1" />
-            </cobrame:ListOfSubreactionReferences>
-          </cobrame:meReactionPlugin>
+          <sbmlme:meReactionPlugin sequence="http://cobramens.url/sbol/b0002" variableKind="continuous" dataId="b0002">
+            <sbmlme:ListOfSubreactionReferences>
+              <sbmlme:subreactionReference subreaction="lys_addition_at_AAA" stoichiometry="3" />
+              <sbmlme:subreactionReference subreaction="asn_addition_at_AAU" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="arg_addition_at_CGU" stoichiometry="8" />
+              <sbmlme:subreactionReference subreaction="phe_addition_at_UUU" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="peptide_chain_release" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="Translation_initiation_factor_InfC" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="Translation_initiation_factor_InfA" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="asn_addition_at_AAC" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="pro_addition_at_CCG" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="ser_addition_at_UCU" stoichiometry="3" />
+              <sbmlme:subreactionReference subreaction="arg_addition_at_CGC" stoichiometry="3" />
+              <sbmlme:subreactionReference subreaction="phe_addition_at_UUC" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="lys_addition_at_AAG" stoichiometry="2" />
+              <sbmlme:subreactionReference subreaction="val_addition_at_GUU" stoichiometry="2" />
+              <sbmlme:subreactionReference subreaction="Translation_gtp_initiation_factor_InfB" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="ala_addition_at_GCA" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="FusA_mono_elongation" stoichiometry="45" />
+              <sbmlme:subreactionReference subreaction="val_addition_at_GUA" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="his_addition_at_CAC" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="peptide_deformylase_processing" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="leu_addition_at_CUG" stoichiometry="3" />
+              <sbmlme:subreactionReference subreaction="UAA_generic_RF_mediated_termination" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="Tuf_gtp_regeneration" stoichiometry="45" />
+              <sbmlme:subreactionReference subreaction="ala_addition_at_GCU" stoichiometry="4" />
+              <sbmlme:subreactionReference subreaction="gln_addition_at_CAA" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="met_addition_at_AUG" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="gln_addition_at_CAG" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="thr_addition_at_ACC" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="gly_addition_at_GGU" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="ribosome_recycler" stoichiometry="1" />
+              <sbmlme:subreactionReference subreaction="thr_addition_at_ACU" stoichiometry="2" />
+              <sbmlme:subreactionReference subreaction="gly_addition_at_GGC" stoichiometry="2" />
+              <sbmlme:subreactionReference subreaction="fmet_addition_at_START" stoichiometry="1" />
+            </sbmlme:ListOfSubreactionReferences>
+          </sbmlme:meReactionPlugin>
         </annotation>
         <listOfReactants>
           <speciesReference constant="false" id="translation_b0002___generic_tRNA_ACU_thr__L_c___reactant" species="generic_tRNA_ACU_thr__L_c" stoichiometry="2" />
@@ -2470,13 +2470,13 @@
       </reaction>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="translocation_b0002" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin variableKind="continuous" dataId="translocation_protein_b0002" aggregationPropensity="0.0" propensityScaling="1.0">
-            <cobrame:ListOfTranslocationReferences>
-              <cobrame:translocationReference translocation="TatE_MONOMER" multiplier="21.0" />
-              <cobrame:translocationReference translocation="TatA_MONOMER" multiplier="21.0" />
-              <cobrame:translocationReference translocation="srp_yidC_translocation" multiplier="0.0" />
-            </cobrame:ListOfTranslocationReferences>
-          </cobrame:meReactionPlugin>
+          <sbmlme:meReactionPlugin variableKind="continuous" dataId="translocation_protein_b0002" aggregationPropensity="0.0" biomassType="" propensityScaling="1.0">
+            <sbmlme:ListOfTranslocationReferences>
+              <sbmlme:translocationReference translocation="TatE_MONOMER" multiplier="21.0" />
+              <sbmlme:translocationReference translocation="TatA_MONOMER" multiplier="21.0" />
+              <sbmlme:translocationReference translocation="srp_yidC_translocation" multiplier="0.0" />
+            </sbmlme:ListOfTranslocationReferences>
+          </sbmlme:meReactionPlugin>
         </annotation>
         <listOfReactants>
           <speciesReference constant="false" id="translocation_b0002___h2o_c___reactant" species="h2o_c" stoichiometry="1" />
@@ -2495,7 +2495,7 @@
       </reaction>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="formation_RpmH_mono" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin variableKind="continuous" dataId="RpmH_mono" />
+          <sbmlme:meReactionPlugin variableKind="continuous" dataId="RpmH_mono" />
         </annotation>
         <listOfReactants>
           <speciesReference constant="false" id="formation_RpmH_mono___protein_b0002_Inner_Membrane___reactant" species="protein_b0002_Inner_Membrane" stoichiometry="1" />
@@ -2506,7 +2506,7 @@
       </reaction>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="ADEt2rpp_REV_YICE_MONOMER" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin variableKind="continuous" dataId="ADEt2rpp" keff="38.86687550524414" reverse="true" complexId="YICE_MONOMER" />
+          <sbmlme:meReactionPlugin variableKind="continuous" dataId="ADEt2rpp" keff="38.86687550524414" reverse="true" complexId="YICE_MONOMER" />
         </annotation>
         <listOfReactants>
           <speciesReference constant="false" id="ADEt2rpp_REV_YICE_MONOMER___YICE_MONOMER___reactant" species="YICE_MONOMER" />
@@ -2520,7 +2520,7 @@
       </reaction>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="ADEt2rpp_FWD_YICE_MONOMER" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin variableKind="continuous" dataId="ADEt2rpp" keff="38.86687550524414" reverse="false" complexId="YICE_MONOMER" />
+          <sbmlme:meReactionPlugin variableKind="continuous" dataId="ADEt2rpp" keff="38.86687550524414" reverse="false" complexId="YICE_MONOMER" />
         </annotation>
         <listOfReactants>
           <speciesReference constant="false" id="ADEt2rpp_FWD_YICE_MONOMER___ade_p___reactant" species="ade_p" stoichiometry="1" />
@@ -2534,7 +2534,7 @@
       </reaction>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="PrfA_mono_to_generic_RF" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin variableKind="continuous" />
+          <sbmlme:meReactionPlugin variableKind="continuous" />
         </annotation>
         <listOfReactants>
           <speciesReference constant="false" id="PrfA_mono_to_generic_RF___PrfA_mono___reactant" species="PrfA_mono" stoichiometry="1" />
@@ -2545,7 +2545,7 @@
       </reaction>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="PrfB_mono_to_generic_RF" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin variableKind="continuous" />
+          <sbmlme:meReactionPlugin variableKind="continuous" />
         </annotation>
         <listOfReactants>
           <speciesReference constant="false" id="PrfB_mono_to_generic_RF___PrfB_mono___reactant" species="PrfB_mono" stoichiometry="1" />
@@ -2556,7 +2556,7 @@
       </reaction>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_mu" fbc:upperFluxBound="me_bound_mu" id="biomass_dilution" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin variableKind="continuous" />
+          <sbmlme:meReactionPlugin variableKind="continuous" />
         </annotation>
         <listOfReactants>
           <speciesReference constant="false" id="biomass_dilution___biomass___reactant" species="biomass" stoichiometry="1" />
@@ -2564,7 +2564,7 @@
       </reaction>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__00000000000" id="protein_biomass_to_biomass" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin variableKind="continuous" />
+          <sbmlme:meReactionPlugin variableKind="continuous" />
         </annotation>
         <listOfReactants>
           <speciesReference constant="false" id="protein_biomass_to_biomass___protein_biomass___reactant" species="protein_biomass" stoichiometry="1" />
@@ -2576,7 +2576,7 @@
       </reaction>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__00000000000" id="mRNA_biomass_to_biomass" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin variableKind="continuous" />
+          <sbmlme:meReactionPlugin variableKind="continuous" />
         </annotation>
         <listOfReactants>
           <speciesReference constant="false" id="mRNA_biomass_to_biomass___mRNA_biomass___reactant" species="mRNA_biomass" stoichiometry="1" />
@@ -2587,7 +2587,7 @@
       </reaction>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__00000000000" id="tRNA_biomass_to_biomass" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin variableKind="continuous" />
+          <sbmlme:meReactionPlugin variableKind="continuous" />
         </annotation>
         <listOfReactants>
           <speciesReference constant="false" id="tRNA_biomass_to_biomass___tRNA_biomass___reactant" species="tRNA_biomass" stoichiometry="1" />
@@ -2598,7 +2598,7 @@
       </reaction>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__00000000000" id="rRNA_biomass_to_biomass" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin variableKind="continuous" />
+          <sbmlme:meReactionPlugin variableKind="continuous" />
         </annotation>
         <listOfReactants>
           <speciesReference constant="false" id="rRNA_biomass_to_biomass___rRNA_biomass___reactant" species="rRNA_biomass" stoichiometry="1" />
@@ -2609,7 +2609,7 @@
       </reaction>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__00000000000" id="ncRNA_biomass_to_biomass" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin variableKind="continuous" />
+          <sbmlme:meReactionPlugin variableKind="continuous" />
         </annotation>
         <listOfReactants>
           <speciesReference constant="false" id="ncRNA_biomass_to_biomass___ncRNA_biomass___reactant" species="ncRNA_biomass" stoichiometry="1" />
@@ -2620,7 +2620,7 @@
       </reaction>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__00000000000" id="DNA_biomass_to_biomass" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin variableKind="continuous" />
+          <sbmlme:meReactionPlugin variableKind="continuous" />
         </annotation>
         <listOfReactants>
           <speciesReference constant="false" id="DNA_biomass_to_biomass___DNA_biomass___reactant" species="DNA_biomass" stoichiometry="1" />
@@ -2631,7 +2631,7 @@
       </reaction>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__00000000000" id="lipid_biomass_to_biomass" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin variableKind="continuous" />
+          <sbmlme:meReactionPlugin variableKind="continuous" />
         </annotation>
         <listOfReactants>
           <speciesReference constant="false" id="lipid_biomass_to_biomass___lipid_biomass___reactant" species="lipid_biomass" stoichiometry="1" />
@@ -2642,7 +2642,7 @@
       </reaction>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__00000000000" id="constituent_biomass_to_biomass" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin variableKind="continuous" />
+          <sbmlme:meReactionPlugin variableKind="continuous" />
         </annotation>
         <listOfReactants>
           <speciesReference constant="false" id="constituent_biomass_to_biomass___constituent_biomass___reactant" species="constituent_biomass" stoichiometry="1" />
@@ -2653,7 +2653,7 @@
       </reaction>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__00000000000" id="prosthetic_group_biomass_to_biomass" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin variableKind="continuous" />
+          <sbmlme:meReactionPlugin variableKind="continuous" />
         </annotation>
         <listOfReactants>
           <speciesReference constant="false" id="prosthetic_group_biomass_to_biomass___prosthetic_group_biomass___reactant" species="prosthetic_group_biomass" stoichiometry="1" />
@@ -2664,7 +2664,7 @@
       </reaction>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__00000000000" id="peptidoglycan_biomass_to_biomass" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin variableKind="continuous" />
+          <sbmlme:meReactionPlugin variableKind="continuous" />
         </annotation>
         <listOfReactants>
           <speciesReference constant="false" id="peptidoglycan_biomass_to_biomass___peptidoglycan_biomass___reactant" species="peptidoglycan_biomass" stoichiometry="1" />
@@ -2675,7 +2675,7 @@
       </reaction>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_mu__times____open____minus__0__125041790343836__times__mu__power__3__90364139015214__divide____open__mu__power__3__90364139015214__plus__0__116858742296566__close____plus__0__192933177925728__close__" fbc:upperFluxBound="me_bound_mu__times____open____minus__0__125041790343836__times__mu__power__3__90364139015214__divide____open__mu__power__3__90364139015214__plus__0__116858742296566__close____plus__0__192933177925728__close__" id="dna_replication" reversible="false">
         <annotation>
-          <cobrame:meReactionPlugin variableKind="continuous" />
+          <sbmlme:meReactionPlugin variableKind="continuous" />
         </annotation>
         <listOfReactants>
           <speciesReference constant="false" id="dna_replication___datp_c___reactant" species="datp_c" stoichiometry="0.246051501452" />

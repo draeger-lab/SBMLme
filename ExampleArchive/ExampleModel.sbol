@@ -1,43 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sbol="http://sbols.org/v2#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:prov="http://www.w3.org/ns/prov#">
-  <sbol:ComponentDefinition rdf:about="http://cobramens.url/sbol/RNA_b0001/1.0">
-    <sbol:persistentIdentity rdf:resource="http://cobramens.url/sbol/RNA_b0001"/>
-    <sbol:displayId>RNA_b0001</sbol:displayId>
-    <sbol:version>1.0</sbol:version>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#RnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/biomodels.sbo/SBO:0000313"/>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://cobramens.url/sbol/RNA_b0001/RNA_b0001_seqAnnotation/1.0">
-        <sbol:persistentIdentity rdf:resource="http://cobramens.url/sbol/RNA_b0001/RNA_b0001_seqAnnotation"/>
-        <sbol:displayId>RNA_b0001_seqAnnotation</sbol:displayId>
-        <sbol:version>1.0</sbol:version>
-        <sbol:location>
-          <sbol:Range rdf:about="http://cobramens.url/sbol/RNA_b0001/RNA_b0001_seqAnnotation/RNA_b0001_loc/1.0">
-            <sbol:persistentIdentity rdf:resource="http://cobramens.url/sbol/RNA_b0001/RNA_b0001_seqAnnotation/RNA_b0001_loc"/>
-            <sbol:displayId>RNA_b0001_loc</sbol:displayId>
-            <sbol:version>1.0</sbol:version>
-            <sbol:start>1</sbol:start>
-            <sbol:end>76</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequence rdf:resource="http://cobramens.url/sbol/RNA_b0001_seq/1.0"/>
-  </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://cobramens.url/sbol/TU0001_from_RpoD_mono/1.0">
     <sbol:persistentIdentity rdf:resource="http://cobramens.url/sbol/TU0001_from_RpoD_mono"/>
     <sbol:displayId>TU0001_from_RpoD_mono</sbol:displayId>
     <sbol:version>1.0</sbol:version>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:sequence rdf:resource="http://cobramens.url/sbol/TU0001_from_RpoD_mono_seq/1.0"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://cobramens.url/sbol/TU0002_from_RpoD_mono/1.0">
-    <sbol:persistentIdentity rdf:resource="http://cobramens.url/sbol/TU0002_from_RpoD_mono"/>
-    <sbol:displayId>TU0002_from_RpoD_mono</sbol:displayId>
-    <sbol:version>1.0</sbol:version>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:sequence rdf:resource="http://cobramens.url/sbol/TU0002_from_RpoD_mono_seq/1.0"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://cobramens.url/sbol/RNA_b0003/1.0">
     <sbol:persistentIdentity rdf:resource="http://cobramens.url/sbol/RNA_b0003"/>
@@ -56,13 +24,52 @@
             <sbol:displayId>RNA_b0003_loc</sbol:displayId>
             <sbol:version>1.0</sbol:version>
             <sbol:start>1</sbol:start>
-            <sbol:end>360</sbol:end>
+            <sbol:end>4</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>
         </sbol:location>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequence rdf:resource="http://cobramens.url/sbol/RNA_b0003_seq/1.0"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://cobramens.url/sbol/TU0002_from_RpoD_mono/1.0">
+    <sbol:persistentIdentity rdf:resource="http://cobramens.url/sbol/TU0002_from_RpoD_mono"/>
+    <sbol:displayId>TU0002_from_RpoD_mono</sbol:displayId>
+    <sbol:version>1.0</sbol:version>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:sequence rdf:resource="http://cobramens.url/sbol/TU0002_from_RpoD_mono_seq/1.0"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://cobramens.url/sbol/RNA_b0001/1.0">
+    <sbol:persistentIdentity rdf:resource="http://cobramens.url/sbol/RNA_b0001"/>
+    <sbol:displayId>RNA_b0001</sbol:displayId>
+    <sbol:version>1.0</sbol:version>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#RnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/biomodels.sbo/SBO:0000313"/>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://cobramens.url/sbol/RNA_b0001/RNA_b0001_seqAnnotation/1.0">
+        <sbol:persistentIdentity rdf:resource="http://cobramens.url/sbol/RNA_b0001/RNA_b0001_seqAnnotation"/>
+        <sbol:displayId>RNA_b0001_seqAnnotation</sbol:displayId>
+        <sbol:version>1.0</sbol:version>
+        <sbol:location>
+          <sbol:Range rdf:about="http://cobramens.url/sbol/RNA_b0001/RNA_b0001_seqAnnotation/RNA_b0001_loc/1.0">
+            <sbol:persistentIdentity rdf:resource="http://cobramens.url/sbol/RNA_b0001/RNA_b0001_seqAnnotation/RNA_b0001_loc"/>
+            <sbol:displayId>RNA_b0001_loc</sbol:displayId>
+            <sbol:version>1.0</sbol:version>
+            <sbol:start>1</sbol:start>
+            <sbol:end>4</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequence rdf:resource="http://cobramens.url/sbol/RNA_b0001_seq/1.0"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://cobramens.url/sbol/b0002/1.0">
+    <sbol:persistentIdentity rdf:resource="http://cobramens.url/sbol/b0002"/>
+    <sbol:displayId>b0002</sbol:displayId>
+    <sbol:version>1.0</sbol:version>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#RnaRegion"/>
+    <sbol:sequence rdf:resource="http://cobramens.url/sbol/b0002_seq/1.0"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://cobramens.url/sbol/RNA_b0002/1.0">
     <sbol:persistentIdentity rdf:resource="http://cobramens.url/sbol/RNA_b0002"/>
@@ -81,20 +88,13 @@
             <sbol:displayId>RNA_b0002_loc</sbol:displayId>
             <sbol:version>1.0</sbol:version>
             <sbol:start>1</sbol:start>
-            <sbol:end>141</sbol:end>
+            <sbol:end>4</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>
         </sbol:location>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequence rdf:resource="http://cobramens.url/sbol/RNA_b0002_seq/1.0"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://cobramens.url/sbol/b0002/1.0">
-    <sbol:persistentIdentity rdf:resource="http://cobramens.url/sbol/b0002"/>
-    <sbol:displayId>b0002</sbol:displayId>
-    <sbol:version>1.0</sbol:version>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#RnaRegion"/>
-    <sbol:sequence rdf:resource="http://cobramens.url/sbol/b0002_seq/1.0"/>
   </sbol:ComponentDefinition>
   <sbol:Sequence rdf:about="http://cobramens.url/sbol/TU0002_from_RpoD_mono_seq/1.0">
     <sbol:persistentIdentity rdf:resource="http://cobramens.url/sbol/TU0002_from_RpoD_mono_seq"/>
