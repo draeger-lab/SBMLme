@@ -1,4 +1,5 @@
 package sbmlme;
+
 import org.sbml.jsbml.util.StringTools;
 import org.sbml.jsbml.xml.XMLAttributes;
 import org.sbml.jsbml.xml.XMLNode;
@@ -117,7 +118,7 @@ public class SubreactionReference extends MEAbstractXMLNodePlugin
    */
   public XMLNode ListOfSubreactionReference() {
     XMLNode listOf =
-      new XMLNode(new XMLTriple("ListOfSubreactionReferences", ns, prefix),
+      new XMLNode(new XMLTriple("listOfSubreactionReferences", ns, prefix),
         new XMLAttributes());
     return listOf;
   }
@@ -129,7 +130,7 @@ public class SubreactionReference extends MEAbstractXMLNodePlugin
    */
   public XMLNode ListOfSubreactionReference(SubreactionReference sr) {
     XMLNode listOf =
-      new XMLNode(new XMLTriple("ListOfSubreactionReferences", ns, prefix),
+      new XMLNode(new XMLTriple("listOfSubreactionReferences", ns, prefix),
         new XMLAttributes());
     listOf.addChild(sr);
     return listOf;

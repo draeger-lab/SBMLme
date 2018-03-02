@@ -27,7 +27,7 @@ public class MESpeciesPlugin extends MEAbstractXMLNodePlugin
 
   // constructors
   public MESpeciesPlugin() {
-    super(new XMLTriple("meSpeciesPlugin", ns, prefix), new XMLAttributes());
+    super(new XMLTriple(speciesPlugin, ns, prefix), new XMLAttributes());
   }
 
 

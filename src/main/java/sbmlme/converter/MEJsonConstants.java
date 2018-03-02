@@ -35,22 +35,7 @@ public interface MEJsonConstants {
     "unprocessed_protein_id";
   // COBRAme JSON reaction types
   public static final String reactionType                = "reaction_type";
-  public static final String summaryVariable             = "SummaryVariable";
-  public static final String meReaction                  = "MEReaction";
-  public static final String genericFormation            =
-    "GenericFormationReaction";
-  public static final String transcription               =
-    "TranscriptionReaction";
-  public static final String translation                 =
-    "TranslationReaction";
-  public static final String tRNACharging                =
-    "tRNAChargingReaction";
-  public static final String postTranslationReaction     =
-    "PostTranslationReaction";
-  public static final String complexFormationReaction    =
-    "ComplexFormationReaction";
   public static final String complexFormation            = "ComplexFormation";
-  public static final String metabolicReaction           = "MetabolicReaction";
   // COBRAme JSON reaction attributes
   public static final String objectiveCoefficient        =
     "objective_coefficient";
@@ -77,6 +62,7 @@ public interface MEJsonConstants {
   public static final String stoichiometric_Data         =
     "stoichiometric_data";
   public static final String complex_data                = "complex_data";
+  public static final String complex_id_                 = "_complex_id";
   public static final String complex_data_id             = "complex_data_id";
   public static final String complexData                 = "ComplexData";
   public static final String transcription_data          = "transcription_data";
@@ -99,43 +85,40 @@ public interface MEJsonConstants {
   public static final String propensity_scaling          = "propensity_scaling";
   public static final String biomass_type                = "biomass_type";
   // SBMLme annotation
-  public static final String reactionPlugin              = "meReactionPlugin";
-  public static final String speciesPlugin               = "meSpeciesPlugin";
-  public static final String processDataPlugin           = "MEProcessData";
-  public static final String speciesRef                  = "meSpeciesReference";
+  public static final String processDataPlugin           = "meProcessData";
   public static final String listSubreactionReferences   =
-    "ListOfSubreactionReferences";
+    "listOfSubreactionReferences";
   public static final String subreactionRef              =
     "subreactionReference";
   public static final String listTranslocationReferences =
-    "ListOfTranslocationReferences";
+    "listOfTranslocationReferences";
   public static final String translocationRef            =
     "translocationReference";
   public static final String listEquilibrium             =
-    "ListOfEquilibriumConstants";
+    "listOfEquilibriumConstants";
   public static final String rateConstant                = "RateConstant";
   public static final String listRateConstant            =
-    "ListOfRateConstants";
+    "listOfRateConstants";
   public static final String saInner                     = "SA_inner_membrane";
   public static final String saOuter                     = "SA_outer_membrane";
   public static final String listOfSubreactionData       =
-    "ListOfSubreactionData";
+    "listOfSubreactionData";
   public static final String listOfTranslocationData     =
-    "ListOfTranslocationData";
+    "listOfTranslocationData";
   public static final String listOfStoichiometricData    =
-    "ListOfStoichiometricData";
+    "listOfStoichiometricData";
   public static final String subreactionData             = "subreactionData";
   public static final String stoichiometricData          = "stoichiometricData";
   public static final String listOfEnzymeInformation     =
-    "ListOfEnzymeInformation";
+    "listOfEnzymeInformation";
   public static final String enzymeInformation           = "enzymeInformation";
   public static final String listOfElementContributions  =
-    "ListOfElementContributions";
+    "listOfElementContributions";
   public static final String elementContribution         =
     "elementContribution";
-  public static final String listOfReactants             = "ListOfReactants";
-  public static final String listOfProducts              = "ListOfProducts";
-  public static final String listOfSubreactions          = "ListOfSubreactions";
+  public static final String listOfReactants             = "listOfReactants";
+  public static final String listOfProducts              = "listOfProducts";
+  public static final String listOfSubreactions          = "listOfSubreactions";
   // COBRAme GlobalInfo
   public static final String globalInformation           = "GlobalInfo";
   public static final String global_Info                 = "global_info";

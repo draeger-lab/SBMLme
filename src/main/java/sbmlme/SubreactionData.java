@@ -1,4 +1,5 @@
 package sbmlme;
+
 import java.util.List;
 
 import org.sbml.jsbml.util.StringTools;
@@ -72,44 +73,6 @@ public class SubreactionData extends MEAbstractXMLNodePlugin
         // turn list more SBML like
         listReactants.addChild(meSpecies.createMESpeciesReference(
           speciesReferences.get(i), stoichiometries.get(i) * -1));
-      } else {
-        listProducts.addChild(meSpecies.createMESpeciesReference(
-          speciesReferences.get(i), stoichiometries.get(i)));
-      }
-    }
-    subreactionData.addChild(listReactants);
-    subreactionData.addChild(listProducts);
-    return subreactionData;
-  }
-
-
-  /**
-   * create SubreactionData object without ElementContributions
-   * outdated
-   * 
-   * @param id
-   * @param keff
-   * @param enzymeReferences
-   * @param speciesReferences
-   * @param stoichiometries
-   * @return
-   */
-  public XMLNode createSubreactionData(String id, double keff,
-    List<String> enzymeReferences, List<String> speciesReferences,
-    List<Integer> stoichiometries) {
-    SubreactionData subreactionData = new SubreactionData();
-    subreactionData.setId(id);
-    subreactionData.setKeff(String.valueOf(keff));
-    EnzymeInformation listEnzymeReferences = new EnzymeInformation();
-    subreactionData.addChild(
-      listEnzymeReferences.createEnzymeInformationList(enzymeReferences));
-    MESpeciesReference meSpecies = new MESpeciesReference();
-    XMLNode listReactants = meSpecies.ListOfMEReactants();
-    XMLNode listProducts = meSpecies.ListOfMEProducts();
-    for (int i = 0; i < stoichiometries.size(); i++) {
-      if (stoichiometries.get(i) < 0) {
-        listReactants.addChild(meSpecies.createMESpeciesReference(
-          speciesReferences.get(i), stoichiometries.get(i)));
       } else {
         listProducts.addChild(meSpecies.createMESpeciesReference(
           speciesReferences.get(i), stoichiometries.get(i)));

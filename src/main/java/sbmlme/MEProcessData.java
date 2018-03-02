@@ -1,4 +1,5 @@
 package sbmlme;
+
 import java.util.List;
 
 import org.sbml.jsbml.xml.XMLAttributes;
@@ -19,7 +20,7 @@ public class MEProcessData extends MEAbstractXMLNodePlugin
 
   // constructors
   public MEProcessData() {
-    super(new XMLTriple("MEProcessData", ns, prefix), new XMLAttributes());
+    super(new XMLTriple("meProcessData", ns, prefix), new XMLAttributes());
   }
 
 
@@ -99,14 +100,14 @@ public class MEProcessData extends MEAbstractXMLNodePlugin
   // ListOf for different subtypes of ProcessData
   public XMLNode ListOfSubreactionData() {
     XMLNode listOf = new XMLNode(
-      new XMLTriple("ListOfSubreactionData", ns, prefix), new XMLAttributes());
+      new XMLTriple("listOfSubreactionData", ns, prefix), new XMLAttributes());
     return listOf;
   }
 
 
   public XMLNode ListOfTranslocationData() {
     XMLNode listOf =
-      new XMLNode(new XMLTriple("ListOfTranslocationData", ns, prefix),
+      new XMLNode(new XMLTriple("listOfTranslocationData", ns, prefix),
         new XMLAttributes());
     return listOf;
   }
@@ -114,7 +115,7 @@ public class MEProcessData extends MEAbstractXMLNodePlugin
 
   public XMLNode ListOfStoichiometricData() {
     XMLNode listOf =
-      new XMLNode(new XMLTriple("ListOfStoichiometricData", ns, prefix),
+      new XMLNode(new XMLTriple("listOfStoichiometricData", ns, prefix),
         new XMLAttributes());
     return listOf;
   }

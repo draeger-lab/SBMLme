@@ -1,4 +1,5 @@
 package sbmlme;
+
 import java.util.List;
 
 import org.sbml.jsbml.util.StringTools;
@@ -97,14 +98,14 @@ public class Subreaction extends MEAbstractXMLNodePlugin
   // ListOf functionality
   public static XMLNode ListOfSubreactions() {
     XMLNode listOf = new XMLNode(
-      new XMLTriple("ListOfSubreactions", ns, prefix), new XMLAttributes());
+      new XMLTriple("listOfSubreactions", ns, prefix), new XMLAttributes());
     return listOf;
   }
 
 
   public static XMLNode ListOfSubreactions(Subreaction sd) {
     XMLNode listOf = new XMLNode(
-      new XMLTriple("ListOfSubreactions", ns, prefix), new XMLAttributes());
+      new XMLTriple("listOfSubreactions", ns, prefix), new XMLAttributes());
     listOf.addChild(sd);
     return listOf;
   }

@@ -1,4 +1,5 @@
 package sbmlme;
+
 import java.util.List;
 
 import org.sbml.jsbml.util.StringTools;
@@ -173,7 +174,7 @@ public class EnzymeInformation extends MEAbstractXMLNodePlugin
   // ListOf functionality
   public static XMLNode ListOfEnzymeInformations() {
     XMLNode listOf =
-      new XMLNode(new XMLTriple("ListOfEnzymeInformation", ns, prefix),
+      new XMLNode(new XMLTriple("listOfEnzymeInformation", ns, prefix),
         new XMLAttributes());
     return listOf;
   }
@@ -181,7 +182,7 @@ public class EnzymeInformation extends MEAbstractXMLNodePlugin
 
   public static XMLNode ListOfEnzymeInformations(EnzymeInformation ec) {
     XMLNode listOf =
-      new XMLNode(new XMLTriple("ListOfEnzymeInformation", ns, prefix),
+      new XMLNode(new XMLTriple("listOfEnzymeInformation", ns, prefix),
         new XMLAttributes());
     listOf.addChild(ec);
     return listOf;

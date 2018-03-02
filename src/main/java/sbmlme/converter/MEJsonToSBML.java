@@ -625,6 +625,8 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
         List<Integer> subreactionCoefficients = new ArrayList<Integer>();
         String dataId = entry.get(reactionType).get(complexFormation)
                              .get(complex_data_id).asText();
+        String complexId = entry.get(reactionType).get(complexFormation)
+                                .get(complex_id_).asText();
         // get ProcessData object
         JsonNode processDataEntry =
           processData.get(processDataIndices.get(dataId)).get(processDataType)
@@ -644,7 +646,7 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
         }
         meReactionPlugin.createComplexFormationReaction(model, groups,
           objective, entry.get(id).textValue(), entry.get(name).textValue(),
-          dataId, entry.get(upper_bound).asDouble(),
+          dataId, complexId, entry.get(upper_bound).asDouble(),
           entry.get(lower_Bound).asDouble(), speciesIds, coefficients,
           entry.get(objectiveCoefficient).asDouble(),
           entry.get(variable_kind).textValue(), subreactionList,

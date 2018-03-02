@@ -1,4 +1,5 @@
 package sbmlme;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
 
   // constructors
   public MEReactionPlugin() {
-    super(new XMLTriple("meReactionPlugin", ns, prefix), new XMLAttributes());
+    super(new XMLTriple(reactionPlugin, ns, prefix), new XMLAttributes());
   }
 
 
@@ -243,11 +244,11 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     tempReaction.initDefaults(2, 4, true);
     tempReaction.setReversible(false);
     tempReaction.setName(name);
-    Group group = (Group) groups.getGroup("SummaryVariable");
+    Group group = (Group) groups.getGroup(summaryVariable);
     if (group != null) {
       group.createMemberWithIdRef(id);
     } else {
-      group = groups.createGroup("SummaryVariable");
+      group = groups.createGroup(summaryVariable);
       group.setKind(Group.Kind.classification);
       group.createMemberWithIdRef(id);
     }
@@ -294,11 +295,11 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     tempReaction.setName(name);
     tempReaction.initDefaults(2, 4, true);
     tempReaction.setReversible(false);
-    Group group = (Group) groups.getGroup("GenericFormationReaction");
+    Group group = (Group) groups.getGroup(genericFormation);
     if (group != null) {
       group.createMemberWithIdRef(id);
     } else {
-      group = groups.createGroup("GenericFormationReaction");
+      group = groups.createGroup(genericFormation);
       group.setKind(Group.Kind.classification);
       group.createMemberWithIdRef(id);
     }
@@ -384,11 +385,11 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     tempReaction.initDefaults(2, 4, true);
     tempReaction.setReversible(false);
     // add reaction to group
-    Group group = (Group) groups.getGroup("TranscriptionReaction");
+    Group group = (Group) groups.getGroup(transcription);
     if (group != null) {
       group.createMemberWithIdRef(id);
     } else {
-      group = groups.createGroup("TranscriptionReaction");
+      group = groups.createGroup(transcription);
       group.setKind(Group.Kind.classification);
       group.createMemberWithIdRef(id);
     }
@@ -472,11 +473,11 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     tempReaction.initDefaults(2, 4, true);
     tempReaction.setReversible(false);
     // add reaction to group
-    Group group = (Group) groups.getGroup("TranslationReaction");
+    Group group = (Group) groups.getGroup(translation);
     if (group != null) {
       group.createMemberWithIdRef(id);
     } else {
-      group = groups.createGroup("TranslationReaction");
+      group = groups.createGroup(translation);
       group.setKind(Group.Kind.classification);
       group.createMemberWithIdRef(id);
     }
@@ -562,11 +563,11 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     tempReaction.initDefaults(2, 4, true);
     tempReaction.setReversible(false);
     // add reaction to group
-    Group group = (Group) groups.getGroup("tRNAChargingReaction");
+    Group group = (Group) groups.getGroup(tRNACharging);
     if (group != null) {
       group.createMemberWithIdRef(id);
     } else {
-      group = groups.createGroup("tRNAChargingReaction");
+      group = groups.createGroup(tRNACharging);
       group.setKind(Group.Kind.classification);
       group.createMemberWithIdRef(id);
     }
@@ -655,11 +656,11 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     tempReaction.initDefaults(2, 4, true);
     tempReaction.setReversible(false);
     // add reaction to group
-    Group group = (Group) groups.getGroup("PostTranslationReaction");
+    Group group = (Group) groups.getGroup(postTranslationReaction);
     if (group != null) {
       group.createMemberWithIdRef(id);
     } else {
-      group = groups.createGroup("PostTranslationReaction");
+      group = groups.createGroup(postTranslationReaction);
       group.setKind(Group.Kind.classification);
       group.createMemberWithIdRef(id);
     }
@@ -761,22 +762,23 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
    */
   public void createComplexFormationReaction(Model model,
     GroupsModelPlugin groups, Objective objective, String id, String name,
-    String dataId, double upperBound, double lowerBound,
+    String dataId, String complexId, double upperBound, double lowerBound,
     List<String> speciesIds, List<String> coefficients,
     double objectiveCoefficient, String variableKind, List<String> subreactions,
     List<Integer> subreactionCoefficients) throws ParseException {
     id = createSBMLConformId(id);
     dataId = createSBMLConformId(dataId);
+    complexId = createSBMLConformId(complexId);
     Reaction tempReaction = model.createReaction(id);
     tempReaction.setName(name);
     tempReaction.initDefaults(2, 4, true);
     tempReaction.setReversible(false);
     // add reaction to group
-    Group group = (Group) groups.getGroup("ComplexFormationReaction");
+    Group group = (Group) groups.getGroup(complexFormationReaction);
     if (group != null) {
       group.createMemberWithIdRef(id);
     } else {
-      group = groups.createGroup("ComplexFormationReaction");
+      group = groups.createGroup(complexFormationReaction);
       group.setKind(Group.Kind.classification);
       group.createMemberWithIdRef(id);
     }
@@ -796,6 +798,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     MEReactionPlugin meReaction = new MEReactionPlugin();
     meReaction.setVariableKind(variableKind);
     meReaction.setDataId(dataId);
+    meReaction.setComplexId(complexId);
     if (subreactions != null) {
       // add subreaction references to annotations
       SubreactionReference subReference = new SubreactionReference();
@@ -842,11 +845,11 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     tempReaction.initDefaults(2, 4, true);
     tempReaction.setReversible(false);
     // add reaction to group
-    Group group = (Group) groups.getGroup("MetabolicReaction");
+    Group group = (Group) groups.getGroup(metabolicReaction);
     if (group != null) {
       group.createMemberWithIdRef(id);
     } else {
-      group = groups.createGroup("MetabolicReaction");
+      group = groups.createGroup(metabolicReaction);
       group.setKind(Group.Kind.classification);
       group.createMemberWithIdRef(id);
     }
@@ -903,11 +906,11 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     tempReaction.initDefaults(2, 4, true);
     tempReaction.setReversible(false);
     // add reaction to group
-    Group group = (Group) groups.getGroup("MEReaction");
+    Group group = (Group) groups.getGroup(meReaction);
     if (group != null) {
       group.createMemberWithIdRef(id);
     } else {
-      group = groups.createGroup("MEReaction");
+      group = groups.createGroup(meReaction);
       group.setKind(Group.Kind.classification);
       group.createMemberWithIdRef(id);
     }

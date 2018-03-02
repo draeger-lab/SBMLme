@@ -1,4 +1,5 @@
 package sbmlme;
+
 import org.sbml.jsbml.util.StringTools;
 import org.sbml.jsbml.xml.XMLAttributes;
 import org.sbml.jsbml.xml.XMLNode;
@@ -29,26 +30,6 @@ public class TranslocationReference extends MEAbstractXMLNodePlugin
     if (tr.isSetId()) {
       setId(tr.getId());
     }
-  }
-
-
-  /**
-   * functions for creating common TranslocationReferences
-   * 
-   * @param id
-   * @param name
-   * @param translocation
-   * @param multiplier
-   * @return
-   */
-  public TranslocationReference createTranslocationReference(String id,
-    String name, String translocation, Double multiplier) {
-    TranslocationReference tr = new TranslocationReference();
-    tr.setId(createSBMLConformId(id));
-    tr.setName(name);
-    tr.setTranslocation(translocation);
-    tr.setMultiplier(Double.toString(multiplier));
-    return tr;
   }
 
 
@@ -120,7 +101,7 @@ public class TranslocationReference extends MEAbstractXMLNodePlugin
   // ListOf functionality
   public XMLNode ListOfTranslocationReference() {
     XMLNode listOf =
-      new XMLNode(new XMLTriple("ListOfTranslocationReferences", ns, prefix),
+      new XMLNode(new XMLTriple("listOfTranslocationReferences", ns, prefix),
         new XMLAttributes());
     return listOf;
   }
@@ -128,7 +109,7 @@ public class TranslocationReference extends MEAbstractXMLNodePlugin
 
   public XMLNode ListOfTranslocationReference(TranslocationReference tr) {
     XMLNode listOf =
-      new XMLNode(new XMLTriple("ListOfTranslocationReferences", ns, prefix),
+      new XMLNode(new XMLTriple("listOfTranslocationReferences", ns, prefix),
         new XMLAttributes());
     listOf.addChild(tr);
     return listOf;

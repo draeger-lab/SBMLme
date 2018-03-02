@@ -1,4 +1,5 @@
 package sbmlme;
+
 import org.sbml.jsbml.xml.XMLAttributes;
 import org.sbml.jsbml.xml.XMLNode;
 import org.sbml.jsbml.xml.XMLTriple;
@@ -22,13 +23,11 @@ public class MEAbstractXMLNodePlugin extends XMLNode implements MEConstants {
 
   public MEAbstractXMLNodePlugin(XMLTriple xmlTriple,
     XMLAttributes xmlAttributes) {
-    // TODO Auto-generated constructor stub
     super(xmlTriple, xmlAttributes);
   }
 
 
   public MEAbstractXMLNodePlugin(MEAbstractXMLNodePlugin plugin) {
-    // TODO Auto-generated constructor stub
     super(plugin);
   }
 
@@ -40,9 +39,9 @@ public class MEAbstractXMLNodePlugin extends XMLNode implements MEConstants {
    * @return
    */
   public String createSBMLConformId(String id) {
-    id = id.replaceAll(":", "__meCOLONme__");
-    id = id.replaceAll("-", "__meMINUSme__");
-    id = id.replaceAll("/", "__meSLASHme__");
+    id = id.replace(":", "__meCOLONme__");
+    id = id.replace("-", "__meMINUSme__");
+    id = id.replace("/", "__meSLASHme__");
     if (id.matches("^\\d.*")) {
       id = "__meSTARTme__" + id;
     }

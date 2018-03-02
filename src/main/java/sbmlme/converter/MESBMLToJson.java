@@ -896,7 +896,11 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
       XMLNode sbmlAnnotation = reaction.getAnnotation().getFullAnnotation();
       String sbmlDataId = sbmlAnnotation.getChildElement(reactionPlugin, "*")
                                         .getAttrValue(dataId);
+      String sbmlComplexId = sbmlAnnotation.getChildElement(reactionPlugin, "*")
+                                           .getAttrValue(complexId);
       typeAttributes.setComplexDataId(ConvertSBMLIdToCOBRAId(sbmlDataId));
+      typeAttributes.setComplexFormationComplexId(
+        ConvertSBMLIdToCOBRAId(sbmlComplexId));
       reactionType.setComplexFormation(typeAttributes);
       MEJsonProcessData tempProcess = new MEJsonProcessData();
       MEJsonProcessDataType tempProcessType = new MEJsonProcessDataType();

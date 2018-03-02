@@ -1,4 +1,5 @@
 package sbmlme;
+
 import java.util.List;
 
 import org.sbml.jsbml.util.StringTools;
@@ -98,7 +99,7 @@ public class ElementContribution extends MEAbstractXMLNodePlugin
   // ListOf functionality
   public static XMLNode ListOfElementContributions() {
     XMLNode listOf =
-      new XMLNode(new XMLTriple("ListOfElementContributions", ns, prefix),
+      new XMLNode(new XMLTriple("listOfElementContributions", ns, prefix),
         new XMLAttributes());
     return listOf;
   }
@@ -106,7 +107,7 @@ public class ElementContribution extends MEAbstractXMLNodePlugin
 
   public static XMLNode ListOfElementContributions(ElementContribution ec) {
     XMLNode listOf =
-      new XMLNode(new XMLTriple("ListOfElementContributions", ns, prefix),
+      new XMLNode(new XMLTriple("listOfElementContributions", ns, prefix),
         new XMLAttributes());
     listOf.addChild(ec);
     return listOf;

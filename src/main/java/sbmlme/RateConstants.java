@@ -1,4 +1,5 @@
 package sbmlme;
+
 import org.sbml.jsbml.util.StringTools;
 import org.sbml.jsbml.xml.XMLAttributes;
 import org.sbml.jsbml.xml.XMLNode;
@@ -87,14 +88,14 @@ public class RateConstants extends MEAbstractXMLNodePlugin
   // ListOf functionality
   public XMLNode ListOfRateConstants() {
     XMLNode listOf = new XMLNode(
-      new XMLTriple("ListOfRateConstants", ns, prefix), new XMLAttributes());
+      new XMLTriple("listOfRateConstants", ns, prefix), new XMLAttributes());
     return listOf;
   }
 
 
   public XMLNode ListOfRateConstants(RateConstants rc) {
     XMLNode listOf = new XMLNode(
-      new XMLTriple("ListOfRateConstants", ns, prefix), new XMLAttributes());
+      new XMLTriple("listOfRateConstants", ns, prefix), new XMLAttributes());
     listOf.addChild(rc);
     return listOf;
   }
@@ -102,7 +103,7 @@ public class RateConstants extends MEAbstractXMLNodePlugin
 
   public XMLNode ListOfEquilibriumConstants() {
     XMLNode listOf =
-      new XMLNode(new XMLTriple("ListOfEquilibriumConstants", ns, prefix),
+      new XMLNode(new XMLTriple("listOfEquilibriumConstants", ns, prefix),
         new XMLAttributes());
     return listOf;
   }
@@ -110,7 +111,7 @@ public class RateConstants extends MEAbstractXMLNodePlugin
 
   public XMLNode ListOfEquilibriumConstants(RateConstants rc) {
     XMLNode listOf =
-      new XMLNode(new XMLTriple("ListOfEquilibriumConstants", ns, prefix),
+      new XMLNode(new XMLTriple("listOfEquilibriumConstants", ns, prefix),
         new XMLAttributes());
     listOf.addChild(rc);
     return listOf;

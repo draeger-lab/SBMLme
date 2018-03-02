@@ -1,4 +1,5 @@
 package sbmlme;
+
 import org.sbml.jsbml.xml.XMLAttributes;
 import org.sbml.jsbml.xml.XMLNode;
 import org.sbml.jsbml.xml.XMLTriple;
@@ -18,7 +19,7 @@ public class MESpeciesReference extends MEAbstractXMLNodePlugin
 
   // constructors
   public MESpeciesReference() {
-    super(new XMLTriple("meSpeciesReference", ns, prefix), new XMLAttributes());
+    super(new XMLTriple(speciesRef, ns, prefix), new XMLAttributes());
   }
 
 
@@ -85,14 +86,14 @@ public class MESpeciesReference extends MEAbstractXMLNodePlugin
 
   // ListOf functionality
   public XMLNode ListOfMEReactants() {
-    XMLNode listOf = new XMLNode(new XMLTriple("ListOfReactants", ns, prefix),
+    XMLNode listOf = new XMLNode(new XMLTriple("listOfReactants", ns, prefix),
       new XMLAttributes());
     return listOf;
   }
 
 
   public XMLNode ListOfMEReactants(MESpeciesReference ec) {
-    XMLNode listOf = new XMLNode(new XMLTriple("ListOfReactants", ns, prefix),
+    XMLNode listOf = new XMLNode(new XMLTriple("listOfReactants", ns, prefix),
       new XMLAttributes());
     listOf.addChild(ec);
     return listOf;
@@ -100,14 +101,14 @@ public class MESpeciesReference extends MEAbstractXMLNodePlugin
 
 
   public XMLNode ListOfMEProducts() {
-    XMLNode listOf = new XMLNode(new XMLTriple("ListOfProducts", ns, prefix),
+    XMLNode listOf = new XMLNode(new XMLTriple("listOfProducts", ns, prefix),
       new XMLAttributes());
     return listOf;
   }
 
 
   public XMLNode ListOfMEProducts(MESpeciesReference ec) {
-    XMLNode listOf = new XMLNode(new XMLTriple("ListOfProducts", ns, prefix),
+    XMLNode listOf = new XMLNode(new XMLTriple("listOfProducts", ns, prefix),
       new XMLAttributes());
     listOf.addChild(ec);
     return listOf;

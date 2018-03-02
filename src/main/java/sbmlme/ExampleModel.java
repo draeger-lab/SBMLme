@@ -596,7 +596,7 @@ public class ExampleModel implements MEConstants {
       Arrays.asList(21.0, 21.0, 0.0), 1.0, null, null, null, null, null, null,
       "");
     meReactionPlugin.createComplexFormationReaction(model, groups, objective,
-      "formation_RpmH_mono", "", "RpmH_mono",
+      "formation_RpmH_mono", "", "RpmH_mono", "RpmH_mono",
       Double.valueOf("1000.00000000000"), Double.valueOf("0.0"),
       Arrays.asList("RpmH_mono", "protein_b0002_Inner_Membrane"),
       Arrays.asList("1", "-1.0"), 0.0, "continuous", null, null);
