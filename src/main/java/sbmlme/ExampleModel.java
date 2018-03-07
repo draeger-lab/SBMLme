@@ -10,6 +10,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.TransformerException;
 
 import org.jdom2.JDOMException;
+import org.sbml.jsbml.ASTNode;
 import org.sbml.jsbml.Compartment;
 import org.sbml.jsbml.Model;
 import org.sbml.jsbml.SBMLDocument;
@@ -55,6 +56,15 @@ public class ExampleModel implements MEConstants {
     JDOMException, java.text.ParseException, CombineArchiveException,
     URISyntaxException, TransformerException {
     new ExampleModel();
+    String test =
+      "-4.27350427350427e-6*mu*(0.000116266666666667*mu + 4.55184e-5) - 1.54e-6";
+    ASTNode testNode = ASTNode.parseFormula(test);
+    System.out.println(testNode);
+    System.out.println(testNode.formulaToString(testNode));
+    System.out.println(testNode.toFormula());
+    System.out.println(testNode.printASTNode());
+    System.out.println(testNode.toString());
+    System.out.println(ASTNode.parseFormula(testNode.toString()));
   }
 
 

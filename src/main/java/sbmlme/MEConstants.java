@@ -27,7 +27,6 @@ public interface MEConstants {
   // Attributes for extended Reactions
   public static final String dataId                   = "dataId";
   public static final String complexId                = "complexId";
-  public static final String stoichiometricRef        = "stoichiometricDataId";
   public static final String reverse                  = "reverse";
   public static final String codon                    = "codon";
   public static final String aminoAcid                = "aminoAcid";

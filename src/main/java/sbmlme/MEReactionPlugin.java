@@ -22,6 +22,15 @@ import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLValidationException;
 
 /**
+ * implements attributes and methods to encode all information of reactions in a
+ * COBRAme model in SBML.
+ * <p>
+ * Besides SBML core the packages fbc and groups are used in all reaction
+ * creating methods of this class. The groups package is used to encode the
+ * reaction type. The fbc package is used to encode the upper and lower bounds
+ * and the objective coefficient of the reaction.
+ * </p>
+ * 
  * @author Marc A. Voigt
  */
 public class MEReactionPlugin extends MEAbstractXMLNodePlugin
@@ -49,12 +58,28 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
 
   /**
    * adds a single species from a COBRAme reaction list to the corresponding
-   * SBML reaction
+   * SBML reaction.
+   * <p>
+   * In COBRAme reactions only possess one list for both reactants and products.
+   * When species are added from this list reactants and products need to be
+   * separated, the method does this by checking if the species' coefficient is
+   * negative. </br>
+   * In COBRAme coefficients can also be complex formulas that depend on
+   * parameters. When such a coefficient is added the formula is checked for
+   * currently unknown parameters that need to be added to the ListOfParameters
+   * of the model. The check whether a species is a product or reactant is based
+   * on the first character in the string that is not an opening bracket, if
+   * this is a minus the species is assumed to be a reactant.
+   * </p>
    * 
    * @param model
+   *        the SBML model
    * @param reaction
+   *        the SBML reaction that the species should be added to
    * @param speciesId
+   *        the id of the species
    * @param coefficient
+   *        the coefficient of the species
    * @throws ParseException
    */
   public void addCOBRAmeSpeciesToReaction(Model model, Reaction reaction,
@@ -94,40 +119,60 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
           }
         }
       }
-      if (coefficient.substring(0, 1).equals("-")) {
-        SpeciesReference temp = reaction.createReactant(reaction.getId() + "___"
-          + createSBMLConformId(speciesId) + "___reactant",
-          createSBMLConformId(speciesId));
-        temp.setConstant(false);
-        ASTNode coefficientNode = ASTNode.parseFormula(coefficient);
-        // need to convert value due to COBRAme only possessing one list for
-        // both reactants & products
-        ASTNode convert = new ASTNode();
-        convert.setValue(-1);
-        InitialAssignment speciesAssignment = model.createInitialAssignment();
-        speciesAssignment.setMath(coefficientNode.multiplyWith(convert));
-        speciesAssignment.setVariable(temp.getId());
-      } else {
-        SpeciesReference temp = reaction.createProduct(reaction.getId() + "___"
-          + createSBMLConformId(speciesId) + "___product",
-          createSBMLConformId(speciesId));
-        temp.setConstant(false);
-        ASTNode coefficientNode = ASTNode.parseFormula(coefficient);
-        InitialAssignment speciesAssignment = model.createInitialAssignment();
-        speciesAssignment.setMath(coefficientNode);
-        speciesAssignment.setVariable(temp.getId());
+      // check the first character that is not an opening bracket, for minus to
+      // decide between reactant and product
+      String testCoefficient = coefficient;
+      for (int i = 0; i < coefficient.length(); i++) {
+        if (testCoefficient.substring(0, 1).equals("(")) {
+          testCoefficient.substring(1);
+        } else if (testCoefficient.substring(0, 1).equals("-")) {
+          SpeciesReference temp = reaction.createReactant(reaction.getId()
+            + "___" + createSBMLConformId(speciesId) + "___reactant",
+            createSBMLConformId(speciesId));
+          temp.setConstant(false);
+          ASTNode coefficientNode = ASTNode.parseFormula(coefficient);
+          // need to convert value due to COBRAme only possessing one list for
+          // both reactants & products
+          ASTNode convert = new ASTNode();
+          convert.setValue(-1);
+          InitialAssignment speciesAssignment = model.createInitialAssignment();
+          speciesAssignment.setMath(coefficientNode.multiplyWith(convert));
+          speciesAssignment.setVariable(temp.getId());
+          break;
+        } else {
+          SpeciesReference temp = reaction.createProduct(reaction.getId()
+            + "___" + createSBMLConformId(speciesId) + "___product",
+            createSBMLConformId(speciesId));
+          temp.setConstant(false);
+          ASTNode coefficientNode = ASTNode.parseFormula(coefficient);
+          InitialAssignment speciesAssignment = model.createInitialAssignment();
+          speciesAssignment.setMath(coefficientNode);
+          speciesAssignment.setVariable(temp.getId());
+          break;
+        }
       }
     }
   }
 
 
   /**
-   * set Bounds of a fbc reaction to a valid parameter
+   * Set the Bounds of a fbc reaction to a valid parameter. If there is no valid
+   * parameter a new one is created.
+   * <p>
+   * In order to not create several parameters with the same value this method
+   * translates the value into a String that can be used as a valid SBML id. The
+   * method then searches the ListOfParameter for a parameter with the
+   * translated id. If no such parameter is found a new parameter is created.
+   * </p>
    * 
    * @param model
+   *        the SBML model
    * @param fbcTempReaction
+   *        the fbc plugin for the reaction
    * @param upperBound
+   *        the designated upper bound
    * @param lowerBound
+   *        the designated lower bound
    * @throws ParseException
    */
   public void setBounds(Model model, FBCReactionPlugin fbcTempReaction,
@@ -219,19 +264,36 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
 
   // Functions for correctly setting COBRAme compliant reactions
   /**
-   * create and adds a SummaryVariable Reaction to the model.
+   * Create and add a SummaryVariable Reaction to the model.
+   * <p>
+   * In COBRAme this reaction type is used to apply global constraints to the
+   * model. This method adds the SBMLme exclusive attribute "variableKind" to
+   * the annotation of the reaction.
+   * </p>
    * 
    * @param model
+   *        the SBML model
    * @param groups
+   *        the GroupsModelPlugin of the SBML model
    * @param objective
+   *        the active objective of the SBML model
    * @param id
+   *        the id of the reaction to be added
    * @param name
+   *        the name of the reaction, can be null
    * @param upperBound
+   *        the upper bound of the reaction
    * @param lowerBound
+   *        the lower bound of the reaction
    * @param speciesIds
+   *        the list with the ids of all species in the reaction
    * @param coefficients
+   *        the list with all species coefficients in the reaction, must have
+   *        the same order as the list with species ids
    * @param objectiveCoefficient
+   *        the coefficient of the flux objective of the reaction
    * @param variableKind
+   *        can be either "continuous" or "discrete"
    * @throws ParseException
    */
   public void createSummaryVariableReaction(Model model,
@@ -268,21 +330,37 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
 
 
   /**
-   * create and add a formation reaction which transforms a species into a
-   * generic Component
-   * and add the reactant to the group of the generic component
+   * Create and add a formation reaction which transforms a species into a
+   * generic Component.
+   * <p>
+   * This method also adds the reactant to the group of the generic component.
+   * This method adds the SBMLme exclusive attribute "variableKind" to
+   * the annotation of the reaction.
+   * </p>
    * 
    * @param model
+   *        the SBML model
    * @param groups
+   *        the GroupsModelPlugin of the SBML model
    * @param objective
+   *        the active objective of the SBML model
    * @param id
+   *        the id of the reaction to be added
    * @param name
+   *        the name of the reaction, can be null
    * @param upperBound
+   *        the upper bound of the reaction
    * @param lowerBound
+   *        the lower bound of the reaction
    * @param speciesIds
+   *        the list with the ids of all species in the reaction
    * @param coefficients
+   *        the list with all species coefficients in the reaction, must have
+   *        the same order as the list with species ids
    * @param objectiveCoefficient
+   *        the coefficient of the flux objective of the reaction
    * @param variableKind
+   *        can be either "continuous" or "discrete"
    * @throws ParseException
    */
   public void createGenericFormationReaction(Model model,
@@ -350,24 +428,54 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
 
 
   /**
-   * create a transcription reaction
+   * Create and add a transcription reaction to the model.
+   * <p>
+   * This method also creates a new ComponentDefinition with the given sequence
+   * in the SBOL document for the transcription unit. The method adds four
+   * SBMLme attributes to the annotation of the reaction, "variableKind",
+   * "dataId", "sequence" and "listOfSubreactionReferences". The attribute
+   * "sequence" contains the URI of the ComponentDefinition in the SBOL document
+   * for the transcription unit. The "listOfSubreactionReferences" contains all
+   * subreactions that take part in the reaction.
+   * </p>
    * 
    * @param model
+   *        the SBML model
    * @param sbol
+   *        the SBOL document to which the sequence should be added
    * @param groups
+   *        the GroupsModelPlugin of the SBML model
    * @param objective
+   *        the active objective of the SBML model
    * @param id
+   *        the id of the reaction to be added
    * @param name
+   *        the name of the reaction, can be null
    * @param dataId
+   *        the id of the process data object that is referred by the reaction
+   *        in COBRAme, cannot be null or empty string
    * @param upperBound
+   *        the upper bound of the reaction
    * @param lowerBound
+   *        the lower bound of the reaction
    * @param speciesIds
+   *        the list with the ids of all species in the reaction
    * @param coefficients
+   *        the list with all species coefficients in the reaction, must have
+   *        the same order as the list with species ids
    * @param objectiveCoefficient
+   *        the coefficient of the flux objective of the reaction
    * @param variableKind
+   *        can be either "continuous" or "discrete"
    * @param sequence
+   *        the nucleotide sequence of the transcription unit, cannot be null or
+   *        empty string
    * @param subreactions
+   *        the list with the ids of the subreactions that take part in the
+   *        reaction, may be null
    * @param subreactionCoefficients
+   *        the list with the coefficients of the subreactions, must have the
+   *        same order as the list with subreaction ids, may be null
    * @throws ParseException
    * @throws SBOLValidationException
    */
@@ -438,24 +546,54 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
 
 
   /**
-   * create a translation reaction
+   * Create and add a translation reaction to the model.
+   * <p>
+   * This method also creates a new ComponentDefinition with the given sequence
+   * in the SBOL document for the transcribed mRNA. The method adds four
+   * SBMLme attributes to the annotation of the reaction, "variableKind",
+   * "dataId", "sequence" and "listOfSubreactionReferences". The attribute
+   * "sequence" contains the URI of the ComponentDefinition in the SBOL document
+   * for the transcription unit. The "listOfSubreactionReferences" contains all
+   * subreactions that take part in the reaction.
+   * </p>
    * 
    * @param model
+   *        the SBML model
    * @param sbol
+   *        the SBOL document to which the sequence should be added
    * @param groups
+   *        the GroupsModelPlugin of the SBML model
    * @param objective
+   *        the active objective of the SBML model
    * @param id
+   *        the id of the reaction to be added
    * @param name
+   *        the name of the reaction, can be null
    * @param dataId
+   *        the id of the process data object that is referred by the reaction
+   *        in COBRAme, cannot be null or empty string
    * @param upperBound
+   *        the upper bound of the reaction
    * @param lowerBound
+   *        the lower bound of the reaction
    * @param speciesIds
+   *        the list with the ids of all species in the reaction
    * @param coefficients
+   *        the list with all species coefficients in the reaction, must have
+   *        the same order as the list with species ids
    * @param objectiveCoefficient
+   *        the coefficient of the flux objective of the reaction
    * @param variableKind
+   *        can be either "continuous" or "discrete"
    * @param sequence
+   *        the nucleotide sequence of the transcribed mRNA, cannot be null or
+   *        empty string
    * @param subreactions
+   *        the list with the ids of the subreactions that take part in the
+   *        reaction, may be null
    * @param subreactionCoefficients
+   *        the list with the coefficients of the subreactions, must have the
+   *        same order as the list with subreaction ids, may be null
    * @throws ParseException
    * @throws SBOLValidationException
    */
@@ -526,26 +664,54 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
 
 
   /**
-   * create a tRNA charging reaction
+   * Create and add a tRNA charging reaction to the model.
+   * <p>
+   * The method adds the attributes "dataId", "keff", "variableKind",
+   * "synthetase", "codon", "aminoAcid" and "listOfSubreactionReferences" to the
+   * annotation of the reaction. The "listOfSubreactionReferences" contains all
+   * subreactions that take part in the reaction.
+   * </p>
    * 
    * @param model
+   *        the SBML model
    * @param groups
+   *        the GroupsModelPlugin of the SBML model
    * @param objective
+   *        the active objective of the SBML model
    * @param id
+   *        the id of the reaction to be added
    * @param name
+   *        the name of the reaction, can be null
    * @param dataId
+   *        the id of the process data object that is referred by the reaction
+   *        in COBRAme, cannot be null or empty string
    * @param upperBound
+   *        the upper bound of the reaction
    * @param lowerBound
+   *        the lower bound of the reaction
    * @param keff
+   *        the effective turnover rate of the synthetase of the reaction
    * @param speciesIds
+   *        the list with the ids of all species in the reaction
    * @param coefficients
+   *        the list with all species coefficients in the reaction, must have
+   *        the same order as the list with species ids
    * @param objectiveCoefficient
+   *        the coefficient of the flux objective of the reaction
    * @param variableKind
+   *        can be either "continuous" or "discrete"
    * @param subreactions
+   *        the list with the ids of the subreactions that take part in the
+   *        reaction, may be null
    * @param subreactionCoefficients
+   *        the list with the coefficients of the subreactions, must have the
+   *        same order as the list with subreaction ids, may be null
    * @param synthetase
+   *        the id of the tRNA synthetase to charge the tRNA with an amino acid
    * @param codon
+   *        the codon that is translated by the tRNA
    * @param aminoAcid
+   *        the id of the amino acid that the tRNA transfers to a peptide
    * @throws ParseException
    * @throws SBOLValidationException
    */
@@ -608,34 +774,86 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
 
 
   /**
-   * create a post translation reaction
+   * Create and add a post translation reaction to the model.
+   * <p>
+   * The method adds the SBMLme attributes "dataID", "keff", "variableKind",
+   * "aggregationPropensity", "propensityScaling", "biomassType",
+   * "surfaceAreaInnerMembrane", "surfaceAreaOuterMembrane",
+   * "listOfSubreactionReferences" and "listOfTranslocationReferences" to the
+   * annotation of the reaction. The "listOfSubreactionReferences" contains all
+   * "subreactionReference" that take part in the reaction. The
+   * "listOfTranslocationReferences" contains all "translocationReferences" that
+   * take part in the reaction. The attributes "surfaceAreaInnerMembrane" and
+   * "surfaceAreaOuterMembrane" contain the value of the area occupied by the
+   * protein in the inner/outer membrane.
+   * </p>
    * 
    * @param model
+   *        the SBML model
    * @param groups
+   *        the GroupsModelPlugin of the SBML model
    * @param objective
+   *        the active objective of the SBML model
    * @param id
+   *        the id of the reaction to be added
    * @param name
+   *        the name of the reaction, can be null
    * @param dataId
+   *        the id of the process data object that is referred by the reaction
+   *        in COBRAme, cannot be null or empty string
    * @param upperBound
+   *        the upper bound of the reaction
    * @param lowerBound
+   *        the lower bound of the reaction
    * @param keff
+   *        the effective turnover rate of the enzymes in the translocation
+   *        pathway
    * @param speciesIds
+   *        the list with the ids of all species in the reaction
    * @param coefficients
+   *        the list with all species coefficients in the reaction, must have
+   *        the same order as the list with species ids
    * @param objectiveCoefficient
+   *        the coefficient of the flux objective of the reaction
    * @param variableKind
+   *        can be either "continuous" or "discrete"
    * @param subreactions
+   *        the list with the ids of the subreactions that take part in the
+   *        reaction, may be null
    * @param subreactionCoefficients
+   *        the list with the coefficients of the subreactions, must have the
+   *        same order as the list with subreaction ids, may be null
    * @param aggregationPropensity
+   *        the aggregation propensity for the protein
    * @param translocation
+   *        the list of ids of translocation pathways involved in the reaction,
+   *        may be null
    * @param multipliers
+   *        the list of multipliers belonging to the translocations, the order
+   *        of both lists must be the same, may be null
    * @param propensityScaling
+   *        accounts for the propensity of some peptides to be folded by certain
+   *        chaperones
    * @param surfaceArea
+   *        the list for the possible surfaces, valid values are
+   *        "SA_inner_membrane" and "SA_outer_membrane", may be null
    * @param surfaceAreaValue
+   *        the list for the area occupied by the protein in the surfaces given
+   *        in the list "surfaceArea", the order of both lists must be the same,
+   *        may be null
    * @param keqFolding
+   *        list of temperatures for keq folding, may be null
    * @param keqValues
+   *        list of temperature dependent keq folding values for the protein,
+   *        may be null
    * @param kFolding
+   *        list of temperatures for k folding, may be null
    * @param kValues
+   *        list of temperature dependent rate constants for protein folding,
+   *        may be null
    * @param biomassType
+   *        the id of the biomass type added by the subreactions of the
+   *        reaction, may be null
    * @throws ParseException
    */
   public void createPostTranslationReaction(Model model,
@@ -742,22 +960,48 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
 
 
   /**
-   * create a complex formation reaction
+   * Create and add a complex formation reaction to the model.
+   * <p>
+   * The method adds the SBMLme attributes "dataId", "keff", "variableKind" and
+   * "ListOfSubreactionReferences". The "listOfSubreactionReferences" contains
+   * all subreactions that take part in the reaction.
+   * </p>
    * 
    * @param model
+   *        the SBML model
    * @param groups
+   *        the GroupsModelPlugin of the SBML model
    * @param objective
+   *        the active objective of the SBML model
    * @param id
+   *        the id of the reaction to be added
    * @param name
+   *        the name of the reaction, can be null
    * @param dataId
+   *        the id of the process data object that is referred by the reaction
+   *        in COBRAme, cannot be null or empty string
    * @param upperBound
+   *        the upper bound of the reaction
    * @param lowerBound
+   *        the lower bound of the reaction
+   * @param keff
+   *        the effective turnover rate of the enzymes in the translocation
+   *        pathway
    * @param speciesIds
+   *        the list with the ids of all species in the reaction
    * @param coefficients
+   *        the list with all species coefficients in the reaction, must have
+   *        the same order as the list with species ids
    * @param objectiveCoefficient
+   *        the coefficient of the flux objective of the reaction
    * @param variableKind
+   *        can be either "continuous" or "discrete"
    * @param subreactions
+   *        the list with the ids of the subreactions that take part in the
+   *        reaction, may be null
    * @param subreactionCoefficients
+   *        the list with the coefficients of the subreactions, must have the
+   *        same order as the list with subreaction ids, may be null
    * @throws ParseException
    */
   public void createComplexFormationReaction(Model model,
@@ -814,23 +1058,53 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
 
 
   /**
-   * create a metabolic reaction based on the M-model
+   * Create and add a metabolic reaction to the model.
+   * <p>
+   * In COBRAme all reversible enzymatic reactions are broken into two
+   * irreversible reactions representing the two directions of the reaction.
+   * Therefore the boolean attribute "reverse" is added to the annotation of the
+   * reaction to define the direction. The attributes "dataId", "keff",
+   * "variableKind" and "complexDataId" are also added to the annotation.
+   * </p>
    * 
    * @param model
+   *        the SBML model
    * @param groups
+   *        the GroupsModelPlugin of the SBML model
    * @param objective
+   *        the active objective of the SBML model
    * @param id
+   *        the id of the reaction to be added
    * @param name
+   *        the name of the reaction, can be null
    * @param dataId
+   *        the id of the process data object that is referred by the reaction
+   *        in COBRAme, cannot be null or empty string
    * @param upperBound
+   *        the upper bound of the reaction
    * @param lowerBound
-   * @param speciesIds
-   * @param coefficients
-   * @param objectiveCoefficient
-   * @param variableKind
+   *        the lower bound of the reaction
    * @param keff
+   *        the effective turnover rate of the enzymes in the translocation
+   *        pathway
+   * @param speciesIds
+   *        the list with the ids of all species in the reaction
+   * @param coefficients
+   *        the list with all species coefficients in the reaction, must have
+   *        the same order as the list with species ids
+   * @param objectiveCoefficient
+   *        the coefficient of the flux objective of the reaction
+   * @param variableKind
+   *        can be either "continuous" or "discrete"
+   * @param keff
+   *        the effective turnover rate that couples enzymatic dilution to
+   *        metabolic flux
    * @param reverse
+   *        whether the reaction corresponds to the reverse reaction of the
+   *        reversible reaction
    * @param complexDataId
+   *        the id of the ComplexData object that details the enzyme which
+   *        catalyzes the reaction
    * @throws ParseException
    */
   public void createMetabolicReaction(Model model, GroupsModelPlugin groups,
@@ -881,19 +1155,34 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
 
 
   /**
-   * create a ME exclusive reaction
+   * Create and add an ME exclusive reaction to the model.
+   * <p>
+   * This method adds the SBMLme exclusive attribute "variableKind" to the
+   * annotation of the reaction.
    * 
    * @param model
+   *        the SBML model
    * @param groups
+   *        the GroupsModelPlugin of the SBML model
    * @param objective
+   *        the active objective of the SBML model
    * @param id
+   *        the id of the reaction to be added
    * @param name
+   *        the name of the reaction, can be null
    * @param upperBound
+   *        the upper bound of the reaction
    * @param lowerBound
+   *        the lower bound of the reaction
    * @param speciesIds
+   *        the list with the ids of all species in the reaction
    * @param coefficients
+   *        the list with all species coefficients in the reaction, must have
+   *        the same order as the list with species ids
    * @param objectiveCoefficient
+   *        the coefficient of the flux objective of the reaction
    * @param variableKind
+   *        can be either "continuous" or "discrete"
    * @throws ParseException
    */
   public void createMEReaction(Model model, GroupsModelPlugin groups,
@@ -934,82 +1223,152 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
 
 
   // functions for checking if a certain attribute is set
+  /**
+   * Returns whether the attribute "sequence" is set.
+   * 
+   * @return whether the attribute "sequence" is set.
+   */
   public boolean isSetSequence() {
     return isSetAttribute(MEConstants.sequence);
   }
 
 
+  /**
+   * Returns whether the attribute "synthetase" is set.
+   * 
+   * @return whether the attribute "synthetase" is set.
+   */
   public boolean isSetSynthetase() {
     return isSetAttribute(MEConstants.synthetase);
   }
 
 
+  /**
+   * Returns whether the attribute "complexId" is set.
+   * 
+   * @return whether the attribute "complexId" is set.
+   */
   public boolean isSetComplexId() {
     return isSetAttribute(MEConstants.complexId);
   }
 
 
+  /**
+   * Returns whether the attribute "keff" is set.
+   * 
+   * @return whether the attribute "keff" is set.
+   */
   public boolean isSetKeff() {
     return isSetAttribute(MEConstants.keff);
   }
 
 
+  /**
+   * Returns whether the attribute "dataId" is set.
+   * 
+   * @return whether the attribute "dataId" is set.
+   */
   public boolean isSetDataId() {
     return isSetAttribute(MEConstants.dataId);
   }
 
 
-  public boolean isSetStoichiometricRef() {
-    return isSetAttribute(MEConstants.stoichiometricRef);
-  }
-
-
+  /**
+   * Returns whether the attribute "reverse" is set.
+   * 
+   * @return whether the attribute "reverse" is set.
+   */
   public boolean isSetReverse() {
     return isSetAttribute(MEConstants.reverse);
   }
 
 
+  /**
+   * Returns whether the attribute "codon" is set.
+   * 
+   * @return whether the attribute "codon" is set.
+   */
   public boolean isSetCodon() {
     return isSetAttribute(MEConstants.codon);
   }
 
 
+  /**
+   * Returns whether the attribute "aminoAcid" is set.
+   * 
+   * @return whether the attribute "aminoAcid" is set.
+   */
   public boolean isSetAminoAcid() {
     return isSetAttribute(MEConstants.aminoAcid);
   }
 
 
+  /**
+   * Returns whether the attribute "biomassType" is set.
+   * 
+   * @return whether the attribute "biomassType" is set.
+   */
   public boolean isSetBiomassType() {
     return isSetAttribute(MEConstants.biomassType);
   }
 
 
+  /**
+   * Returns whether the attribute "surfaceAreaInnerMembrane" is set.
+   * 
+   * @return whether the attribute "surfaceAreaInnerMembrane" is set.
+   */
   public boolean isSetSurfaceAreaInner() {
     return isSetAttribute(MEConstants.surfaceAreaInner);
   }
 
 
+  /**
+   * Returns whether the attribute "surfaceAreaOuterMembrane" is set.
+   * 
+   * @return whether the attribute "surfaceAreaOuterMembrane" is set.
+   */
   public boolean isSetSurfaceAreaOuter() {
     return isSetAttribute(MEConstants.surfaceAreaOuter);
   }
 
 
+  /**
+   * Returns whether the attribute "aggregationPropensity" is set.
+   * 
+   * @return whether the attribute "aggregationPropensity" is set.
+   */
   public boolean isSetAggregationPropensity() {
     return isSetAttribute(MEConstants.aggregationPropensity);
   }
 
 
+  /**
+   * Returns whether the attribute "propensityScaling" is set.
+   * 
+   * @return whether the attribute "propensityScaling" is set.
+   */
   public boolean isSetPropensityScaling() {
     return isSetAttribute(MEConstants.propensityScaling);
   }
 
 
+  /**
+   * Returns whether the attribute "variableKind" is set.
+   * 
+   * @return whether the attribute "variableKind" is set.
+   */
   public boolean isSetVariableKind() {
     return isSetAttribute(MEConstants.variableKind);
   }
 
 
   // getter functions for attributes
+  /**
+   * Returns the value of the attribute "sequence".
+   * 
+   * @return the value of the attribute "sequence".
+   */
   public String getSequence() {
     if (isSetSequence()) {
       return getAttribute(MEConstants.sequence);
@@ -1018,6 +1377,11 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
   }
 
 
+  /**
+   * Returns the value of the attribute "complexId".
+   * 
+   * @return the value of the attribute "complexId".
+   */
   public String getComplexId() {
     if (isSetComplexId()) {
       return getAttribute(MEConstants.complexId);
@@ -1026,6 +1390,11 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
   }
 
 
+  /**
+   * Returns the value of the attribute "synthetase".
+   * 
+   * @return the value of the attribute "synthetase".
+   */
   public String getSynthetase() {
     if (isSetSynthetase()) {
       return getAttribute(MEConstants.synthetase);
@@ -1034,6 +1403,11 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
   }
 
 
+  /**
+   * Returns the value of the attribute "keff".
+   * 
+   * @return the value of the attribute "keff".
+   */
   public String getKeff() {
     if (isSetKeff()) {
       return getAttribute(MEConstants.keff);
@@ -1042,6 +1416,11 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
   }
 
 
+  /**
+   * Returns the value of the attribute "dataId".
+   * 
+   * @return the value of the attribute "dataId".
+   */
   public String getDataId() {
     if (isSetDataId()) {
       return getAttribute(MEConstants.dataId);
@@ -1050,14 +1429,11 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
   }
 
 
-  public String getStoichiometricRef() {
-    if (isSetStoichiometricRef()) {
-      return getAttribute(MEConstants.stoichiometricRef);
-    }
-    return "";
-  }
-
-
+  /**
+   * Returns the value of the attribute "reverse".
+   * 
+   * @return the value of the attribute "reverse".
+   */
   public String getReverse() {
     if (isSetReverse()) {
       return getAttribute(MEConstants.reverse);
@@ -1066,6 +1442,11 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
   }
 
 
+  /**
+   * Returns the value of the attribute "codon".
+   * 
+   * @return the value of the attribute "codon".
+   */
   public String getCodon() {
     if (isSetCodon()) {
       return getAttribute(MEConstants.codon);
@@ -1074,6 +1455,11 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
   }
 
 
+  /**
+   * Returns the value of the attribute "aminoAcid".
+   * 
+   * @return the value of the attribute "aminoAcid".
+   */
   public String getAminoAcid() {
     if (isSetAminoAcid()) {
       return getAttribute(MEConstants.aminoAcid);
@@ -1082,6 +1468,11 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
   }
 
 
+  /**
+   * Returns the value of the attribute "biomassType".
+   * 
+   * @return the value of the attribute "biomassType".
+   */
   public String getBiomassType() {
     if (isSetBiomassType()) {
       return getAttribute(MEConstants.biomassType);
@@ -1090,6 +1481,11 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
   }
 
 
+  /**
+   * Returns the value of the attribute "surfaceAreaInnerMembrane".
+   * 
+   * @return the value of the attribute "surfaceAreaInnerMembrane".
+   */
   public String getSurfaceAreaInner() {
     if (isSetSurfaceAreaInner()) {
       return getAttribute(MEConstants.surfaceAreaInner);
@@ -1098,6 +1494,11 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
   }
 
 
+  /**
+   * Returns the value of the attribute "surfaceAreaOuterMembrane".
+   * 
+   * @return the value of the attribute "surfaceAreaOuterMembrane".
+   */
   public String getSurfaceAreaOuter() {
     if (isSetSurfaceAreaOuter()) {
       return getAttribute(MEConstants.surfaceAreaOuter);
@@ -1106,6 +1507,11 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
   }
 
 
+  /**
+   * Returns the value of the attribute "aggregationPropensity".
+   * 
+   * @return the value of the attribute "aggregationPropensity".
+   */
   public String getAggregationPropensity() {
     if (isSetAggregationPropensity()) {
       return getAttribute(MEConstants.aggregationPropensity);
@@ -1114,6 +1520,11 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
   }
 
 
+  /**
+   * Returns the value of the attribute "propensityScaling".
+   * 
+   * @return the value of the attribute "propensityScaling".
+   */
   public String getPropensityScaling() {
     if (isSetPropensityScaling()) {
       return getAttribute(MEConstants.propensityScaling);
@@ -1122,6 +1533,11 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
   }
 
 
+  /**
+   * Returns the value of the attribute "variableKind".
+   * 
+   * @return the value of the attribute "variableKind".
+   */
   public String getVariableKind() {
     if (isSetVariableKind()) {
       return getAttribute(MEConstants.variableKind);
@@ -1131,11 +1547,36 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
 
 
   // Setter functions
+  /**
+   * Sets the value of the attribute "sequence".
+   * <p>
+   * The optional attribute "sequence" takes a string that represents a
+   * valid URI for a ComponentDefinition in an SBOL document. This attribute is
+   * mandatory when the reaction is of type "TranscriptionReaction" or of type
+   * "TranslationReaction".
+   * </p>
+   * 
+   * @param value
+   *        valid URI of a ComponentDefinition in an SBOL document
+   * @return
+   */
   public int setSequence(String value) {
     return setAttribute(MEConstants.sequence, value);
   }
 
 
+  /**
+   * Sets the value of the attribute "complexId".
+   * <p>
+   * The optional attribute "complexId" takes a string representing the Id of
+   * the ComplexData object that is referred by the reaction. This attribute is
+   * mandatory for reactions of type "ComplexFormationReaction" and
+   * "MetabolicReaction".
+   * 
+   * @param value
+   *        id of the ComplexData object that is referred in COBRAme
+   * @return
+   */
   public int setComplexId(String value) {
     return setAttribute(MEConstants.complexId, value);
   }
@@ -1153,11 +1594,6 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
 
   public int setDataId(String value) {
     return setAttribute(MEConstants.dataId, value);
-  }
-
-
-  public int setStoichiometricRef(String value) {
-    return setAttribute(MEConstants.stoichiometricRef, value);
   }
 
 

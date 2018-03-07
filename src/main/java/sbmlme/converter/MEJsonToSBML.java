@@ -45,7 +45,14 @@ import sbmlme.MEReactionPlugin;
 import sbmlme.MESpeciesPlugin;
 
 /**
- * contains methods for converting a COBRAme JSON file into a SBML model
+ * contains methods for converting a COBRAme JSON file into a SBML model.
+ * IMPORTANT: Can only convert directly from a COBRAme JSON file to SBML.
+ * Conversion from a JSON file created by converting a SBMLme model to JSON is
+ * currently not possible since the conversion from a ASTNode value to String
+ * may add several brackets and removes all whitespace from the original String.
+ * The additional brackets should not cause problems any more but the removal of
+ * whitespace causes a ParseException when trying to read them in by the ASTNode
+ * parser in certain cases.
  * 
  * @author Marc A. Voigt
  */
