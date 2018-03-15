@@ -1,32 +1,68 @@
 package sbmlme.converter;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
- * class for representing the reaction type in a JSON serialization
+ * Represents the different types of reactions in a COBRAme JSON schema. Any
+ * reactions in a COBRAme model needs to have one and only one of the declared
+ * types in this class.
  * 
  * @author Marc A. Voigt
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MEJsonReactionType {
 
+  /**
+   * The type of reactions that apply a global constraint to the model.
+   */
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private MEJsonReactionTypeAttributes SummaryVariable;
+  /**
+   * The type for all ME exclusive reactions that can not be assigned to another
+   * type.
+   */
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private MEJsonReactionTypeAttributes MEReaction;
+  /**
+   * All reactions that create {@link MEJsonMetaboliteType#GenericComponent
+   * generic components}.
+   */
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private MEJsonReactionTypeAttributes GenericFormationReaction;
+  /**
+   * All reactions that transcribe a gene.
+   */
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private MEJsonReactionTypeAttributes TranscriptionReaction;
+  /**
+   * All reactions that translate a mRNA.
+   */
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private MEJsonReactionTypeAttributes TranslationReaction;
+  /**
+   * All reactions that charge a {@link MEJsonMetaboliteType#GenerictRNA generic
+   * tRNA}.
+   */
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private MEJsonReactionTypeAttributes tRNAChargingReaction;
+  /**
+   * All reactions that create a {@link MEJsonMetaboliteType#ProcessedProtein
+   * ProcessedProtein}.
+   */
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private MEJsonReactionTypeAttributes PostTranslationReaction;
+  /**
+   * All reactions that create a {@link MEJsonMetaboliteType#Complex protein
+   * complex}.
+   */
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private MEJsonReactionTypeAttributes ComplexFormation;
+  /**
+   * All reactions that were part of the M-model on which the COBRAme model is
+   * based.
+   */
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private MEJsonReactionTypeAttributes MetabolicReaction;
 
@@ -37,11 +73,6 @@ public class MEJsonReactionType {
 
 
   // setter and getter functions for different reaction types
-  /**
-   * set reaction type for SummaryVariable
-   * 
-   * @param reactionType
-   */
   @JsonSetter("SummaryVariable")
   public void setSummaryVariable(MEJsonReactionTypeAttributes reactionType) {
     SummaryVariable = reactionType;
@@ -54,11 +85,6 @@ public class MEJsonReactionType {
   }
 
 
-  /**
-   * set reaction type for MEReaction
-   * 
-   * @param reactionType
-   */
   @JsonSetter("MEReaction")
   public void setMEReaction(MEJsonReactionTypeAttributes reactionType) {
     MEReaction = reactionType;
@@ -71,11 +97,6 @@ public class MEJsonReactionType {
   }
 
 
-  /**
-   * set reaction type for GenericFormationReaction
-   * 
-   * @param reactionType
-   */
   @JsonSetter("GenericFormationReaction")
   public void setGenericFormationReaction(
     MEJsonReactionTypeAttributes reactionType) {
@@ -89,11 +110,6 @@ public class MEJsonReactionType {
   }
 
 
-  /**
-   * set reaction type for TranscriptionReaction
-   * 
-   * @param reactionType
-   */
   @JsonSetter("TranscriptionReaction")
   public void setTranscriptionReaction(
     MEJsonReactionTypeAttributes reactionType) {
@@ -107,11 +123,6 @@ public class MEJsonReactionType {
   }
 
 
-  /**
-   * set reaction type for TranslationReaction
-   * 
-   * @param reactionType
-   */
   @JsonSetter("TranslationReaction")
   public void setTranslationReaction(
     MEJsonReactionTypeAttributes reactionType) {
@@ -125,11 +136,6 @@ public class MEJsonReactionType {
   }
 
 
-  /**
-   * set reaction type for tRNAChargingReaction
-   * 
-   * @param reactionType
-   */
   @JsonSetter("tRNAChargingReaction")
   public void settRNAChargingReaction(
     MEJsonReactionTypeAttributes reactionType) {
@@ -143,11 +149,6 @@ public class MEJsonReactionType {
   }
 
 
-  /**
-   * set reaction type for PostTranslationReaction
-   * 
-   * @param reactionType
-   */
   @JsonSetter("PostTranslationReaction")
   public void setPostTranslationReaction(
     MEJsonReactionTypeAttributes reactionType) {
@@ -161,11 +162,6 @@ public class MEJsonReactionType {
   }
 
 
-  /**
-   * set reaction type for ComplexFormation
-   * 
-   * @param reactionType
-   */
   @JsonSetter("ComplexFormation")
   public void setComplexFormation(MEJsonReactionTypeAttributes reactionType) {
     ComplexFormation = reactionType;
@@ -178,11 +174,6 @@ public class MEJsonReactionType {
   }
 
 
-  /**
-   * set reaction type for MetabolicReaction
-   * 
-   * @param reactionType
-   */
   @JsonSetter("MetabolicReaction")
   public void setMetabolicReaction(MEJsonReactionTypeAttributes reactionType) {
     MetabolicReaction = reactionType;

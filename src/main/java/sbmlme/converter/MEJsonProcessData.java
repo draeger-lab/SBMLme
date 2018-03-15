@@ -1,17 +1,24 @@
 package sbmlme.converter;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
- * represent ProcessData object in aCOBRAme JSON file
+ * Represents a process data object in a COBRAme JSON schema.
  * 
  * @author Marc A. Voigt
  */
 @JsonPropertyOrder({"process_data_type", "id"})
 public class MEJsonProcessData {
 
+  /**
+   * The type of the process data object with additional nested attributes.
+   */
   private MEJsonProcessDataType process_data_type;
+  /**
+   * The id of the process data object.
+   */
   private String                id;
 
 

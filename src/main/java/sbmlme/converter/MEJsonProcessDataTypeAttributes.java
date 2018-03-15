@@ -1,4 +1,5 @@
 package sbmlme.converter;
+
 import java.util.List;
 import java.util.Map;
 
@@ -7,79 +8,305 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
- * represent attributes of Processdata types in COBRAme
+ * Represents the attributes of process data objects in the COBRAme JSON schema.
  * 
  * @author Marc A. Voigt
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MEJsonProcessDataTypeAttributes {
 
+  /**
+   * The nucleotide sequence of the transcription unit in a
+   * {@link MEJsonReactionType#TranscriptionReaction TranscriptionReaction} or
+   * the mRNA to be translated in a
+   * {@link MEJsonReactionType#TranslationReaction TransclationReaction}. This
+   * attribute is mandatory for process data objects of type
+   * {@link MEJsonProcessDataType#TranscriptionData TranscriptionData} and
+   * {@link MEJsonProcessDataType#TranslationData TransclationData} and should
+   * not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String                            nucleotide_sequence;
+  /**
+   * The map with all subreactions their usage numbers in a process, the map may
+   * be empty. Should not be used for objects of type
+   * {@link MEJsonProcessDataType#GenericData GenericData},
+   * {@link MEJsonProcessDataType#SubreactionData SubreactionData} and
+   * {@link MEJsonProcessDataType#TranslocationData TranslocationData}.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Double>               subreactions;
+  /**
+   * The list with all RNAs produced by the
+   * {@link MEJsonReactionType#TranscriptionReaction TranscriptionReaction}.
+   * This attribute is mandatory for process data objects of type
+   * {@link MEJsonProcessDataType#TranscriptionData TranscriptionData} and
+   * should not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private List<String>                      RNA_products;
+  /**
+   * The RNA polymerase that is used in the
+   * {@link MEJsonReactionType#TranscriptionReaction TranscriptionReaction}.
+   * This attribute is mandatory for process data objects of type
+   * {@link MEJsonProcessDataType#TranscriptionData TranscriptionData} and
+   * should not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String                            RNA_polymerase;
+  /**
+   * The protein that is created by the
+   * {@link MEJsonReactionType#TranslationReaction TransclationReaction}.
+   * This attribute is mandatory for process data objects of type
+   * {@link MEJsonProcessDataType#TranslationData TransclationData} and
+   * should not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String                            protein;
+  /**
+   * The mRNA that is translated by the
+   * {@link MEJsonReactionType#TranslationReaction TransclationReaction}.
+   * This attribute is mandatory for process data objects of type
+   * {@link MEJsonProcessDataType#TranslationData TransclationData} and
+   * should not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String                            mRNA;
+  /**
+   * The list with all species that the
+   * {@link MEJsonMetaboliteType#GenericComponent GenericComponent} can
+   * represent. This attribute is mandatory for process data objects of type
+   * {@link MEJsonProcessDataType#GenericData GenericData} and
+   * should not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private List<String>                      component_list;
+  /**
+   * This attribute is used for different purposes in COBRAme. In
+   * {@link MEJsonProcessDataType#ComplexData ComplexData} it is used to encode
+   * the composition of subunits of a protein complex, in
+   * {@link MEJsonProcessDataType#SubreactionData SubreactionData} and
+   * {@link MEJsonProcessDataType#TranslocationData TranslocationData} it
+   * encodes the stoichiometry of the process. It should only be used on these
+   * process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Double>               stoichiometry;
+  /**
+   * Encodes the stoichiometry of a
+   * {@link MEJsonProcessDataType#StoichiometricData StoichiometricData} object.
+   * This attribute is mandatory for process data objects of type
+   * {@link MEJsonProcessDataType#StoichiometricData StoichiometricData} and
+   * should not be used for other process data types.
+   */
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Double>               stoichiometry_;
+  /**
+   * The id of the complex that is created by a
+   * {@link MEJsonReactionType#ComplexFormation ComplexFormation}. This
+   * attribute is mandatory for process data objects of type
+   * {@link MEJsonProcessDataType#ComplexData ComplexData} and
+   * should not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String                            complex_id;
+  /**
+   * The effective turnover rate of the synthetase of a
+   * {@link MEJsonReactionType#tRNAChargingReaction tRNAChargingReaction}. This
+   * attribute is mandatory for process data objects of type
+   * {@link MEJsonProcessDataType#tRNAData tRNAData} and should not be used for
+   * other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Double                            synthetase_keff;
+  /**
+   * The synthetase in a {@link MEJsonReactionType#tRNAChargingReaction
+   * tRNAChargingReaction}. This attribute is mandatory for process data objects
+   * of type {@link MEJsonProcessDataType#tRNAData tRNAData} and should not be
+   * used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String                            synthetase;
+  /**
+   * The amino acid that is charged on the tRNA in a
+   * {@link MEJsonReactionType#tRNAChargingReaction tRNAChargingReaction}. This
+   * attribute is mandatory for process data objects of type
+   * {@link MEJsonProcessDataType#tRNAData tRNAData} and should not be used for
+   * other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String                            amino_acid;
+  /**
+   * The codon that the charged tRNA translates. This attribute is mandatory for
+   * process data objects of type {@link MEJsonProcessDataType#tRNAData
+   * tRNAData} and should not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String                            codon;
+  /**
+   * The id of the RNA that is charged by the
+   * {@link MEJsonReactionType#tRNAChargingReaction tRNAChargingReaction}. This
+   * attribute is mandatory for process data objects of type
+   * {@link MEJsonProcessDataType#tRNAData tRNAData} and should not be used for
+   * other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String                            RNA;
+  /**
+   * The id of the protein which is processed by the
+   * {@link MEJsonReactionType#PostTranslationReaction PostTranslationReaction}.
+   * This attribute is mandatory for process data objects of type
+   * {@link MEJsonProcessDataType#PostTranslationData PostTranslationData} and
+   * should not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String                            unprocessed_protein_id;
+  /**
+   * The id of the processed protein which is created by the
+   * {@link MEJsonReactionType#PostTranslationReaction PostTranslationReaction}.
+   * This attribute is mandatory for process data objects of type
+   * {@link MEJsonProcessDataType#PostTranslationData PostTranslationData} and
+   * should not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String                            processed_protein_id;
+  /**
+   * The id of the biomass type that is used in the modification process of a
+   * {@link MEJsonReactionType#PostTranslationReaction PostTranslationReaction},
+   * may be null. This attribute is mandatory for process data objects of type
+   * {@link MEJsonProcessDataType#PostTranslationData PostTranslationData} and
+   * should not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String                            biomass_type;
+  /**
+   * The aggregation propensity for the protein created by the
+   * {@link MEJsonReactionType#PostTranslationReaction PostTranslationReaction}.
+   * This attribute is mandatory for process data objects of type
+   * {@link MEJsonProcessDataType#PostTranslationData PostTranslationData} and
+   * should not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Double                            aggregation_propensity;
+  /**
+   * The propensity scaling used in the
+   * {@link MEJsonReactionType#PostTranslationReaction PostTranslationReaction}
+   * for polypeptides whose folding is preferred by certain chaperones. This
+   * attribute is mandatory for process data objects of type
+   * {@link MEJsonProcessDataType#PostTranslationData PostTranslationData} and
+   * should not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Double                            propensity_scaling;
+  /**
+   * The map containing information about the numerical usage of certain
+   * {@link MEJsonProcessDataType#TranslocationData TranslocationData} objects
+   * in the {@link MEJsonReactionType#PostTranslationReaction
+   * PostTranslationReaction}, may be null. This attribute is mandatory for
+   * process data objects of type
+   * {@link MEJsonProcessDataType#PostTranslationData PostTranslationData} and
+   * should not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Double>               translocation_multipliers;
+  /**
+   * The map containing temperature dependent keq information about protein
+   * folding in the {@link MEJsonReactionType#PostTranslationReaction
+   * PostTranslationReaction}, may be null. This attribute is mandatory for
+   * process data objects of type
+   * {@link MEJsonProcessDataType#PostTranslationData PostTranslationData} and
+   * should not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Double>               keq_folding;
+  /**
+   * The map containing temperature dependent rate constants about protein
+   * folding in the {@link MEJsonReactionType#PostTranslationReaction
+   * PostTranslationReaction}, may be null. This attribute is mandatory for
+   * process data objects of type
+   * {@link MEJsonProcessDataType#PostTranslationData PostTranslationData} and
+   * should not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Double>               k_folding;
+  /**
+   * The map containing information about membrane surface area occupancy by the
+   * created protein, may be null. This attribute is mandatory for process data
+   * objects of type {@link MEJsonProcessDataType#PostTranslationData
+   * PostTranslationData} and should not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Double>               surface_area;
+  /**
+   * The list with the translocation pathways involved in the
+   * {@link MEJsonReactionType#PostTranslationReaction PostTranslationReaction},
+   * may be null. This attribute is mandatory for process data objects of type
+   * {@link MEJsonProcessDataType#PostTranslationData PostTranslationData} and
+   * should not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private List<String>                      translocation;
+  /**
+   * The effective turnover rate of an enzyme in a
+   * {@link MEJsonProcessDataType#SubreactionData SubreactionData} object or a
+   * {@link MEJsonProcessDataType#TranslocationData TranslocationData} object.
+   * This attribute is mandatory for both object types and should not be used
+   * for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Double                            keff;
   // COBRAme accepts null/String/List<String>
+  /**
+   * The list with the enzymes that are part of the
+   * {@link MEJsonProcessDataType#SubreactionData subreaction process}, may be
+   * empty. This attribute is mandatory for process data objects of type
+   * {@link MEJsonProcessDataType#SubreactionData SubreactionData} and
+   * should not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private List<String>                      enzyme;
+  /**
+   * The map with the net change in elements that a
+   * {@link MEJsonProcessDataType#SubreactionData subreaction process} applies
+   * to a macromolecule. This attribute is mandatory for process data objects of
+   * type {@link MEJsonProcessDataType#SubreactionData SubreactionData} and
+   * should not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Integer>              element_contribution;
-  // check if this works
+  /**
+   * The map containing enzyme specific information about the coupling process
+   * to a protein in a {@link MEJsonReactionType#PostTranslationReaction
+   * PostTranslationReaction}, may be empty. This attribute is mandatory for
+   * process data objects of type {@link MEJsonProcessDataType#TranslocationData
+   * TranslocationData} and should not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Map<String, Boolean>> enzyme_dict;
+  /**
+   * Whether the energy cost of the translocation is depending on the protein
+   * length. This attribute is mandatory for process data objects of type
+   * {@link MEJsonProcessDataType#TranslocationData TranslocationData} and
+   * should not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Boolean                           length_dependent_energy;
+  /**
+   * The lower bound of a {@link MEJsonReactionType#MetabolicReaction
+   * MetabolicReaction}. This attribute is mandatory for process data objects of
+   * type {@link MEJsonProcessDataType#StoichiometricData StoichiometricData}
+   * and should not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Double                            lower_bound;
+  /**
+   * The upper bound of a {@link MEJsonReactionType#MetabolicReaction
+   * MetabolicReaction}. This attribute is mandatory for process data objects of
+   * type {@link MEJsonProcessDataType#StoichiometricData StoichiometricData}
+   * and should not be used for other process data types.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Double                            upper_bound;
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Double>               stoichiometry_;
 
 
   public MEJsonProcessDataTypeAttributes() {

@@ -1,11 +1,12 @@
 package sbmlme.converter;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
- * represent JSON format of a single reaction entry in the list of reactions in
- * a COBRAme JSON file
+ * Represents the JSON schema of a single reaction entry in the list of
+ * reactions in a COBRAme JSON file.
  * 
  * @author Marc A. Voigt
  */
@@ -13,16 +14,44 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
   "metabolites", "objective_coefficient", "variable_kind", "id"})
 public class MEJsonReaction {
 
+  /**
+   * The type of the reaction with additional nested attributes.
+   */
   private MEJsonReactionType reaction_type;
+  /**
+   * The name of the reaction, may be null.
+   */
   private String             name;
+  /**
+   * The upper bound of the reaction.
+   */
   private String             upper_bound;
+  /**
+   * The lower bound of the reaction.
+   */
   private String             lower_bound;
   // metabolites in COBRAme may have a value of type int, double or String. To
   // represent this the metabolites should be added as fields to a single
   // ObjectNode
+  /**
+   * The ObjectNode containing all species that take part in the reaction
+   * with their coefficients. Since the coefficients can be any int, double or
+   * string formula an ObjectNode was chosen to effectively represent all
+   * species.
+   */
   private ObjectNode         metabolites;
+  /**
+   * The coefficient of the reaction flux in the calculation of the model
+   * objective.
+   */
   private double             objective_coefficient;
+  /**
+   * can be either "continuous" or "discrete"
+   */
   private String             variable_kind;
+  /**
+   * The id of the reaction.
+   */
   private String             id;
 
 

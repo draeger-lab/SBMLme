@@ -6,6 +6,9 @@ import org.sbml.jsbml.xml.XMLNode;
 import org.sbml.jsbml.xml.XMLTriple;
 
 /**
+ * Implements methods for adding references to {@link SubreactionData} to the
+ * annotation of reactions and {@link StoichiometricData} objects.
+ * 
  * @author Marc A. Voigt
  */
 public class SubreactionReference extends MEAbstractXMLNodePlugin
@@ -41,11 +44,17 @@ public class SubreactionReference extends MEAbstractXMLNodePlugin
 
 
   /**
+   * Create an {@link XMLNode} of the new SubreactionReference for the given
+   * subreaction and number of usages.
+   * 
    * @param subreaction
+   *        the id of the subreaction
    * @param numUsage
-   * @return
+   *        the number of usages in the reaction
+   * @return the XMLNode of the finished SubreactionReference
    */
-  public XMLNode createSubreactionReference(String subreaction, int numUsage) {
+  public XMLNode createSubreactionReference(String subreaction,
+    double numUsage) {
     SubreactionReference temp = new SubreactionReference();
     temp.setSubreaction(createSBMLConformId(subreaction));
     temp.setStoichiometry(String.valueOf(numUsage));
@@ -55,7 +64,9 @@ public class SubreactionReference extends MEAbstractXMLNodePlugin
 
   // functions for checking if a certain attribute is set
   /**
-   * @return
+   * Returns whether the attribute "subreaction" is set.
+   * 
+   * @return whether the attribute "subreaction" is set
    */
   public boolean isSetSubreaction() {
     return isSetAttribute(MEConstants.subreaction);
@@ -63,7 +74,9 @@ public class SubreactionReference extends MEAbstractXMLNodePlugin
 
 
   /**
-   * @return
+   * Returns whether the attribute "stoichiometry" is set.
+   * 
+   * @return whether the attribute "stoichiometry" is set
    */
   public boolean isSetStoichiometry() {
     return isSetAttribute(MEConstants.stoichiometry);
@@ -72,7 +85,9 @@ public class SubreactionReference extends MEAbstractXMLNodePlugin
 
   // getter functions for attributes
   /**
-   * @return
+   * Returns the value of the attribute "subreaction".
+   * 
+   * @return the value of the attribute "subreaction"
    */
   public String getSubreation() {
     if (isSetSubreaction()) {
@@ -83,7 +98,9 @@ public class SubreactionReference extends MEAbstractXMLNodePlugin
 
 
   /**
-   * @return
+   * Returns the value of the attribute "stoichiometry".
+   * 
+   * @return the value of the attribute "stoichiometry"
    */
   public String getStoichiometry() {
     if (isSetStoichiometry()) {
@@ -95,7 +112,14 @@ public class SubreactionReference extends MEAbstractXMLNodePlugin
 
   // Setter functions
   /**
+   * Sets the value of the attribute "subreaction".
+   * <p>
+   * The given id must refer to a member of the "ListOfSubreactionData" in the
+   * {@link MEProcessData} annotation.
+   * </p>
+   * 
    * @param subreaction
+   *        the id of the subreaction
    * @return
    */
   public int setSubreaction(String subreaction) {
@@ -104,7 +128,10 @@ public class SubreactionReference extends MEAbstractXMLNodePlugin
 
 
   /**
+   * Sets the value of the attribute "stoichiometry".
+   * 
    * @param stoichiometry
+   *        the number of usages
    * @return
    */
   public int setStoichiometry(String stoichiometry) {
@@ -114,7 +141,9 @@ public class SubreactionReference extends MEAbstractXMLNodePlugin
 
   // ListOf functionality
   /**
-   * @return
+   * Create an empty list of SubreactionReferences.
+   * 
+   * @return the {@link XMLNode} with the list of SubreactionReferences
    */
   public XMLNode ListOfSubreactionReference() {
     XMLNode listOf =
@@ -125,8 +154,11 @@ public class SubreactionReference extends MEAbstractXMLNodePlugin
 
 
   /**
+   * Create a list of SubreactionReferences with a single child.
+   * 
    * @param sr
-   * @return
+   *        the child SubreactionReference
+   * @return the {@link XMLNode} with the list of SubreactionReferences
    */
   public XMLNode ListOfSubreactionReference(SubreactionReference sr) {
     XMLNode listOf =

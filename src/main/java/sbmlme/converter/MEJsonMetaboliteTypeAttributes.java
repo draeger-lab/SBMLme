@@ -1,11 +1,13 @@
 package sbmlme.converter;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
- * represent attributes of different metabolite types
+ * Represents attributes of different metabolite types in the COBRAme JSON
+ * schema.
  * 
  * @author Marc A. Voigt
  */
@@ -14,16 +16,51 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MEJsonMetaboliteTypeAttributes {
 
+  /**
+   * The id of the protein that has been modified by a
+   * {@link MEJsonReactionType#PostTranslationReaction post translation}
+   * reaction. This is a mandatory attribute for species of type
+   * {@link MEJsonMetaboliteType#ProcessedProtein ProcessedProtein} and should
+   * not be set on other types of species.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String  unprocessed_protein_id;
+  /**
+   * The starting position of the nucleotide sequence on the genome. This is a
+   * mandatory attribute for species of type
+   * {@link MEJsonMetaboliteType#TranscribedGene TranscribedGene} and should not
+   * be set on other types of species.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Integer left_pos;
+  /**
+   * The type of RNA that the species represents. This is a
+   * mandatory attribute for species of type
+   * {@link MEJsonMetaboliteType#TranscribedGene TranscribedGene} and should not
+   * be set on other types of species.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String  RNA_type;
+  /**
+   * The ending position of the nucleotide sequence on the genome. This is a
+   * mandatory attribute for species of type
+   * {@link MEJsonMetaboliteType#TranscribedGene TranscribedGene} and should not
+   * be set on other types of species.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Integer right_pos;
+  /**
+   * The genome strand on which the nucleotide sequence is encoded. This is a
+   * mandatory attribute for species of type "TranscribedGene" and should not be
+   * set on other types of species.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String  strand;
+  /**
+   * The nucleotide sequence of the species. This is a mandatory attribute for
+   * species of type {@link MEJsonMetaboliteType#TranscribedGene
+   * TranscribedGene} and should not be set on other types of species.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String  nucleotide_sequence;
 

@@ -1,32 +1,74 @@
 package sbmlme.converter;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
- * represent the different possible types of ProcessData
+ * Represents the different types of process data in a COBRAme JSON schema. Any
+ * process data object in a COBRAme model needs to have one and only one of the
+ * declared types in this class.
  * 
  * @author Marc A. Voigt
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MEJsonProcessDataType {
 
+  /**
+   * The type of process data that encode information of a single
+   * {@link MEJsonReactionType#TranscriptionReaction transcription} reaction.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private MEJsonProcessDataTypeAttributes TranscriptionData;
+  /**
+   * The type of process data that encode information of a single
+   * {@link MEJsonReactionType#TranslationReaction translation} reaction.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private MEJsonProcessDataTypeAttributes TranslationData;
+  /**
+   * The type of process data that encode information of all
+   * {@link MEJsonReactionType#GenericFormationReaction generic formation}
+   * reactions that produce the same
+   * {@link MEJsonMetaboliteType#GenericComponent generic component}.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private MEJsonProcessDataTypeAttributes GenericData;
+  /**
+   * The type of process data that encode information of a single
+   * {@link MEJsonReactionType#ComplexFormation complex formation}
+   * reaction.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private MEJsonProcessDataTypeAttributes ComplexData;
+  /**
+   * The type of process data that encode information of a single
+   * {@link MEJsonReactionType#tRNAChargingReaction tRNA charging} reaction.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private MEJsonProcessDataTypeAttributes tRNAData;
+  /**
+   * The type of process data that encode information of a single
+   * {@link MEJsonReactionType#PostTranslationReaction post translation}
+   * reaction.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private MEJsonProcessDataTypeAttributes PostTranslationData;
+  /**
+   * The type of process data that encode information of a subreaction process.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private MEJsonProcessDataTypeAttributes SubreactionData;
+  /**
+   * The type of process data that encode information of a translocation
+   * process.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private MEJsonProcessDataTypeAttributes TranslocationData;
+  /**
+   * The type of process data that encode information of up to two
+   * {@link MEJsonReactionType#MetabolicReaction metabolic} reactions.
+   */
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private MEJsonProcessDataTypeAttributes StoichiometricData;
 

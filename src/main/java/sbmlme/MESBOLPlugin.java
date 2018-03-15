@@ -1,4 +1,5 @@
 package sbmlme;
+
 import java.net.URI;
 
 import org.sbolstandard.core2.ComponentDefinition;
@@ -9,6 +10,11 @@ import org.sbolstandard.core2.Sequence;
 import org.sbolstandard.core2.SystemsBiologyOntology;
 
 /**
+ * implements methods to add sequences with additional information to an
+ * external SBOL document. This class is intended to reduce the file size of the
+ * SBML model while ensuring that the resulting SBOL document follows a schema
+ * that can be interpreted by the SBMLme converter.
+ * 
  * @author Marc A. Voigt
  */
 public class MESBOLPlugin implements MEConstants {
@@ -18,11 +24,25 @@ public class MESBOLPlugin implements MEConstants {
 
 
   /**
+   * Create and add a sequence with type and position specific data to the SBOL
+   * document.
+   * <p>
+   * This method creates a new sequence object in the SBOL document and then
+   * adds this to a newly created ComponentDefinition. A SequenceAnnotation
+   * object will be created with position specific data.
+   * </p>
+   * 
    * @param sbol
+   *        the SBOL document
    * @param id
-   * @param seq
+   *        the id of the reaction/species that the sequence belongs to
+   * @param sequence
+   *        the nucleotide sequence
    * @param role
+   *        the type of molecule that the sequence encodes, e.g. "mRNA",
+   *        "DNA",...
    * @param ori
+   *        the orientation of the sequence on the genome
    * @throws SBOLValidationException
    */
   public void createSBOLSequenceWithAnnotation(SBOLDocument sbol, String id,
@@ -73,10 +93,23 @@ public class MESBOLPlugin implements MEConstants {
 
 
   /**
+   * Create and add a sequence to the SBOL document.
+   * <p>
+   * This method creates a new sequence object in the SBOL document and then
+   * adds this to a newly created ComponentDefinition. This method is intended
+   * to be used for adding sequence information that does not require position
+   * or type specific data.
+   * </p>
+   * 
    * @param sbol
+   *        the SBOL document
    * @param id
-   * @param seq
+   *        the id of the reaction/species that the sequence belongs to
+   * @param sequence
+   *        the nucleotide sequence
    * @param role
+   *        the type of molecule that the sequence encodes, e.g. "mRNA",
+   *        "DNA",...
    * @throws SBOLValidationException
    */
   public void createSBOL(SBOLDocument sbol, String id, String sequence,

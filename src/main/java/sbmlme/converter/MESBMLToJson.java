@@ -46,7 +46,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import sbmlme.MEConstants;
 
 /**
- * contains methods for converting a SBMLme model into a COBRAme JSON file
+ * Contains methods for converting a SBMLme model to a COBRAme JSON file.
  * 
  * @author Marc A. Voigt
  */
@@ -54,12 +54,17 @@ import sbmlme.MEConstants;
 public class MESBMLToJson implements MEJsonConstants, MEConstants {
 
   /**
-   * read in a SBML file and a SBOL file and convert it to a JSON file
+   * Reads in a SBML file and a SBOL file of a SBMLme model and converts it to a
+   * COBRAme JSON file.
    * 
    * @param sbmlFile
+   *        the location of the SBML file
    * @param sbolFile
+   *        the location of the SBOL file
    * @param output
+   *        the prefix of the output file
    * @param tidy
+   *        whether the JSON file should be printed tidy
    * @throws XMLStreamException
    * @throws IOException
    * @throws SBOLValidationException
@@ -221,11 +226,13 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
   /**
    * Since COBRA ids are semantically overloaded and may contain characters
    * forbidden in SBML they had to be converted to create SBML conform ids. This
-   * method is intended to be used to create COBRA ids from these SBML conform
+   * method is intended to be used to convert ids back to COBRA ids from these
+   * SBML conform
    * ids.
    * 
    * @param id
-   * @return
+   *        the SBML id
+   * @return the COBRAme id
    */
   public String ConvertSBMLIdToCOBRAId(String id) {
     id = id.replaceAll("__meCOLONme__", ":");
@@ -237,13 +244,17 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
 
 
   /**
-   * creates a metabolite for the list of metabolites of the JSON output
+   * Creates a metabolite for the list of metabolites in the JSON output.
    * 
    * @param member
+   *        the {@link Member} with the id of the species
    * @param model
+   *        the SBML model
    * @param sbolDoc
+   *        the SBOLDocument
    * @param groupId
-   * @return
+   *        the Id of the group that contains the member
+   * @return the JSON representation of the metabolite
    */
   public MEJsonMetabolite addMetabolites(Member member, Model model,
     SBOLDocument sbolDoc, String groupId) {
@@ -333,10 +344,12 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
 
 
   /**
-   * create SubreactionData entry for the list of process data
+   * Creates a SubreactionData entry for the list of process data in the JSON
+   * output.
    * 
    * @param subreactionData
-   * @return
+   *        the XMLNode with the SBMLme representation of the SubreactionData
+   * @return the JSON representation of the SubreactionData
    */
   public MEJsonProcessData addSubreactionData(XMLNode subreactionData) {
     MEJsonProcessData processDataEntry = new MEJsonProcessData();
@@ -391,10 +404,12 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
 
 
   /**
-   * create TranslocationData entry for the list of process data
+   * Creates a TranslocationData entry for the list of process data in the JSON
+   * output.
    * 
    * @param translocationData
-   * @return
+   *        the XMLNode with the SBMLme representation of the TranslocationData
+   * @return the JSON representation of the TranslocationData
    */
   public MEJsonProcessData addTranslocationData(XMLNode translocationData) {
     MEJsonProcessData processDataEntry = new MEJsonProcessData();
@@ -445,10 +460,12 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
 
 
   /**
-   * create StoichiometricData entry for the list of process data
+   * Creates a StoichiometricData entry for the list of process data in the JSON
+   * output.
    * 
    * @param stoichiometricData
-   * @return
+   *        the XMLNode with the SBMLme representation of the StoichiometricData
+   * @return the JSON representation of the StoichiometricData
    */
   public MEJsonProcessData addStoichiometricData(XMLNode stoichiometricData) {
     MEJsonProcessData processDataEntry = new MEJsonProcessData();
@@ -464,12 +481,12 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
       Double.valueOf(stoichiometricData.getAttrValue(upperFluxBound)));
     // add subreations
     List<XMLNode> listSubreactions =
-      stoichiometricData.getChildElement(listOfSubreactions, "*")
-                        .getChildElements(subreaction, "*");
+      stoichiometricData.getChildElement(listSubreactionReferences, "*")
+                        .getChildElements(subreactionRef, "*");
     Map<String, Double> subreactions = new HashMap<String, Double>();
     for (XMLNode entry : listSubreactions) {
       subreactions.put(ConvertSBMLIdToCOBRAId(entry.getAttrValue(subreaction)),
-        Double.valueOf(entry.getAttrValue(coefficient)));
+        Double.valueOf(entry.getAttrValue(stoichiometry)));
     }
     processDataEntryTypeAttributes.setSubreactions(subreactions);
     // add stoichiometry
@@ -496,21 +513,33 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
 
 
   /**
-   * create reaction entry for list of reactions
+   * Creates a reaction entry for the list of reactions in the JSON output.
    * 
    * @param member
+   *        the {@link Member} with the id of the reaction
    * @param model
+   *        the SBML model
    * @param fbcModel
+   *        the FBCModelPlugin of the SBML model
    * @param processData
+   *        the list with the JSON representation of the process data
    * @param groupId
+   *        the id of the group that contains the member
    * @param sbolDoc
+   *        the SBOLDocument
    * @param listTranscribed
+   *        the list of transcribed genes
    * @param listRNAP
+   *        the list of RNA polymerases
    * @param listTranslated
+   *        the list of translated genes
    * @param listtRNA
+   *        the list of charged tRNAs
    * @param listProcessed
+   *        the list of processed proteins
    * @param listComplex
-   * @return
+   *        the list of protein complexes
+   * @return the JSON representation of the reaction
    */
   public MEJsonReaction addReaction(Member member, Model model,
     FBCModelPlugin fbcModel, List<MEJsonProcessData> processData,
@@ -631,10 +660,9 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
       // iterate over List of Subreaction References
       for (Iterator<XMLNode> subreactionIter =
         subreactionReferences.iterator(); subreactionIter.hasNext();) {
-        XMLNode subreactionRef = subreactionIter.next();
-        subreactions.put(
-          ConvertSBMLIdToCOBRAId(subreactionRef.getAttrValue(subreaction)),
-          Double.valueOf(subreactionRef.getAttrValue(stoichiometry)));
+        XMLNode sub = subreactionIter.next();
+        subreactions.put(ConvertSBMLIdToCOBRAId(sub.getAttrValue(subreaction)),
+          Double.valueOf(sub.getAttrValue(stoichiometry)));
       }
       tempProcessTypeAttributes.setSubreactions(subreactions);
       // add list of RNA products
@@ -689,10 +717,9 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
       // iterate over List of Subreaction References
       for (Iterator<XMLNode> subreactionIter =
         subreactionReferences.iterator(); subreactionIter.hasNext();) {
-        XMLNode subreactionRef = subreactionIter.next();
-        subreactions.put(
-          ConvertSBMLIdToCOBRAId(subreactionRef.getAttrValue(subreaction)),
-          Double.valueOf(subreactionRef.getAttrValue(stoichiometry)));
+        XMLNode sub = subreactionIter.next();
+        subreactions.put(ConvertSBMLIdToCOBRAId(sub.getAttrValue(subreaction)),
+          Double.valueOf(sub.getAttrValue(stoichiometry)));
       }
       tempProcessTypeAttributes.setSubreactions(subreactions);
       // add mRNA
@@ -736,10 +763,9 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
       // iterate over List of Subreaction References
       for (Iterator<XMLNode> subreactionIter =
         subreactionReferences.iterator(); subreactionIter.hasNext();) {
-        XMLNode subreactionRef = subreactionIter.next();
-        subreactions.put(
-          ConvertSBMLIdToCOBRAId(subreactionRef.getAttrValue(subreaction)),
-          Double.valueOf(subreactionRef.getAttrValue(stoichiometry)));
+        XMLNode sub = subreactionIter.next();
+        subreactions.put(ConvertSBMLIdToCOBRAId(sub.getAttrValue(subreaction)),
+          Double.valueOf(sub.getAttrValue(stoichiometry)));
       }
       // add RNA
       for (SpeciesReference species : reaction.getListOfReactants()) {
@@ -787,10 +813,9 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
       // iterate over List of Subreaction References
       for (Iterator<XMLNode> subreactionIter =
         subreactionReferences.iterator(); subreactionIter.hasNext();) {
-        XMLNode subreactionRef = subreactionIter.next();
-        subreactions.put(
-          ConvertSBMLIdToCOBRAId(subreactionRef.getAttrValue(subreaction)),
-          Double.valueOf(subreactionRef.getAttrValue(stoichiometry)));
+        XMLNode sub = subreactionIter.next();
+        subreactions.put(ConvertSBMLIdToCOBRAId(sub.getAttrValue(subreaction)),
+          Double.valueOf(sub.getAttrValue(stoichiometry)));
       }
       tempProcessTypeAttributes.setSubreactions(subreactions);
       // add unprocessed Protein
@@ -916,10 +941,9 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
       // iterate over List of Subreaction References
       for (Iterator<XMLNode> subreactionIter =
         subreactionReferences.iterator(); subreactionIter.hasNext();) {
-        XMLNode subreactionRef = subreactionIter.next();
-        subreactions.put(
-          ConvertSBMLIdToCOBRAId(subreactionRef.getAttrValue(subreaction)),
-          Double.valueOf(subreactionRef.getAttrValue(stoichiometry)));
+        XMLNode sub = subreactionIter.next();
+        subreactions.put(ConvertSBMLIdToCOBRAId(sub.getAttrValue(subreaction)),
+          Double.valueOf(sub.getAttrValue(stoichiometry)));
       }
       tempProcessTypeAttributes.setSubreactions(subreactions);
       // set stoichiometry in Process Data

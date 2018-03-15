@@ -5,13 +5,14 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.TransformerException;
 
 import org.jdom2.JDOMException;
-import org.sbml.jsbml.ASTNode;
-import org.sbml.jsbml.Compartment;
 import org.sbml.jsbml.Model;
 import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.SBMLException;
@@ -30,6 +31,9 @@ import de.unirostock.sems.cbarchive.CombineArchive;
 import de.unirostock.sems.cbarchive.CombineArchiveException;
 
 /**
+ * Contains an example model to show how a COBRAme model can be represented in
+ * SBMLme.
+ * 
  * @author Marc A. Voigt
  */
 @SuppressWarnings("restriction")
@@ -56,22 +60,15 @@ public class ExampleModel implements MEConstants {
     JDOMException, java.text.ParseException, CombineArchiveException,
     URISyntaxException, TransformerException {
     new ExampleModel();
-    String test =
-      "-4.27350427350427e-6*mu*(0.000116266666666667*mu + 4.55184e-5) - 1.54e-6";
-    ASTNode testNode = ASTNode.parseFormula(test);
-    System.out.println(testNode);
-    System.out.println(testNode.formulaToString(testNode));
-    System.out.println(testNode.toFormula());
-    System.out.println(testNode.printASTNode());
-    System.out.println(testNode.toString());
-    System.out.println(ASTNode.parseFormula(testNode.toString()));
   }
 
 
   /**
-   * create example model and write content to file
-   * the example model is very incomplete and only shows how each kind of
-   * Species/Reaction/ProcessData will be created and represented in SBML/SBOL
+   * Create the example model and write its content to a CombineArchive.
+   * <p>
+   * The example model is very incomplete and only shows how each kind of
+   * Species/Reaction/ProcessData will be created and represented in SBML/SBOL.
+   * </p>
    * 
    * @throws SBMLException
    * @throws XMLStreamException
@@ -97,7 +94,7 @@ public class ExampleModel implements MEConstants {
     sbol.setDefaultURIprefix("http://cobramens.url/sbol/");
     // Create a new SBML model, and add compartments to it.
     Model model = doc.createModel("example_model");
-    model.initDefaults(2, 4);
+    model.initDefaults(3, 1);
     // create basic objective
     // Objective for flux coefficient
     FBCModelPlugin fbcModel =
@@ -421,20 +418,28 @@ public class ExampleModel implements MEConstants {
       Arrays.asList("gtp_c", "h2o_c", "pi_c", "gdp_c", "h_c"),
       Arrays.asList(-1.0, -1.0, 1.0, 1.0, 1.0), false);
     meProcessData.addStoichiometricData(meProcessData, "ADEt2rpp", -1000.0,
-      1000.0, null, null, Arrays.asList("ade_p", "ade_c", "h_c", "h_p"),
+      1000.0, null, Arrays.asList("ade_p", "ade_c", "h_c", "h_p"),
       Arrays.asList(-1.0, 1.0, 1.0, -1.0));
     meProcessData.addSubreactionData(meProcessData, "met_addition_at_AUG", 65.0,
-      Arrays.asList("generic_TUF"), null, null,
+      Arrays.asList("generic_TUF"), null,
       Arrays.asList("generic_tRNA_AUG_met__L_c", "h2o_c", "gdp_c", "atp_c",
         "ppi_c", "gtp_c", "h_c", "pi_c", "amp_c"),
       Arrays.asList(-1, -2, 1, -1, 1, -1, 2, 1, 1));
+    Map<String, Integer> elementContribution = new HashMap<String, Integer>();
+    elementContribution.put("O", -1);
+    elementContribution.put("Se", 1);
     meProcessData.addSubreactionData(meProcessData, "sec_addition_at_UGA", 65.0,
       Arrays.asList("SelA_deca_mod_10:pydx5p", "SelB_mono"),
-      Arrays.asList("O", "Se"), Arrays.asList(-1, 1),
+      elementContribution,
       Arrays.asList("pi_c", "h_c", "generic_tRNA_UGA_cys__L_c", "selnp_c"),
       Arrays.asList(1, 1, -1, -1));
     // create ME Reactions
     MEReactionPlugin meReactionPlugin = new MEReactionPlugin();
+    Map<String, Double> subreactionMap = new HashMap<String, Double>();
+    subreactionMap.put("monocistronic_excision", 2.0);
+    subreactionMap.put("Transcription_stable_rho_dependent", 1.0);
+    subreactionMap.put("RNA_degradation_machine", 2.0);
+    subreactionMap.put("RNA_degradation_atp_requirement", 8.0);
     meReactionPlugin.createTranscriptionReaction(model, sbol, groups, objective,
       "transcription_TU0001_from_RpoD_mono", "", "TU0001_from_RpoD_mono",
       Double.valueOf("1000.00000000000"), Double.valueOf("0.0"),
@@ -457,14 +462,20 @@ public class ExampleModel implements MEConstants {
         "-4.27350427350427e-6*mu", "-21", "5.0", "-4.27350427350427e-6*mu"),
       0.0, "continuous",
       "CACACGATTCCTCTGTAGTTCAGTCGGTAGAACGGCGGACTGTTAATCCGTATGTCACTGGTTCGAGTCCAGTCAGAGGAGCCA",
-      Arrays.asList("monocistronic_excision",
-        "Transcription_stable_rho_dependent", "RNA_degradation_machine",
-        "RNA_degradation_atp_requirement"),
-      Arrays.asList(2, 1, 2, 8));
+      subreactionMap);
     meReactionPlugin.createMEReaction(model, groups, objective, "DM_RNA_b0001",
       "", Double.valueOf("1000.00000000000"), Double.valueOf("0.0"),
       Arrays.asList("RNA_b0001", "tRNA_biomass"),
       Arrays.asList("-1", "-24.3340140000000"), 0.0, "continuous");
+    subreactionMap.clear();
+    List<String> subreactions =
+      Arrays.asList("D_at_16", "s4U_at_8", "m7G_at_46", "t6A_at_37", "Y_at_39",
+        "D_at_20", "Y_at_55", "Q_at_34", "m5U_at_54");
+    List<Integer> subCoefficients = Arrays.asList(1, 1, 1, 1, 1, 1, 1, 1, 1);
+    for (int i = 0; i < subreactions.size(); i++) {
+      subreactionMap.put(subreactions.get(i),
+        subCoefficients.get(i).doubleValue());
+    }
     meReactionPlugin.createtRNAChargingReaction(model, groups, objective,
       "charging_tRNA_b10001_AAC", "", "tRNA_b0001_AAC",
       Double.valueOf("1000.00000000000"), Double.valueOf("0.0"), 65.0,
@@ -507,11 +518,9 @@ public class ExampleModel implements MEConstants {
         "-4.27350427350427e-6*mu*(0.000116266666666667*mu + 4.55184e-5)",
         "0.000116266666666667*mu + 4.55184e-5",
         "-0.000116266666666667*mu - 4.55184e-5", "1"),
-      0.0, "continuous",
-      Arrays.asList("D_at_16", "s4U_at_8", "m7G_at_46", "t6A_at_37", "Y_at_39",
-        "D_at_20", "Y_at_55", "Q_at_34", "m5U_at_54"),
-      Arrays.asList(1, 1, 1, 1, 1, 1, 1, 1, 1), "Asn_RS_dim", "AAC",
-      "asn__L_c");
+      0.0, "continuous", subreactionMap, "Asn_RS_dim", "AAC", "asn__L_c");
+    subreactionMap.clear();
+    subreactionMap.put("Transcription_normal_rho_dependent", 1.0);
     meReactionPlugin.createTranscriptionReaction(model, sbol, groups, objective,
       "transcription_TU0002_from_RpoD_mono", "", "TU0002_from_RpoD_mono",
       Double.valueOf("1000.00000000000"), Double.valueOf("0.0"),
@@ -528,7 +537,28 @@ public class ExampleModel implements MEConstants {
         "3.0", "-4.27350427350427e-6*mu"),
       0.0, "continuous",
       "CCACCCGGCGCGCCATGCTGGTTTCCACTGGTGTGAGGTCGTACATTTTCCCTGCGAAAAGGTGCGGAAAAGCGCGGTAAATAAGGAAAGAGAATTGACTCCGGAGTGTACAATTATTACAATCCGGCCTCTTTAATCACCCATGGCTTCGGTGTCCATCGTTTCATTTTTCGGCGGATATCCAATAAAGCCATTGAATTTATTCAAGTTTAGGTAGAAATCGCCATGAAACGCACTTTTCAACCGTCTGTACTGAAGCGCAACCGTTCTCACGGCTTCCGTGCTCGTATGGCTACTAAAAATGGTCGTCAGGTTCTGGCACGTCGTCGTGCTAAAGGCCGCGCTCGTCTGACCGTTTCTAAGTAATAAAGCTAACCCCTGAGTGGTTAAGCTCGCATTTCCCAGGGAGTTACGCTTGTTAACTCCCAGTCAATTCACATTCGTCTTCCAGCAGCCACAACGGGCTGGCACGCCGCAAATTACCATTCTCGGCCGCCTGAATTCGCTGGGGCATCCCCGTATCGGTCTTACAGTCGCCAAGAAAAACGTTCGACGCGCCCATGAACGCAATCGGATTAAACGTCTGACGCGTGAAAGCTTCCGTCTGCGCCAACATGAACTCCCGGCTATGGATTTCGTGGTGGTGGCGAAAAAAGGGGTTGCCGACCTCGATAACCGTGCTCTCTCGGAAGCGTTGGAAAAATTATGGCGCCGCCACTGTCGCCTGGCTCGCGGGTCCTGA",
-      Arrays.asList("Transcription_normal_rho_dependent"), Arrays.asList(1));
+      subreactionMap);
+    subreactionMap.clear();
+    subreactions = Arrays.asList("lys_addition_at_AAA", "asn_addition_at_AAU",
+      "arg_addition_at_CGU", "phe_addition_at_UUU", "peptide_chain_release",
+      "Translation_initiation_factor_InfC",
+      "Translation_initiation_factor_InfA", "asn_addition_at_AAC",
+      "pro_addition_at_CCG", "ser_addition_at_UCU", "arg_addition_at_CGC",
+      "phe_addition_at_UUC", "lys_addition_at_AAG", "val_addition_at_GUU",
+      "Translation_gtp_initiation_factor_InfB", "ala_addition_at_GCA",
+      "FusA_mono_elongation", "val_addition_at_GUA", "his_addition_at_CAC",
+      "peptide_deformylase_processing", "leu_addition_at_CUG",
+      "UAA_generic_RF_mediated_termination", "Tuf_gtp_regeneration",
+      "ala_addition_at_GCU", "gln_addition_at_CAA", "met_addition_at_AUG",
+      "gln_addition_at_CAG", "thr_addition_at_ACC", "gly_addition_at_GGU",
+      "ribosome_recycler", "thr_addition_at_ACU", "gly_addition_at_GGC",
+      "fmet_addition_at_START");
+    subCoefficients = Arrays.asList(2, 4, 8, 1, 1, 1, 1, 1, 1, 3, 2, 4, 2, 2, 1,
+      1, (int) 45.0, 1, 1, 1, 2, 4, (int) 45.0, 4, 1, 1, 1, 1, 1, 1, 2, 2, 1);
+    for (int i = 0; i < subreactions.size(); i++) {
+      subreactionMap.put(subreactions.get(i),
+        subCoefficients.get(i).doubleValue());
+    }
     meReactionPlugin.createTranslationReaction(model, sbol, groups, objective,
       "translation_b0002", "", "b0002", Double.valueOf("1000.00000000000"),
       Double.valueOf("0.0"),
@@ -576,22 +606,7 @@ public class ExampleModel implements MEConstants {
         "45.0 + 0.227270233196159*(mu + 0.3915)/mu"),
       0.0, "continuous",
       "ATGAAACGCACTTTTCAACCGTCTGTACTGAAGCGCAACCGTTCTCACGGCTTCCGTGCTCGTATGGCTACTAAAAATGGTCGTCAGGTTCTGGCACGTCGTCGTGCTAAAGGCCGCGCTCGTCTGACCGTTTCTAAGTAA",
-      Arrays.asList("lys_addition_at_AAA", "asn_addition_at_AAU",
-        "arg_addition_at_CGU", "phe_addition_at_UUU", "peptide_chain_release",
-        "Translation_initiation_factor_InfC",
-        "Translation_initiation_factor_InfA", "asn_addition_at_AAC",
-        "pro_addition_at_CCG", "ser_addition_at_UCU", "arg_addition_at_CGC",
-        "phe_addition_at_UUC", "lys_addition_at_AAG", "val_addition_at_GUU",
-        "Translation_gtp_initiation_factor_InfB", "ala_addition_at_GCA",
-        "FusA_mono_elongation", "val_addition_at_GUA", "his_addition_at_CAC",
-        "peptide_deformylase_processing", "leu_addition_at_CUG",
-        "UAA_generic_RF_mediated_termination", "Tuf_gtp_regeneration",
-        "ala_addition_at_GCU", "gln_addition_at_CAA", "met_addition_at_AUG",
-        "gln_addition_at_CAG", "thr_addition_at_ACC", "gly_addition_at_GGU",
-        "ribosome_recycler", "thr_addition_at_ACU", "gly_addition_at_GGC",
-        "fmet_addition_at_START"),
-      Arrays.asList(3, 1, 8, 1, 1, 1, 1, 1, 1, 3, 3, 1, 2, 2, 1, 1, (int) 45.0,
-        1, 1, 1, 3, 1, (int) 45.0, 4, 1, 1, 1, 1, 1, 1, 2, 2, 1));
+      subreactionMap);
     meReactionPlugin.createPostTranslationReaction(model, groups, objective,
       "translocation_b0002", "", "translocation_protein_b0002",
       Double.valueOf("1000.00000000000"), Double.valueOf("0.0"),
@@ -601,7 +616,7 @@ public class ExampleModel implements MEConstants {
       Arrays.asList("-1.0", "1.0", "-0.00661111111111111*mu", "1.0", "-1.0",
         "-1.0", "1.0", "1.0", "-0.00661111111111111*mu",
         "-0.00661111111111111*mu"),
-      0.0, "continuous", null, null, 0.0,
+      0.0, "continuous", null, 0.0,
       Arrays.asList("TatE_MONOMER", "TatA_MONOMER", "srp_yidC_translocation"),
       Arrays.asList(21.0, 21.0, 0.0), 1.0, null, null, null, null, null, null,
       "");
@@ -609,7 +624,7 @@ public class ExampleModel implements MEConstants {
       "formation_RpmH_mono", "", "RpmH_mono", "RpmH_mono",
       Double.valueOf("1000.00000000000"), Double.valueOf("0.0"),
       Arrays.asList("RpmH_mono", "protein_b0002_Inner_Membrane"),
-      Arrays.asList("1", "-1.0"), 0.0, "continuous", null, null);
+      Arrays.asList("1", "-1.0"), 0.0, "continuous", null);
     meReactionPlugin.createMetabolicReaction(model, groups, objective,
       "ADEt2rpp_REV_YICE_MONOMER", "", "ADEt2rpp", 1000.0, 0.0,
       Arrays.asList("ade_p", "YICE_MONOMER", "ade_c", "h_c", "h_p"),

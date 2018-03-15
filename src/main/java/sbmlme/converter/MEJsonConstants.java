@@ -1,6 +1,9 @@
 package sbmlme.converter;
 
 /**
+ * Contains constants required for the conversion between the COBRAme JSON
+ * schema and SBMLme schema.
+ * 
  * @author Marc A. Voigt
  */
 public interface MEJsonConstants {

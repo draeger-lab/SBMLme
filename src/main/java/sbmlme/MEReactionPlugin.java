@@ -2,6 +2,7 @@ package sbmlme;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.sbml.jsbml.ASTNode;
 import org.sbml.jsbml.InitialAssignment;
@@ -22,7 +23,7 @@ import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLValidationException;
 
 /**
- * implements attributes and methods to encode all information of reactions in a
+ * Implements attributes and methods to encode all information of reactions in a
  * COBRAme model in SBML.
  * <p>
  * Besides SBML core the packages fbc and groups are used in all reaction
@@ -57,13 +58,13 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
 
 
   /**
-   * adds a single species from a COBRAme reaction list to the corresponding
+   * Adds a single species from a COBRAme reaction list to the corresponding
    * SBML reaction.
    * <p>
    * In COBRAme reactions only possess one list for both reactants and products.
    * When species are added from this list reactants and products need to be
    * separated, the method does this by checking if the species' coefficient is
-   * negative. </br>
+   * negative.
    * In COBRAme coefficients can also be complex formulas that depend on
    * parameters. When such a coefficient is added the formula is checked for
    * currently unknown parameters that need to be added to the ListOfParameters
@@ -124,7 +125,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
       String testCoefficient = coefficient;
       for (int i = 0; i < coefficient.length(); i++) {
         if (testCoefficient.substring(0, 1).equals("(")) {
-          testCoefficient.substring(1);
+          testCoefficient = testCoefficient.substring(1);
         } else if (testCoefficient.substring(0, 1).equals("-")) {
           SpeciesReference temp = reaction.createReactant(reaction.getId()
             + "___" + createSBMLConformId(speciesId) + "___reactant",
@@ -156,7 +157,8 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
 
 
   /**
-   * Set the Bounds of a fbc reaction to a valid parameter. If there is no valid
+   * Sets the Bounds of a fbc reaction to a valid parameter. If there is no
+   * valid
    * parameter a new one is created.
    * <p>
    * In order to not create several parameters with the same value this method
@@ -470,12 +472,9 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
    * @param sequence
    *        the nucleotide sequence of the transcription unit, cannot be null or
    *        empty string
-   * @param subreactions
-   *        the list with the ids of the subreactions that take part in the
-   *        reaction, may be null
-   * @param subreactionCoefficients
-   *        the list with the coefficients of the subreactions, must have the
-   *        same order as the list with subreaction ids, may be null
+   * @param subreactionMap
+   *        the map with the ids and coefficients of the subreactions that take
+   *        part in the reaction, may be null
    * @throws ParseException
    * @throws SBOLValidationException
    */
@@ -484,7 +483,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     String dataId, double upperBound, double lowerBound,
     List<String> speciesIds, List<String> coefficients,
     double objectiveCoefficient, String variableKind, String sequence,
-    List<String> subreactions, List<Integer> subreactionCoefficients)
+    Map<String, Double> subreactionMap)
     throws ParseException, SBOLValidationException {
     id = createSBMLConformId(id);
     dataId = createSBMLConformId(dataId);
@@ -531,13 +530,13 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     meReaction.setDataId(dataId);
     // test should only return false if information is missing
     // might need to print out a warning during validation
-    if (subreactions != null) {
+    if (subreactionMap != null) {
       // add subreaction references to annotations
       SubreactionReference subReference = new SubreactionReference();
       XMLNode listSubRef = subReference.ListOfSubreactionReference();
-      for (int i = 0; i < subreactions.size(); i++) {
+      for (Map.Entry<String, Double> entry : subreactionMap.entrySet()) {
         listSubRef.addChild(subReference.createSubreactionReference(
-          subreactions.get(i), subreactionCoefficients.get(i)));
+          entry.getKey(), entry.getValue().intValue()));
       }
       meReaction.addChild(listSubRef);
     }
@@ -588,12 +587,9 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
    * @param sequence
    *        the nucleotide sequence of the transcribed mRNA, cannot be null or
    *        empty string
-   * @param subreactions
-   *        the list with the ids of the subreactions that take part in the
-   *        reaction, may be null
-   * @param subreactionCoefficients
-   *        the list with the coefficients of the subreactions, must have the
-   *        same order as the list with subreaction ids, may be null
+   * @param subreactionMap
+   *        the map with the ids and coefficients of the subreactions that take
+   *        part in the reaction, may be null
    * @throws ParseException
    * @throws SBOLValidationException
    */
@@ -602,7 +598,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     String dataId, double upperBound, double lowerBound,
     List<String> speciesIds, List<String> coefficients,
     double objectiveCoefficient, String variableKind, String sequence,
-    List<String> subreactions, List<Integer> subreactionCoefficients)
+    Map<String, Double> subreactionMap)
     throws ParseException, SBOLValidationException {
     id = createSBMLConformId(id);
     dataId = createSBMLConformId(dataId);
@@ -649,13 +645,13 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     meReaction.setDataId(dataId);
     // test should only return false if information is missing
     // might need to print out a warning during validation
-    if (subreactions != null) {
+    if (subreactionMap != null) {
       // add subreaction references to annotations
       SubreactionReference subReference = new SubreactionReference();
       XMLNode listSubRef = subReference.ListOfSubreactionReference();
-      for (int i = 0; i < subreactions.size(); i++) {
+      for (Map.Entry<String, Double> entry : subreactionMap.entrySet()) {
         listSubRef.addChild(subReference.createSubreactionReference(
-          subreactions.get(i), subreactionCoefficients.get(i)));
+          entry.getKey(), entry.getValue().intValue()));
       }
       meReaction.addChild(listSubRef);
     }
@@ -700,12 +696,9 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
    *        the coefficient of the flux objective of the reaction
    * @param variableKind
    *        can be either "continuous" or "discrete"
-   * @param subreactions
-   *        the list with the ids of the subreactions that take part in the
-   *        reaction, may be null
-   * @param subreactionCoefficients
-   *        the list with the coefficients of the subreactions, must have the
-   *        same order as the list with subreaction ids, may be null
+   * @param subreactionMap
+   *        the map with the ids and coefficients of the subreactions that take
+   *        part in the reaction, may be null
    * @param synthetase
    *        the id of the tRNA synthetase to charge the tRNA with an amino acid
    * @param codon
@@ -719,9 +712,8 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     Objective objective, String id, String name, String dataId,
     double upperBound, double lowerBound, double keff, List<String> speciesIds,
     List<String> coefficients, double objectiveCoefficient, String variableKind,
-    List<String> subreactions, List<Integer> subreactionCoefficients,
-    String synthetase, String codon, String aminoAcid)
-    throws ParseException, SBOLValidationException {
+    Map<String, Double> subreactionMap, String synthetase, String codon,
+    String aminoAcid) throws ParseException, SBOLValidationException {
     id = createSBMLConformId(id);
     dataId = createSBMLConformId(dataId);
     Reaction tempReaction = model.createReaction(id);
@@ -759,13 +751,13 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     meReaction.setAminoAcid(aminoAcid);
     // test should only return false if information is missing
     // might need to print out a warning during validation
-    if (subreactions != null) {
+    if (subreactionMap != null) {
       // add subreaction references to annotations
       SubreactionReference subReference = new SubreactionReference();
       XMLNode listSubRef = subReference.ListOfSubreactionReference();
-      for (int i = 0; i < subreactions.size(); i++) {
+      for (Map.Entry<String, Double> entry : subreactionMap.entrySet()) {
         listSubRef.addChild(subReference.createSubreactionReference(
-          subreactions.get(i), subreactionCoefficients.get(i)));
+          entry.getKey(), entry.getValue().intValue()));
       }
       meReaction.addChild(listSubRef);
     }
@@ -776,7 +768,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
   /**
    * Create and add a post translation reaction to the model.
    * <p>
-   * The method adds the SBMLme attributes "dataID", "keff", "variableKind",
+   * The method adds the SBMLme attributes "dataID", "variableKind",
    * "aggregationPropensity", "propensityScaling", "biomassType",
    * "surfaceAreaInnerMembrane", "surfaceAreaOuterMembrane",
    * "listOfSubreactionReferences" and "listOfTranslocationReferences" to the
@@ -805,9 +797,6 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
    *        the upper bound of the reaction
    * @param lowerBound
    *        the lower bound of the reaction
-   * @param keff
-   *        the effective turnover rate of the enzymes in the translocation
-   *        pathway
    * @param speciesIds
    *        the list with the ids of all species in the reaction
    * @param coefficients
@@ -817,12 +806,9 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
    *        the coefficient of the flux objective of the reaction
    * @param variableKind
    *        can be either "continuous" or "discrete"
-   * @param subreactions
-   *        the list with the ids of the subreactions that take part in the
-   *        reaction, may be null
-   * @param subreactionCoefficients
-   *        the list with the coefficients of the subreactions, must have the
-   *        same order as the list with subreaction ids, may be null
+   * @param subreactionMap
+   *        the map with the ids and coefficients of the subreactions that take
+   *        part in the reaction, may be null
    * @param aggregationPropensity
    *        the aggregation propensity for the protein
    * @param translocation
@@ -860,8 +846,8 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     GroupsModelPlugin groups, Objective objective, String id, String name,
     String dataId, double upperBound, double lowerBound,
     List<String> speciesIds, List<String> coefficients,
-    double objectiveCoefficient, String variableKind, List<String> subreactions,
-    List<Integer> subreactionCoefficients, double aggregationPropensity,
+    double objectiveCoefficient, String variableKind,
+    Map<String, Double> subreactionMap, double aggregationPropensity,
     List<String> translocation, List<Double> multipliers,
     double propensityScaling, List<String> surfaceArea,
     List<Double> surfaceAreaValue, List<String> keqFolding,
@@ -900,13 +886,13 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     meReaction.setDataId(dataId);
     meReaction.setAggregationPropensity(String.valueOf(aggregationPropensity));
     meReaction.setBiomassType(biomassType);
-    if (subreactions != null) {
+    if (subreactionMap != null) {
       // add subreaction references to annotations
       SubreactionReference subReference = new SubreactionReference();
       XMLNode listSubRef = subReference.ListOfSubreactionReference();
-      for (int i = 0; i < subreactions.size(); i++) {
+      for (Map.Entry<String, Double> entry : subreactionMap.entrySet()) {
         listSubRef.addChild(subReference.createSubreactionReference(
-          subreactions.get(i), subreactionCoefficients.get(i)));
+          entry.getKey(), entry.getValue().intValue()));
       }
       meReaction.addChild(listSubRef);
     }
@@ -962,7 +948,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
   /**
    * Create and add a complex formation reaction to the model.
    * <p>
-   * The method adds the SBMLme attributes "dataId", "keff", "variableKind" and
+   * The method adds the SBMLme attributes "dataId", "variableKind" and
    * "ListOfSubreactionReferences". The "listOfSubreactionReferences" contains
    * all subreactions that take part in the reaction.
    * </p>
@@ -984,9 +970,6 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
    *        the upper bound of the reaction
    * @param lowerBound
    *        the lower bound of the reaction
-   * @param keff
-   *        the effective turnover rate of the enzymes in the translocation
-   *        pathway
    * @param speciesIds
    *        the list with the ids of all species in the reaction
    * @param coefficients
@@ -996,20 +979,17 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
    *        the coefficient of the flux objective of the reaction
    * @param variableKind
    *        can be either "continuous" or "discrete"
-   * @param subreactions
-   *        the list with the ids of the subreactions that take part in the
-   *        reaction, may be null
-   * @param subreactionCoefficients
-   *        the list with the coefficients of the subreactions, must have the
-   *        same order as the list with subreaction ids, may be null
+   * @param subreactionMap
+   *        the map with the ids and coefficients of the subreactions that take
+   *        part in the reaction, may be null
    * @throws ParseException
    */
   public void createComplexFormationReaction(Model model,
     GroupsModelPlugin groups, Objective objective, String id, String name,
     String dataId, String complexId, double upperBound, double lowerBound,
     List<String> speciesIds, List<String> coefficients,
-    double objectiveCoefficient, String variableKind, List<String> subreactions,
-    List<Integer> subreactionCoefficients) throws ParseException {
+    double objectiveCoefficient, String variableKind,
+    Map<String, Double> subreactionMap) throws ParseException {
     id = createSBMLConformId(id);
     dataId = createSBMLConformId(dataId);
     complexId = createSBMLConformId(complexId);
@@ -1043,13 +1023,13 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     meReaction.setVariableKind(variableKind);
     meReaction.setDataId(dataId);
     meReaction.setComplexId(complexId);
-    if (subreactions != null) {
+    if (subreactionMap != null) {
       // add subreaction references to annotations
       SubreactionReference subReference = new SubreactionReference();
       XMLNode listSubRef = subReference.ListOfSubreactionReference();
-      for (int i = 0; i < subreactions.size(); i++) {
+      for (Map.Entry<String, Double> entry : subreactionMap.entrySet()) {
         listSubRef.addChild(subReference.createSubreactionReference(
-          subreactions.get(i), subreactionCoefficients.get(i)));
+          entry.getKey(), entry.getValue().intValue()));
       }
       meReaction.addChild(listSubRef);
     }
@@ -1572,6 +1552,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
    * the ComplexData object that is referred by the reaction. This attribute is
    * mandatory for reactions of type "ComplexFormationReaction" and
    * "MetabolicReaction".
+   * </p>
    * 
    * @param value
    *        id of the ComplexData object that is referred in COBRAme
@@ -1582,61 +1563,210 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
   }
 
 
+  /**
+   * Sets the value of the attribute "synthetase".
+   * <p>
+   * The optional attribute "synthetase" takes a string representing the Id of a
+   * synthetase. This attribute is mandatory for reactions of type
+   * "tRNAChargingReaction".
+   * </p>
+   * 
+   * @param value
+   *        id of the synthetase that synthesizes the tRNA charging
+   * @return
+   */
   public int setSynthetase(String value) {
     return setAttribute(MEConstants.synthetase, value);
   }
 
 
+  /**
+   * Sets the value of the attribute "keff".
+   * <p>
+   * The optional attribute "keff" contains the turnover rate of an enzyme
+   * catalyzing a reaction. The attribute is mandatory for reactions of type
+   * "MetabolicReaction".
+   * </p>
+   * 
+   * @param value
+   *        the effective turnover rate of the enzyme catalyzing the reaction
+   * @return
+   */
   public int setKeff(String value) {
     return setAttribute(MEConstants.keff, value);
   }
 
 
+  /**
+   * Sets the value of the attribute "dataId".
+   * <p>
+   * The optional attribute "dataId" contains the Id of the process data object
+   * in COBRAme that contains additional information about the reaction. The
+   * attribute is mandatory for all reaction types except "SummaryVariable",
+   * "MEReaction" and "GenericFormationreaction".
+   * </p>
+   * 
+   * @param value
+   *        the Id of the process data object in COBRAme containing additional
+   *        reaction information.
+   * @return
+   */
   public int setDataId(String value) {
     return setAttribute(MEConstants.dataId, value);
   }
 
 
+  /**
+   * Sets the value of the attribute "reverse".
+   * <p>
+   * The optional attribute "reverse" contains a boolean representing if the
+   * "MetabolicReaction" is the reverse direction of a reversible reaction or
+   * not.
+   * </p>
+   * 
+   * @param value
+   *        whether the reaction represents the reverse direction or not
+   * @return
+   */
   public int setReverse(String value) {
     return setAttribute(MEConstants.reverse, value);
   }
 
 
+  /**
+   * Sets the value of the attribute "codon".
+   * <p>
+   * The optional attribute "codon" takes a string representing a codon that
+   * will be translated to a specific amino acid. This attribute should only be
+   * used in reactions of type "tRNAChargingReaction".
+   * </p>
+   * 
+   * @param value
+   *        a String containing a triplet of nucleotides in single-letter
+   *        representation
+   * @return
+   */
   public int setCodon(String value) {
     return setAttribute(MEConstants.codon, value);
   }
 
 
+  /**
+   * Sets the value of the attribute "aminoAcid".
+   * <p>
+   * The optional attribute "aminoAcid" takes a string representing an amino
+   * acid that will be added to a peptide by the charged tRNA. This attribute
+   * should only be used in reactions of type "tRNAChargingReaction".
+   * </p>
+   * 
+   * @param value
+   *        a String containing the id of an amino acid
+   * @return
+   */
   public int setAminoAcid(String value) {
     return setAttribute(MEConstants.aminoAcid, value);
   }
 
 
+  /**
+   * Sets the value of the attribute "biomassType".
+   * <p>
+   * The optional attribute "biomassType" takes a string representing a type of
+   * biomass that is used in reactions of type "PostTranslationReaction". This
+   * attribute is used when biomass is added to the translated protein to
+   * indicate which type of biomass is added by the reaction.
+   * </p>
+   * 
+   * @param value
+   *        a String containing the id of an constraint representing a type of
+   *        biomass
+   * @return
+   */
   public int setBiomassType(String value) {
     return setAttribute(MEConstants.biomassType, value);
   }
 
 
+  /**
+   * Sets the value of the attribute "surfaceAreaInnerMembrane".
+   * <p>
+   * The optional attribute "surfaceAreaInnerMembrane" contains information
+   * about the area that is occupied by the protein altered by the reaction of
+   * type "PostTranslationReaction".
+   * </p>
+   * 
+   * @param value
+   *        a double representing the area that is occupied by the protein
+   * @return
+   */
   public int setSurfaceAreaInner(String value) {
     return setAttribute(MEConstants.surfaceAreaInner, value);
   }
 
 
+  /**
+   * Sets the value of the attribute "surfaceAreaOuterMembrane".
+   * <p>
+   * The optional attribute "surfaceAreaOuterMembrane" contains information
+   * about the area that is occupied by the protein altered by the reaction of
+   * type "PostTranslationReaction".
+   * </p>
+   * 
+   * @param value
+   *        a double representing the area that is occupied by the protein
+   * @return
+   */
   public int setSurfaceAreaOuter(String value) {
     return setAttribute(MEConstants.surfaceAreaOuter, value);
   }
 
 
+  /**
+   * Sets the value of the attribute "aggregationPropensity".
+   * <p>
+   * The optional attribute "aggregationPropensity" contains information
+   * about propensity of the protein to aggregate. This attribute is mandatory
+   * for reactions of type "PostTranslationReaction".
+   * </p>
+   * 
+   * @param value
+   *        a double representing the propensity of the protein to aggregate.
+   * @return
+   */
   public int setAggregationPropensity(String value) {
     return setAttribute(MEConstants.aggregationPropensity, value);
   }
 
 
+  /**
+   * Sets the value of the attribute "propensityScaling".
+   * <p>
+   * The optional attribute "propensityScaling" contains information
+   * about propensity of the protein to aggregate. This attribute is mandatory
+   * for reactions of type "PostTranslationReaction".
+   * </p>
+   * 
+   * @param value
+   *        string representation of a double value accounting for the
+   *        propensity of some peptides to be folded by certain chaperones
+   * @return
+   */
   public int setPropensityScaling(String value) {
     return setAttribute(MEConstants.propensityScaling, value);
   }
 
 
+  /**
+   * Sets the value of the mandatory attribute "variableKind".
+   * <p>
+   * The attribute defines if the values for the reaction flux are continuous or
+   * discrete.
+   * </p>
+   * 
+   * @param value
+   *        a string, either "continuous" or "discrete"
+   * @return
+   */
   public int setVariableKind(String value) {
     return setAttribute(MEConstants.variableKind, value);
   }

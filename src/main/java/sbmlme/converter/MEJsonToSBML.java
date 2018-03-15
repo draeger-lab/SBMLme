@@ -45,14 +45,7 @@ import sbmlme.MEReactionPlugin;
 import sbmlme.MESpeciesPlugin;
 
 /**
- * contains methods for converting a COBRAme JSON file into a SBML model.
- * IMPORTANT: Can only convert directly from a COBRAme JSON file to SBML.
- * Conversion from a JSON file created by converting a SBMLme model to JSON is
- * currently not possible since the conversion from a ASTNode value to String
- * may add several brackets and removes all whitespace from the original String.
- * The additional brackets should not cause problems any more but the removal of
- * whitespace causes a ParseException when trying to read them in by the ASTNode
- * parser in certain cases.
+ * Contains methods for converting a COBRAme JSON file into a SBML model.
  * 
  * @author Marc A. Voigt
  */
@@ -60,13 +53,20 @@ import sbmlme.MESpeciesPlugin;
 public class MEJsonToSBML implements MEConstants, MEJsonConstants {
 
   /**
-   * read in JSON file and convert it to SBML/SBOL file
+   * Reads in the given COBRAme JSON file and converts it to the CombineArchive
+   * of the SBMLme representation with the respective SBML and SBOL files.
    * 
    * @param jsonFile
+   *        the JSON file of the COBRAme model
    * @param output
+   *        the prefix of the output files
    * @param modelName
+   *        the name of the model in SBML
    * @param validation
+   *        whether the created SBML model should be validated, currently does
+   *        not involve the validity of the SBMLme attributes.
    * @param tidy
+   *        whether the documents should be printed tidy.
    * @throws IOException
    * @throws SBOLValidationException
    * @throws ParseException
@@ -173,7 +173,7 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
     sbol.setDefaultURIprefix(uriSBOL);
     // initialize model
     Model model = doc.createModel(modelName);
-    model.initDefaults(2, 4);
+    model.initDefaults(3, 1);
     // create basic objective
     // Objective for flux coefficient
     FBCModelPlugin fbcModel =
@@ -236,12 +236,18 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
 
 
   /**
-   * add all Species from a list of JsonNodes to the model
+   * Adds all species from a list of JsonNodes to the SBML and SBOL models
+   * according to their
+   * type.
    * 
    * @param model
+   *        the SBML model
    * @param sbol
+   *        the SBOL document
    * @param groups
+   *        the GroupsModelPlugin of the SBML model
    * @param metabolites
+   *        the list of species from the JSON file
    * @throws SBOLValidationException
    */
   public void addSpeciesFromJSON(Model model, SBOLDocument sbol,
@@ -281,12 +287,15 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
 
 
   /**
-   * add all global information from a JsonNode to the parameters in the SBML
-   * model
+   * Adds all global information from a JsonNode to the parameters in the SBML
+   * model.
    * 
    * @param model
+   *        The SBML model
    * @param globalInfo
+   *        the JsonNode containing the global information
    * @param groups
+   *        the GroupsModelPlugin of the model
    */
   public void addGlobalInfoFromJSON(Model model, JsonNode globalInfo,
     GroupsModelPlugin groups) {
@@ -313,10 +322,16 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
 
 
   /**
-   * add ProcessData from JSON
+   * Adds ProcessData information from the list of reaction independent process
+   * data of the JSON file. To be more specific the list of process data
+   * includes all StoichiometricData, SubreactionData and TranslocationData
+   * objects.
    * 
    * @param model
+   *        the SBML model
    * @param processDataSBML
+   *        the list of process data objects that do not encode information of a
+   *        single reaction
    */
   public void addMEProcessDataFromJSON(Model model,
     List<JsonNode> processDataSBML) {
@@ -324,17 +339,16 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
     meProcessData = meProcessData.createMEProcessData();
     for (JsonNode entry : processDataSBML) {
       if (entry.get(processDataType).has(StoichiometricData)) {
-        List<String> listSubreactionReferences = new ArrayList<String>();
-        List<Double> listCoefficients = new ArrayList<Double>();
+        Map<String, Double> subreactionMap = new HashMap<String, Double>();
         List<String> speciesReferences = new ArrayList<String>();
         List<Double> stoichiometries = new ArrayList<Double>();
-        // fill Lists for SubreactionReferences
+        // fill map for SubreactionReferences
         for (Iterator<Entry<String, JsonNode>> subreactionEntry =
           entry.get(processDataType).get(StoichiometricData).get(subreactions)
                .fields(); subreactionEntry.hasNext();) {
           Entry<String, JsonNode> currentEntry = subreactionEntry.next();
-          listSubreactionReferences.add(currentEntry.getKey());
-          listCoefficients.add(currentEntry.getValue().asDouble());
+          subreactionMap.put(currentEntry.getKey(),
+            currentEntry.getValue().asDouble());
         }
         // fill Lists for Stoichiometries
         for (Iterator<Entry<String, JsonNode>> stoichiometricEntry =
@@ -351,12 +365,11 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
                .asDouble(),
           entry.get(processDataType).get(StoichiometricData).get(upper_bound)
                .asDouble(),
-          listSubreactionReferences, listCoefficients, speciesReferences,
-          stoichiometries);
+          subreactionMap, speciesReferences, stoichiometries);
       } else if (entry.get(processDataType).has(SubreactionData)) {
         List<String> enzymes = new ArrayList<String>();
-        List<String> elements = new ArrayList<String>();
-        List<Integer> contribution = new ArrayList<Integer>();
+        Map<String, Integer> elementContributions =
+          new HashMap<String, Integer>();
         List<String> speciesReferences = new ArrayList<String>();
         List<Integer> stoichiometries = new ArrayList<Integer>();
         // prepare list for enzymes
@@ -382,8 +395,8 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
           entry.get(processDataType).get(SubreactionData)
                .get(element_contribution).fields(); elementEntry.hasNext();) {
           Entry<String, JsonNode> currentEntry = elementEntry.next();
-          elements.add(currentEntry.getKey());
-          contribution.add(currentEntry.getValue().asInt());
+          elementContributions.put(currentEntry.getKey(),
+            currentEntry.getValue().asInt());
         }
         // prepare lists for subreaction stoichiometries
         for (Iterator<Entry<String, JsonNode>> stoichiometryEntry =
@@ -397,7 +410,7 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
         meProcessData.addSubreactionData(meProcessData,
           entry.get(id).textValue(),
           entry.get(processDataType).get(SubreactionData).get(keff).asDouble(),
-          enzymes, elements, contribution, speciesReferences, stoichiometries);
+          enzymes, elementContributions, speciesReferences, stoichiometries);
       } else {
         List<String> enzymeReferences = new ArrayList<String>();
         List<Boolean> fixedKeff = new ArrayList<Boolean>();
@@ -438,15 +451,27 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
 
 
   /**
-   * add reactions from JSON to SBML/SBOL
+   * Adds all reactions from a list of JsonNodes to the SBML and SBOL models
+   * according to their type. Also adds all process data information to the
+   * reaction annotations that is not added to the model annotation by the
+   * {@link #addMEProcessDataFromJSON(Model, List)} method.
    * 
    * @param model
+   *        the SBML model
    * @param sbol
+   *        the SBOL document
    * @param groups
+   *        the GroupsModelPlugin of the SBML model
    * @param objective
+   *        the objective of the model
    * @param reactions
+   *        the list of reactions from the JSON file
    * @param processData
+   *        the list of process data objects that encode additional reaction
+   *        specific information
    * @param processDataIndices
+   *        the map with indices of the processData list for easier traversing
+   *        the processData list
    * @throws ParseException
    * @throws SBOLValidationException
    */
@@ -528,8 +553,7 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
         // add TranscriptionReaction to model
         List<String> speciesIds = new ArrayList<String>();
         List<String> coefficients = new ArrayList<String>();
-        List<String> subreactionList = new ArrayList<String>();
-        List<Integer> subreactionCoefficients = new ArrayList<Integer>();
+        Map<String, Double> subreactionMap = new HashMap<String, Double>();
         String dataId = entry.get(reactionType).get(transcription)
                              .get(transcription_data).asText();
         // get ProcessData object
@@ -546,8 +570,8 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
           processDataEntry.get(subreactions).fields(); elementEntry
                                                                    .hasNext();) {
           Entry<String, JsonNode> currentEntry = elementEntry.next();
-          subreactionList.add(currentEntry.getKey());
-          subreactionCoefficients.add(currentEntry.getValue().asInt());
+          subreactionMap.put(currentEntry.getKey(),
+            currentEntry.getValue().asDouble());
         }
         meReactionPlugin.createTranscriptionReaction(model, sbol, groups,
           objective, entry.get(id).textValue(), entry.get(name).textValue(),
@@ -555,14 +579,12 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
           entry.get(lower_Bound).asDouble(), speciesIds, coefficients,
           entry.get(objectiveCoefficient).asDouble(),
           entry.get(variable_kind).textValue(),
-          processDataEntry.get(nucleotide_sequence).asText(), subreactionList,
-          subreactionCoefficients);
+          processDataEntry.get(nucleotide_sequence).asText(), subreactionMap);
       } else if (entry.get(reactionType).has(translation)) {
         // add TranslationReaction to model
         List<String> speciesIds = new ArrayList<String>();
         List<String> coefficients = new ArrayList<String>();
-        List<String> subreactionList = new ArrayList<String>();
-        List<Integer> subreactionCoefficients = new ArrayList<Integer>();
+        Map<String, Double> subreactionMap = new HashMap<String, Double>();
         String dataId = entry.get(reactionType).get(translation)
                              .get(translation_data).asText();
         // get ProcessData object
@@ -579,8 +601,8 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
           processDataEntry.get(subreactions).fields(); elementEntry
                                                                    .hasNext();) {
           Entry<String, JsonNode> currentEntry = elementEntry.next();
-          subreactionList.add(currentEntry.getKey());
-          subreactionCoefficients.add(currentEntry.getValue().asInt());
+          subreactionMap.put(currentEntry.getKey(),
+            currentEntry.getValue().asDouble());
         }
         meReactionPlugin.createTranslationReaction(model, sbol, groups,
           objective, entry.get(id).textValue(), entry.get(name).textValue(),
@@ -588,14 +610,12 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
           entry.get(lower_Bound).asDouble(), speciesIds, coefficients,
           entry.get(objectiveCoefficient).asDouble(),
           entry.get(variable_kind).textValue(),
-          processDataEntry.get(nucleotide_sequence).asText(), subreactionList,
-          subreactionCoefficients);
+          processDataEntry.get(nucleotide_sequence).asText(), subreactionMap);
       } else if (entry.get(reactionType).has(tRNACharging)) {
         // add tRNAChargingReaction to model
         List<String> speciesIds = new ArrayList<String>();
         List<String> coefficients = new ArrayList<String>();
-        List<String> subreactionList = new ArrayList<String>();
-        List<Integer> subreactionCoefficients = new ArrayList<Integer>();
+        Map<String, Double> subreactionMap = new HashMap<String, Double>();
         String dataId =
           entry.get(reactionType).get(tRNACharging).get(tRNA_data).asText();
         // get ProcessData object
@@ -612,24 +632,23 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
           processDataEntry.get(subreactions).fields(); elementEntry
                                                                    .hasNext();) {
           Entry<String, JsonNode> currentEntry = elementEntry.next();
-          subreactionList.add(currentEntry.getKey());
-          subreactionCoefficients.add(currentEntry.getValue().asInt());
+          subreactionMap.put(currentEntry.getKey(),
+            currentEntry.getValue().asDouble());
         }
         meReactionPlugin.createtRNAChargingReaction(model, groups, objective,
           entry.get(id).textValue(), entry.get(name).textValue(), dataId,
           entry.get(upper_bound).asDouble(), entry.get(lower_Bound).asDouble(),
           processDataEntry.get(synthetaseKeff).asDouble(), speciesIds,
           coefficients, entry.get(objectiveCoefficient).asDouble(),
-          entry.get(variable_kind).textValue(), subreactionList,
-          subreactionCoefficients, processDataEntry.get(synthetase).textValue(),
+          entry.get(variable_kind).textValue(), subreactionMap,
+          processDataEntry.get(synthetase).textValue(),
           processDataEntry.get(codon).textValue(),
           processDataEntry.get(amino_acid).textValue());
       } else if (entry.get(reactionType).has(complexFormation)) {
         // add ComplexFormation Reaction
         List<String> speciesIds = new ArrayList<String>();
         List<String> coefficients = new ArrayList<String>();
-        List<String> subreactionList = new ArrayList<String>();
-        List<Integer> subreactionCoefficients = new ArrayList<Integer>();
+        Map<String, Double> subreactionMap = new HashMap<String, Double>();
         String dataId = entry.get(reactionType).get(complexFormation)
                              .get(complex_data_id).asText();
         String complexId = entry.get(reactionType).get(complexFormation)
@@ -648,22 +667,20 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
           processDataEntry.get(subreactions).fields(); elementEntry
                                                                    .hasNext();) {
           Entry<String, JsonNode> currentEntry = elementEntry.next();
-          subreactionList.add(currentEntry.getKey());
-          subreactionCoefficients.add(currentEntry.getValue().asInt());
+          subreactionMap.put(currentEntry.getKey(),
+            currentEntry.getValue().asDouble());
         }
         meReactionPlugin.createComplexFormationReaction(model, groups,
           objective, entry.get(id).textValue(), entry.get(name).textValue(),
           dataId, complexId, entry.get(upper_bound).asDouble(),
           entry.get(lower_Bound).asDouble(), speciesIds, coefficients,
           entry.get(objectiveCoefficient).asDouble(),
-          entry.get(variable_kind).textValue(), subreactionList,
-          subreactionCoefficients);
+          entry.get(variable_kind).textValue(), subreactionMap);
       } else if (entry.get(reactionType).has(postTranslationReaction)) {
         // add PostTranslationReaction to model
         List<String> speciesIds = new ArrayList<String>();
         List<String> coefficients = new ArrayList<String>();
-        List<String> subreactionList = new ArrayList<String>();
-        List<Integer> subreactionCoefficients = new ArrayList<Integer>();
+        Map<String, Double> subreactionMap = new HashMap<String, Double>();
         List<String> translocationList = new ArrayList<String>();
         List<Double> multipliers = new ArrayList<Double>();
         List<String> keqFolding = new ArrayList<String>();
@@ -688,8 +705,8 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
           processDataEntry.get(subreactions).fields(); elementEntry
                                                                    .hasNext();) {
           Entry<String, JsonNode> currentEntry = elementEntry.next();
-          subreactionList.add(currentEntry.getKey());
-          subreactionCoefficients.add(currentEntry.getValue().asInt());
+          subreactionMap.put(currentEntry.getKey(),
+            currentEntry.getValue().asDouble());
         }
         // combine list of translocation multipliers with list of translocation
         for (Iterator<Entry<String, JsonNode>> elementEntry =
@@ -730,8 +747,7 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
           entry.get(id).textValue(), entry.get(name).textValue(), dataId,
           entry.get(upper_bound).asDouble(), entry.get(lower_Bound).asDouble(),
           speciesIds, coefficients, entry.get(objectiveCoefficient).asDouble(),
-          entry.get(variable_kind).textValue(), subreactionList,
-          subreactionCoefficients,
+          entry.get(variable_kind).textValue(), subreactionMap,
           processDataEntry.get(aggregation_propensity).asDouble(),
           translocationList, multipliers,
           processDataEntry.get(propensity_scaling).asDouble(), surfaceArea,

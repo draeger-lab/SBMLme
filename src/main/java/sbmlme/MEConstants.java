@@ -1,6 +1,8 @@
 package sbmlme;
 
 /**
+ * Contains constants related to the SBMLme package.
+ * 
  * @author Marc A. Voigt
  */
 public interface MEConstants {

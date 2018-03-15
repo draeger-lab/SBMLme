@@ -14,6 +14,12 @@ import org.sbolstandard.core2.SBOLValidationException;
 
 import de.unirostock.sems.cbarchive.CombineArchiveException;
 
+/**
+ * Contains the main method for the bidirectional conversion between an SBMLme
+ * and a COBRAme model.
+ * 
+ * @author Marc A. Voigt
+ */
 @SuppressWarnings("restriction")
 public class SBMLmeConverter {
 
