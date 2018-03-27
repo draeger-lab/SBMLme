@@ -5,9 +5,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.TransformerException;
@@ -425,7 +424,8 @@ public class ExampleModel implements MEConstants {
       Arrays.asList("generic_tRNA_AUG_met__L_c", "h2o_c", "gdp_c", "atp_c",
         "ppi_c", "gtp_c", "h_c", "pi_c", "amp_c"),
       Arrays.asList(-1, -2, 1, -1, 1, -1, 2, 1, 1));
-    Map<String, Integer> elementContribution = new HashMap<String, Integer>();
+    LinkedHashMap<String, Integer> elementContribution =
+      new LinkedHashMap<String, Integer>();
     elementContribution.put("O", -1);
     elementContribution.put("Se", 1);
     meProcessData.addSubreactionData(meProcessData, "sec_addition_at_UGA", 65.0,
@@ -435,7 +435,8 @@ public class ExampleModel implements MEConstants {
       Arrays.asList(1, 1, -1, -1));
     // create ME Reactions
     MEReactionPlugin meReactionPlugin = new MEReactionPlugin();
-    Map<String, Double> subreactionMap = new HashMap<String, Double>();
+    LinkedHashMap<String, Double> subreactionMap =
+      new LinkedHashMap<String, Double>();
     subreactionMap.put("monocistronic_excision", 2.0);
     subreactionMap.put("Transcription_stable_rho_dependent", 1.0);
     subreactionMap.put("RNA_degradation_machine", 2.0);
@@ -619,12 +620,12 @@ public class ExampleModel implements MEConstants {
       0.0, "continuous", null, 0.0,
       Arrays.asList("TatE_MONOMER", "TatA_MONOMER", "srp_yidC_translocation"),
       Arrays.asList(21.0, 21.0, 0.0), 1.0, null, null, null, null, null, null,
-      "");
+      "", "protein_b0002_Inner_Membrane", "protein_b0002");
     meReactionPlugin.createComplexFormationReaction(model, groups, objective,
       "formation_RpmH_mono", "", "RpmH_mono", "RpmH_mono",
       Double.valueOf("1000.00000000000"), Double.valueOf("0.0"),
       Arrays.asList("RpmH_mono", "protein_b0002_Inner_Membrane"),
-      Arrays.asList("1", "-1.0"), 0.0, "continuous", null);
+      Arrays.asList("1", "-1.0"), 0.0, "continuous", null, null);
     meReactionPlugin.createMetabolicReaction(model, groups, objective,
       "ADEt2rpp_REV_YICE_MONOMER", "", "ADEt2rpp", 1000.0, 0.0,
       Arrays.asList("ade_p", "YICE_MONOMER", "ade_c", "h_c", "h_p"),

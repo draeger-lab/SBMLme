@@ -1,7 +1,7 @@
 package sbmlme;
 
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.sbml.jsbml.xml.XMLAttributes;
 import org.sbml.jsbml.xml.XMLNode;
@@ -84,8 +84,8 @@ public class MEProcessData extends MEAbstractXMLNodePlugin
    */
   public void addSubreactionData(MEProcessData processData, String id,
     double keff, List<String> enzymeReferences,
-    Map<String, Integer> elementContributions, List<String> speciesReferences,
-    List<Integer> stoichiometries) {
+    LinkedHashMap<String, Integer> elementContributions,
+    List<String> speciesReferences, List<Integer> stoichiometries) {
     SubreactionData nodeToBeAdded = new SubreactionData();
     // get first child of the MEProcessData object which should be the list of
     // SubreactionData
@@ -166,8 +166,8 @@ public class MEProcessData extends MEAbstractXMLNodePlugin
    */
   public void addStoichiometricData(MEProcessData processData, String id,
     Double lowerFluxBound, Double upperFluxBound,
-    Map<String, Double> subreactionMap, List<String> speciesReferences,
-    List<Double> stoichiometries) {
+    LinkedHashMap<String, Double> subreactionMap,
+    List<String> speciesReferences, List<Double> stoichiometries) {
     StoichiometricData nodeToBeAdded = new StoichiometricData();
     // get third child of the MEProcessData object which should be the list of
     // StoichiometricData

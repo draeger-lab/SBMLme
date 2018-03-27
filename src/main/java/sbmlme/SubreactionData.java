@@ -1,7 +1,7 @@
 package sbmlme;
 
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.sbml.jsbml.util.StringTools;
 import org.sbml.jsbml.xml.XMLAttributes;
@@ -61,7 +61,8 @@ public class SubreactionData extends MEAbstractXMLNodePlugin
    * @return the XMLNode containing the SubreactionData
    */
   public XMLNode createSubreactionData(String id, double keff,
-    List<String> enzymeReferences, Map<String, Integer> elementContributions,
+    List<String> enzymeReferences,
+    LinkedHashMap<String, Integer> elementContributions,
     List<String> speciesReferences, List<Integer> stoichiometries) {
     SubreactionData subreactionData = new SubreactionData();
     subreactionData.setId(createSBMLConformId(id));

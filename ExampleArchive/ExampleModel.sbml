@@ -28,8 +28,8 @@
               <sbmlme:enzymeInformation enzymeReference="SelB_mono" />
             </sbmlme:listOfEnzymeInformation>
             <sbmlme:listOfElementContributions>
-              <sbmlme:elementContribution element="Se" value="1" />
               <sbmlme:elementContribution element="O" value="-1" />
+              <sbmlme:elementContribution element="Se" value="1" />
             </sbmlme:listOfElementContributions>
             <sbmlme:listOfReactants>
               <sbmlme:meSpeciesReference species="generic_tRNA_UGA_cys__L_c" stoichiometry="1.0" />
@@ -2351,10 +2351,10 @@
         <annotation>
           <sbmlme:meReactionPlugin sequence="http://cobramens.url/sbol/TU0001_from_RpoD_mono" variableKind="continuous" dataId="TU0001_from_RpoD_mono">
             <sbmlme:listOfSubreactionReferences>
-              <sbmlme:subreactionReference subreaction="RNA_degradation_atp_requirement" stoichiometry="8.0" />
               <sbmlme:subreactionReference subreaction="monocistronic_excision" stoichiometry="2.0" />
-              <sbmlme:subreactionReference subreaction="RNA_degradation_machine" stoichiometry="2.0" />
               <sbmlme:subreactionReference subreaction="Transcription_stable_rho_dependent" stoichiometry="1.0" />
+              <sbmlme:subreactionReference subreaction="RNA_degradation_machine" stoichiometry="2.0" />
+              <sbmlme:subreactionReference subreaction="RNA_degradation_atp_requirement" stoichiometry="8.0" />
             </sbmlme:listOfSubreactionReferences>
           </sbmlme:meReactionPlugin>
         </annotation>
@@ -2407,15 +2407,15 @@
         <annotation>
           <sbmlme:meReactionPlugin variableKind="continuous" dataId="tRNA_b0001_AAC" codon="AAC" keff="65.0" synthetase="Asn_RS_dim" aminoAcid="asn__L_c">
             <sbmlme:listOfSubreactionReferences>
-              <sbmlme:subreactionReference subreaction="t6A_at_37" stoichiometry="1.0" />
-              <sbmlme:subreactionReference subreaction="Y_at_55" stoichiometry="1.0" />
-              <sbmlme:subreactionReference subreaction="m5U_at_54" stoichiometry="1.0" />
               <sbmlme:subreactionReference subreaction="D_at_16" stoichiometry="1.0" />
               <sbmlme:subreactionReference subreaction="s4U_at_8" stoichiometry="1.0" />
-              <sbmlme:subreactionReference subreaction="Y_at_39" stoichiometry="1.0" />
               <sbmlme:subreactionReference subreaction="m7G_at_46" stoichiometry="1.0" />
-              <sbmlme:subreactionReference subreaction="Q_at_34" stoichiometry="1.0" />
+              <sbmlme:subreactionReference subreaction="t6A_at_37" stoichiometry="1.0" />
+              <sbmlme:subreactionReference subreaction="Y_at_39" stoichiometry="1.0" />
               <sbmlme:subreactionReference subreaction="D_at_20" stoichiometry="1.0" />
+              <sbmlme:subreactionReference subreaction="Y_at_55" stoichiometry="1.0" />
+              <sbmlme:subreactionReference subreaction="Q_at_34" stoichiometry="1.0" />
+              <sbmlme:subreactionReference subreaction="m5U_at_54" stoichiometry="1.0" />
             </sbmlme:listOfSubreactionReferences>
           </sbmlme:meReactionPlugin>
         </annotation>
@@ -2494,39 +2494,39 @@
         <annotation>
           <sbmlme:meReactionPlugin sequence="http://cobramens.url/sbol/b0002" variableKind="continuous" dataId="b0002">
             <sbmlme:listOfSubreactionReferences>
-              <sbmlme:subreactionReference subreaction="ribosome_recycler" stoichiometry="1.0" />
-              <sbmlme:subreactionReference subreaction="phe_addition_at_UUU" stoichiometry="1.0" />
-              <sbmlme:subreactionReference subreaction="FusA_mono_elongation" stoichiometry="45.0" />
-              <sbmlme:subreactionReference subreaction="gly_addition_at_GGU" stoichiometry="1.0" />
-              <sbmlme:subreactionReference subreaction="thr_addition_at_ACU" stoichiometry="2.0" />
-              <sbmlme:subreactionReference subreaction="lys_addition_at_AAG" stoichiometry="2.0" />
-              <sbmlme:subreactionReference subreaction="asn_addition_at_AAC" stoichiometry="1.0" />
-              <sbmlme:subreactionReference subreaction="arg_addition_at_CGC" stoichiometry="2.0" />
-              <sbmlme:subreactionReference subreaction="ala_addition_at_GCA" stoichiometry="1.0" />
-              <sbmlme:subreactionReference subreaction="his_addition_at_CAC" stoichiometry="1.0" />
-              <sbmlme:subreactionReference subreaction="phe_addition_at_UUC" stoichiometry="4.0" />
-              <sbmlme:subreactionReference subreaction="Translation_initiation_factor_InfA" stoichiometry="1.0" />
-              <sbmlme:subreactionReference subreaction="gln_addition_at_CAG" stoichiometry="1.0" />
-              <sbmlme:subreactionReference subreaction="val_addition_at_GUA" stoichiometry="1.0" />
-              <sbmlme:subreactionReference subreaction="UAA_generic_RF_mediated_termination" stoichiometry="4.0" />
-              <sbmlme:subreactionReference subreaction="Translation_initiation_factor_InfC" stoichiometry="1.0" />
-              <sbmlme:subreactionReference subreaction="Translation_gtp_initiation_factor_InfB" stoichiometry="1.0" />
-              <sbmlme:subreactionReference subreaction="arg_addition_at_CGU" stoichiometry="8.0" />
-              <sbmlme:subreactionReference subreaction="peptide_chain_release" stoichiometry="1.0" />
-              <sbmlme:subreactionReference subreaction="ser_addition_at_UCU" stoichiometry="3.0" />
-              <sbmlme:subreactionReference subreaction="gln_addition_at_CAA" stoichiometry="1.0" />
-              <sbmlme:subreactionReference subreaction="fmet_addition_at_START" stoichiometry="1.0" />
-              <sbmlme:subreactionReference subreaction="pro_addition_at_CCG" stoichiometry="1.0" />
-              <sbmlme:subreactionReference subreaction="gly_addition_at_GGC" stoichiometry="2.0" />
-              <sbmlme:subreactionReference subreaction="peptide_deformylase_processing" stoichiometry="1.0" />
-              <sbmlme:subreactionReference subreaction="met_addition_at_AUG" stoichiometry="1.0" />
-              <sbmlme:subreactionReference subreaction="asn_addition_at_AAU" stoichiometry="4.0" />
-              <sbmlme:subreactionReference subreaction="Tuf_gtp_regeneration" stoichiometry="45.0" />
-              <sbmlme:subreactionReference subreaction="thr_addition_at_ACC" stoichiometry="1.0" />
               <sbmlme:subreactionReference subreaction="lys_addition_at_AAA" stoichiometry="2.0" />
-              <sbmlme:subreactionReference subreaction="ala_addition_at_GCU" stoichiometry="4.0" />
+              <sbmlme:subreactionReference subreaction="asn_addition_at_AAU" stoichiometry="4.0" />
+              <sbmlme:subreactionReference subreaction="arg_addition_at_CGU" stoichiometry="8.0" />
+              <sbmlme:subreactionReference subreaction="phe_addition_at_UUU" stoichiometry="1.0" />
+              <sbmlme:subreactionReference subreaction="peptide_chain_release" stoichiometry="1.0" />
+              <sbmlme:subreactionReference subreaction="Translation_initiation_factor_InfC" stoichiometry="1.0" />
+              <sbmlme:subreactionReference subreaction="Translation_initiation_factor_InfA" stoichiometry="1.0" />
+              <sbmlme:subreactionReference subreaction="asn_addition_at_AAC" stoichiometry="1.0" />
+              <sbmlme:subreactionReference subreaction="pro_addition_at_CCG" stoichiometry="1.0" />
+              <sbmlme:subreactionReference subreaction="ser_addition_at_UCU" stoichiometry="3.0" />
+              <sbmlme:subreactionReference subreaction="arg_addition_at_CGC" stoichiometry="2.0" />
+              <sbmlme:subreactionReference subreaction="phe_addition_at_UUC" stoichiometry="4.0" />
+              <sbmlme:subreactionReference subreaction="lys_addition_at_AAG" stoichiometry="2.0" />
               <sbmlme:subreactionReference subreaction="val_addition_at_GUU" stoichiometry="2.0" />
+              <sbmlme:subreactionReference subreaction="Translation_gtp_initiation_factor_InfB" stoichiometry="1.0" />
+              <sbmlme:subreactionReference subreaction="ala_addition_at_GCA" stoichiometry="1.0" />
+              <sbmlme:subreactionReference subreaction="FusA_mono_elongation" stoichiometry="45.0" />
+              <sbmlme:subreactionReference subreaction="val_addition_at_GUA" stoichiometry="1.0" />
+              <sbmlme:subreactionReference subreaction="his_addition_at_CAC" stoichiometry="1.0" />
+              <sbmlme:subreactionReference subreaction="peptide_deformylase_processing" stoichiometry="1.0" />
               <sbmlme:subreactionReference subreaction="leu_addition_at_CUG" stoichiometry="2.0" />
+              <sbmlme:subreactionReference subreaction="UAA_generic_RF_mediated_termination" stoichiometry="4.0" />
+              <sbmlme:subreactionReference subreaction="Tuf_gtp_regeneration" stoichiometry="45.0" />
+              <sbmlme:subreactionReference subreaction="ala_addition_at_GCU" stoichiometry="4.0" />
+              <sbmlme:subreactionReference subreaction="gln_addition_at_CAA" stoichiometry="1.0" />
+              <sbmlme:subreactionReference subreaction="met_addition_at_AUG" stoichiometry="1.0" />
+              <sbmlme:subreactionReference subreaction="gln_addition_at_CAG" stoichiometry="1.0" />
+              <sbmlme:subreactionReference subreaction="thr_addition_at_ACC" stoichiometry="1.0" />
+              <sbmlme:subreactionReference subreaction="gly_addition_at_GGU" stoichiometry="1.0" />
+              <sbmlme:subreactionReference subreaction="ribosome_recycler" stoichiometry="1.0" />
+              <sbmlme:subreactionReference subreaction="thr_addition_at_ACU" stoichiometry="2.0" />
+              <sbmlme:subreactionReference subreaction="gly_addition_at_GGC" stoichiometry="2.0" />
+              <sbmlme:subreactionReference subreaction="fmet_addition_at_START" stoichiometry="1.0" />
             </sbmlme:listOfSubreactionReferences>
           </sbmlme:meReactionPlugin>
         </annotation>
@@ -2607,7 +2607,7 @@
       </reaction>
       <reaction fast="false" fbc:lowerFluxBound="me_bound_0__0" fbc:upperFluxBound="me_bound_1000__0" id="translocation_b0002" reversible="false">
         <annotation>
-          <sbmlme:meReactionPlugin variableKind="continuous" dataId="translocation_protein_b0002" aggregationPropensity="0.0" biomassType="" propensityScaling="1.0">
+          <sbmlme:meReactionPlugin variableKind="continuous" dataId="translocation_protein_b0002" processedProteinId="protein_b0002_Inner_Membrane" unprocessedProteinId="protein_b0002" aggregationPropensity="0.0" biomassType="" propensityScaling="1.0">
             <sbmlme:listOfTranslocationReferences>
               <sbmlme:translocationReference translocation="TatE_MONOMER" multiplier="21.0" />
               <sbmlme:translocationReference translocation="TatA_MONOMER" multiplier="21.0" />

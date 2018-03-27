@@ -1,7 +1,7 @@
 package sbmlme.converter;
 
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -26,7 +26,7 @@ public class MEJsonProcessDataTypeAttributes {
    * not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String                            nucleotide_sequence;
+  private String                                                nucleotide_sequence;
   /**
    * The map with all subreactions their usage numbers in a process, the map may
    * be empty. Should not be used for objects of type
@@ -35,7 +35,7 @@ public class MEJsonProcessDataTypeAttributes {
    * {@link MEJsonProcessDataType#TranslocationData TranslocationData}.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Double>               subreactions;
+  private LinkedHashMap<String, Double>                         subreactions;
   /**
    * The list with all RNAs produced by the
    * {@link MEJsonReactionType#TranscriptionReaction TranscriptionReaction}.
@@ -44,7 +44,7 @@ public class MEJsonProcessDataTypeAttributes {
    * should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private List<String>                      RNA_products;
+  private List<String>                                          RNA_products;
   /**
    * The RNA polymerase that is used in the
    * {@link MEJsonReactionType#TranscriptionReaction TranscriptionReaction}.
@@ -53,7 +53,7 @@ public class MEJsonProcessDataTypeAttributes {
    * should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String                            RNA_polymerase;
+  private String                                                RNA_polymerase;
   /**
    * The protein that is created by the
    * {@link MEJsonReactionType#TranslationReaction TransclationReaction}.
@@ -62,7 +62,7 @@ public class MEJsonProcessDataTypeAttributes {
    * should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String                            protein;
+  private String                                                protein;
   /**
    * The mRNA that is translated by the
    * {@link MEJsonReactionType#TranslationReaction TransclationReaction}.
@@ -71,7 +71,7 @@ public class MEJsonProcessDataTypeAttributes {
    * should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String                            mRNA;
+  private String                                                mRNA;
   /**
    * The list with all species that the
    * {@link MEJsonMetaboliteType#GenericComponent GenericComponent} can
@@ -80,7 +80,7 @@ public class MEJsonProcessDataTypeAttributes {
    * should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private List<String>                      component_list;
+  private List<String>                                          component_list;
   /**
    * This attribute is used for different purposes in COBRAme. In
    * {@link MEJsonProcessDataType#ComplexData ComplexData} it is used to encode
@@ -91,7 +91,7 @@ public class MEJsonProcessDataTypeAttributes {
    * process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Double>               stoichiometry;
+  private LinkedHashMap<String, Double>                         stoichiometry;
   /**
    * Encodes the stoichiometry of a
    * {@link MEJsonProcessDataType#StoichiometricData StoichiometricData} object.
@@ -100,7 +100,7 @@ public class MEJsonProcessDataTypeAttributes {
    * should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Double>               stoichiometry_;
+  private LinkedHashMap<String, Double>                         stoichiometry_;
   /**
    * The id of the complex that is created by a
    * {@link MEJsonReactionType#ComplexFormation ComplexFormation}. This
@@ -109,7 +109,7 @@ public class MEJsonProcessDataTypeAttributes {
    * should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String                            complex_id;
+  private String                                                complex_id;
   /**
    * The effective turnover rate of the synthetase of a
    * {@link MEJsonReactionType#tRNAChargingReaction tRNAChargingReaction}. This
@@ -118,7 +118,7 @@ public class MEJsonProcessDataTypeAttributes {
    * other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Double                            synthetase_keff;
+  private Double                                                synthetase_keff;
   /**
    * The synthetase in a {@link MEJsonReactionType#tRNAChargingReaction
    * tRNAChargingReaction}. This attribute is mandatory for process data objects
@@ -126,7 +126,7 @@ public class MEJsonProcessDataTypeAttributes {
    * used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String                            synthetase;
+  private String                                                synthetase;
   /**
    * The amino acid that is charged on the tRNA in a
    * {@link MEJsonReactionType#tRNAChargingReaction tRNAChargingReaction}. This
@@ -135,14 +135,14 @@ public class MEJsonProcessDataTypeAttributes {
    * other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String                            amino_acid;
+  private String                                                amino_acid;
   /**
    * The codon that the charged tRNA translates. This attribute is mandatory for
    * process data objects of type {@link MEJsonProcessDataType#tRNAData
    * tRNAData} and should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String                            codon;
+  private String                                                codon;
   /**
    * The id of the RNA that is charged by the
    * {@link MEJsonReactionType#tRNAChargingReaction tRNAChargingReaction}. This
@@ -151,7 +151,7 @@ public class MEJsonProcessDataTypeAttributes {
    * other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String                            RNA;
+  private String                                                RNA;
   /**
    * The id of the protein which is processed by the
    * {@link MEJsonReactionType#PostTranslationReaction PostTranslationReaction}.
@@ -160,7 +160,7 @@ public class MEJsonProcessDataTypeAttributes {
    * should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String                            unprocessed_protein_id;
+  private String                                                unprocessed_protein_id;
   /**
    * The id of the processed protein which is created by the
    * {@link MEJsonReactionType#PostTranslationReaction PostTranslationReaction}.
@@ -169,7 +169,7 @@ public class MEJsonProcessDataTypeAttributes {
    * should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String                            processed_protein_id;
+  private String                                                processed_protein_id;
   /**
    * The id of the biomass type that is used in the modification process of a
    * {@link MEJsonReactionType#PostTranslationReaction PostTranslationReaction},
@@ -178,7 +178,7 @@ public class MEJsonProcessDataTypeAttributes {
    * should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String                            biomass_type;
+  private String                                                biomass_type;
   /**
    * The aggregation propensity for the protein created by the
    * {@link MEJsonReactionType#PostTranslationReaction PostTranslationReaction}.
@@ -187,7 +187,7 @@ public class MEJsonProcessDataTypeAttributes {
    * should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Double                            aggregation_propensity;
+  private Double                                                aggregation_propensity;
   /**
    * The propensity scaling used in the
    * {@link MEJsonReactionType#PostTranslationReaction PostTranslationReaction}
@@ -197,7 +197,7 @@ public class MEJsonProcessDataTypeAttributes {
    * should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Double                            propensity_scaling;
+  private Double                                                propensity_scaling;
   /**
    * The map containing information about the numerical usage of certain
    * {@link MEJsonProcessDataType#TranslocationData TranslocationData} objects
@@ -208,7 +208,7 @@ public class MEJsonProcessDataTypeAttributes {
    * should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Double>               translocation_multipliers;
+  private LinkedHashMap<String, Double>                         translocation_multipliers;
   /**
    * The map containing temperature dependent keq information about protein
    * folding in the {@link MEJsonReactionType#PostTranslationReaction
@@ -218,7 +218,7 @@ public class MEJsonProcessDataTypeAttributes {
    * should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Double>               keq_folding;
+  private LinkedHashMap<String, Double>                         keq_folding;
   /**
    * The map containing temperature dependent rate constants about protein
    * folding in the {@link MEJsonReactionType#PostTranslationReaction
@@ -228,7 +228,7 @@ public class MEJsonProcessDataTypeAttributes {
    * should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Double>               k_folding;
+  private LinkedHashMap<String, Double>                         k_folding;
   /**
    * The map containing information about membrane surface area occupancy by the
    * created protein, may be null. This attribute is mandatory for process data
@@ -236,7 +236,7 @@ public class MEJsonProcessDataTypeAttributes {
    * PostTranslationData} and should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Double>               surface_area;
+  private LinkedHashMap<String, Double>                         surface_area;
   /**
    * The list with the translocation pathways involved in the
    * {@link MEJsonReactionType#PostTranslationReaction PostTranslationReaction},
@@ -245,7 +245,7 @@ public class MEJsonProcessDataTypeAttributes {
    * should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private List<String>                      translocation;
+  private List<String>                                          translocation;
   /**
    * The effective turnover rate of an enzyme in a
    * {@link MEJsonProcessDataType#SubreactionData SubreactionData} object or a
@@ -254,7 +254,7 @@ public class MEJsonProcessDataTypeAttributes {
    * for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Double                            keff;
+  private Double                                                keff;
   // COBRAme accepts null/String/List<String>
   /**
    * The list with the enzymes that are part of the
@@ -264,7 +264,7 @@ public class MEJsonProcessDataTypeAttributes {
    * should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private List<String>                      enzyme;
+  private List<String>                                          enzyme;
   /**
    * The map with the net change in elements that a
    * {@link MEJsonProcessDataType#SubreactionData subreaction process} applies
@@ -273,7 +273,7 @@ public class MEJsonProcessDataTypeAttributes {
    * should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Integer>              element_contribution;
+  private LinkedHashMap<String, Integer>                        element_contribution;
   /**
    * The map containing enzyme specific information about the coupling process
    * to a protein in a {@link MEJsonReactionType#PostTranslationReaction
@@ -282,7 +282,7 @@ public class MEJsonProcessDataTypeAttributes {
    * TranslocationData} and should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Map<String, Boolean>> enzyme_dict;
+  private LinkedHashMap<String, LinkedHashMap<String, Boolean>> enzyme_dict;
   /**
    * Whether the energy cost of the translocation is depending on the protein
    * length. This attribute is mandatory for process data objects of type
@@ -290,7 +290,7 @@ public class MEJsonProcessDataTypeAttributes {
    * should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Boolean                           length_dependent_energy;
+  private Boolean                                               length_dependent_energy;
   /**
    * The lower bound of a {@link MEJsonReactionType#MetabolicReaction
    * MetabolicReaction}. This attribute is mandatory for process data objects of
@@ -298,7 +298,7 @@ public class MEJsonProcessDataTypeAttributes {
    * and should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Double                            lower_bound;
+  private Double                                                lower_bound;
   /**
    * The upper bound of a {@link MEJsonReactionType#MetabolicReaction
    * MetabolicReaction}. This attribute is mandatory for process data objects of
@@ -306,7 +306,7 @@ public class MEJsonProcessDataTypeAttributes {
    * and should not be used for other process data types.
    */
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Double                            upper_bound;
+  private Double                                                upper_bound;
 
 
   public MEJsonProcessDataTypeAttributes() {
@@ -327,13 +327,13 @@ public class MEJsonProcessDataTypeAttributes {
 
 
   @JsonProperty("subreactions")
-  public Map<String, Double> getSubreactions() {
+  public LinkedHashMap<String, Double> getSubreactions() {
     return subreactions;
   }
 
 
   @JsonSetter("subreactions")
-  public void setSubreactions(Map<String, Double> value) {
+  public void setSubreactions(LinkedHashMap<String, Double> value) {
     subreactions = value;
   }
 
@@ -399,13 +399,13 @@ public class MEJsonProcessDataTypeAttributes {
 
 
   @JsonProperty("stoichiometry")
-  public Map<String, Double> getStoichiometry() {
+  public LinkedHashMap<String, Double> getStoichiometry() {
     return stoichiometry;
   }
 
 
   @JsonSetter("stoichiometry")
-  public void setStoichiometry(Map<String, Double> value) {
+  public void setStoichiometry(LinkedHashMap<String, Double> value) {
     stoichiometry = value;
   }
 
@@ -543,49 +543,50 @@ public class MEJsonProcessDataTypeAttributes {
 
 
   @JsonProperty("translocation_multipliers")
-  public Map<String, Double> getTranslocation_multipliers() {
+  public LinkedHashMap<String, Double> getTranslocation_multipliers() {
     return translocation_multipliers;
   }
 
 
   @JsonSetter("translocation_multipliers")
-  public void setTranslocation_multipliers(Map<String, Double> value) {
+  public void setTranslocation_multipliers(
+    LinkedHashMap<String, Double> value) {
     translocation_multipliers = value;
   }
 
 
   @JsonProperty("keq_folding")
-  public Map<String, Double> getKeq_folding() {
+  public LinkedHashMap<String, Double> getKeq_folding() {
     return keq_folding;
   }
 
 
   @JsonSetter("keq_folding")
-  public void setKeq_folding(Map<String, Double> value) {
+  public void setKeq_folding(LinkedHashMap<String, Double> value) {
     keq_folding = value;
   }
 
 
   @JsonProperty("k_folding")
-  public Map<String, Double> getK_folding() {
+  public LinkedHashMap<String, Double> getK_folding() {
     return k_folding;
   }
 
 
   @JsonSetter("k_folding")
-  public void setK_folding(Map<String, Double> value) {
+  public void setK_folding(LinkedHashMap<String, Double> value) {
     k_folding = value;
   }
 
 
   @JsonProperty("surface_area")
-  public Map<String, Double> getSurface_area() {
+  public LinkedHashMap<String, Double> getSurface_area() {
     return surface_area;
   }
 
 
   @JsonSetter("surface_area")
-  public void setSurface_area(Map<String, Double> value) {
+  public void setSurface_area(LinkedHashMap<String, Double> value) {
     surface_area = value;
   }
 
@@ -627,25 +628,26 @@ public class MEJsonProcessDataTypeAttributes {
 
 
   @JsonProperty("element_contribution")
-  public Map<String, Integer> getElement_contribution() {
+  public LinkedHashMap<String, Integer> getElement_contribution() {
     return element_contribution;
   }
 
 
   @JsonSetter("element_contribution")
-  public void setElement_contribution(Map<String, Integer> value) {
+  public void setElement_contribution(LinkedHashMap<String, Integer> value) {
     element_contribution = value;
   }
 
 
   @JsonProperty("enzyme_dict")
-  public Map<String, Map<String, Boolean>> getEnzyme_dict() {
+  public LinkedHashMap<String, LinkedHashMap<String, Boolean>> getEnzyme_dict() {
     return enzyme_dict;
   }
 
 
   @JsonSetter("enzyme_dict")
-  public void setEnzyme_dict(Map<String, Map<String, Boolean>> value) {
+  public void setEnzyme_dict(
+    LinkedHashMap<String, LinkedHashMap<String, Boolean>> value) {
     enzyme_dict = value;
   }
 
@@ -687,13 +689,13 @@ public class MEJsonProcessDataTypeAttributes {
 
 
   @JsonProperty("_stoichiometry")
-  public Map<String, Double> get_stoichiometry() {
+  public LinkedHashMap<String, Double> get_stoichiometry() {
     return stoichiometry_;
   }
 
 
   @JsonSetter("_stoichiometry")
-  public void set_stoichiometry(Map<String, Double> value) {
+  public void set_stoichiometry(LinkedHashMap<String, Double> value) {
     stoichiometry_ = value;
   }
 }

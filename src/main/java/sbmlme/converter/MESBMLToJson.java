@@ -5,10 +5,9 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -121,7 +120,8 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
       listComplex.add(member.getIdRef());
     }
     // set Map for global info
-    Map<String, Double> globalInfo = new HashMap<String, Double>();
+    LinkedHashMap<String, Double> globalInfo =
+      new LinkedHashMap<String, Double>();
     FBCModelPlugin fbcModel =
       (FBCModelPlugin) model.getPlugin(FBCConstants.shortLabel);
     for (Group group : groups.getListOfGroups()) {
@@ -154,10 +154,10 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
         MEJsonProcessDataType genericDataType = new MEJsonProcessDataType();
         MEJsonProcessDataTypeAttributes genericDataTypeAttributes =
           new MEJsonProcessDataTypeAttributes();
-        genericData.setId(genericDataId);
+        genericData.setId(ConvertSBMLIdToCOBRAId(genericDataId));
         // add all component to a list
         for (Member member : group.getListOfMembers()) {
-          component_list.add(member.getIdRef());
+          component_list.add(ConvertSBMLIdToCOBRAId(member.getIdRef()));
         }
         // set ProcessData structure
         genericDataTypeAttributes.setComponent_list(component_list);
@@ -373,7 +373,8 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
     List<XMLNode> listElementNodes =
       subreactionData.getChildElement(listOfElementContributions, "*")
                      .getChildElements(elementContribution, "*");
-    Map<String, Integer> elementContributions = new HashMap<String, Integer>();
+    LinkedHashMap<String, Integer> elementContributions =
+      new LinkedHashMap<String, Integer>();
     for (XMLNode elementNode : listElementNodes) {
       elementContributions.put(elementNode.getAttrValue(element),
         Integer.valueOf(elementNode.getAttrValue(value)));
@@ -387,7 +388,8 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
     List<XMLNode> listProductNodes =
       subreactionData.getChildElement(listOfProducts, "*")
                      .getChildElements(speciesRef, "*");
-    Map<String, Double> stoichiometries = new HashMap<String, Double>();
+    LinkedHashMap<String, Double> stoichiometries =
+      new LinkedHashMap<String, Double>();
     for (XMLNode entry : listReactantNodes) {
       stoichiometries.put(ConvertSBMLIdToCOBRAId(entry.getAttrValue(species)),
         Double.valueOf(entry.getAttrValue(stoichiometry)) * -1);
@@ -423,13 +425,14 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
     processDataEntryTypeAttributes.setLength_dependent_energy(
       Boolean.valueOf(translocationData.getAttrValue(lengthDependent)));
     // add enzyme_dict
-    Map<String, Map<String, Boolean>> enzymeDict =
-      new HashMap<String, Map<String, Boolean>>();
+    LinkedHashMap<String, LinkedHashMap<String, Boolean>> enzymeDict =
+      new LinkedHashMap<String, LinkedHashMap<String, Boolean>>();
     List<XMLNode> enzymeDictNodes =
       translocationData.getChildElement(listOfEnzymeInformation, "*")
                        .getChildElements(enzymeInformation, "*");
     for (XMLNode node : enzymeDictNodes) {
-      Map<String, Boolean> dict = new HashMap<String, Boolean>();
+      LinkedHashMap<String, Boolean> dict =
+        new LinkedHashMap<String, Boolean>();
       dict.put(fixed_keff, Boolean.valueOf(node.getAttrValue(fixedkeff)));
       dict.put(lengthDep, Boolean.valueOf(node.getAttrValue(lengthDependent)));
       enzymeDict.put(ConvertSBMLIdToCOBRAId(node.getAttrValue(enzymeRef)),
@@ -443,7 +446,8 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
     List<XMLNode> listProductNodes =
       translocationData.getChildElement(listOfProducts, "*")
                        .getChildElements(speciesRef, "*");
-    Map<String, Double> stoichiometries = new HashMap<String, Double>();
+    LinkedHashMap<String, Double> stoichiometries =
+      new LinkedHashMap<String, Double>();
     for (XMLNode entry : listReactantNodes) {
       stoichiometries.put(ConvertSBMLIdToCOBRAId(entry.getAttrValue(species)),
         Double.valueOf(entry.getAttrValue(stoichiometry)) * -1);
@@ -483,7 +487,8 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
     List<XMLNode> listSubreactions =
       stoichiometricData.getChildElement(listSubreactionReferences, "*")
                         .getChildElements(subreactionRef, "*");
-    Map<String, Double> subreactions = new HashMap<String, Double>();
+    LinkedHashMap<String, Double> subreactions =
+      new LinkedHashMap<String, Double>();
     for (XMLNode entry : listSubreactions) {
       subreactions.put(ConvertSBMLIdToCOBRAId(entry.getAttrValue(subreaction)),
         Double.valueOf(entry.getAttrValue(stoichiometry)));
@@ -496,7 +501,8 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
     List<XMLNode> listProductNodes =
       stoichiometricData.getChildElement(listOfProducts, "*")
                         .getChildElements(speciesRef, "*");
-    Map<String, Double> stoichiometries = new HashMap<String, Double>();
+    LinkedHashMap<String, Double> stoichiometries =
+      new LinkedHashMap<String, Double>();
     for (XMLNode entry : listReactantNodes) {
       stoichiometries.put(ConvertSBMLIdToCOBRAId(entry.getAttrValue(species)),
         Double.valueOf(entry.getAttrValue(stoichiometry)) * -1);
@@ -652,7 +658,8 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
           sequenceIterator.next().getElements());
       }
       // add subreations to ProcessData
-      Map<String, Double> subreactions = new HashMap<String, Double>();
+      LinkedHashMap<String, Double> subreactions =
+        new LinkedHashMap<String, Double>();
       List<XMLNode> subreactionReferences =
         sbmlAnnotation.getChildElement(reactionPlugin, "*")
                       .getChildElement(listSubreactionReferences, "*")
@@ -709,7 +716,8 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
           sequenceIterator.next().getElements());
       }
       // add subreations to ProcessData
-      Map<String, Double> subreactions = new HashMap<String, Double>();
+      LinkedHashMap<String, Double> subreactions =
+        new LinkedHashMap<String, Double>();
       List<XMLNode> subreactionReferences =
         sbmlAnnotation.getChildElement(reactionPlugin, "*")
                       .getChildElement(listSubreactionReferences, "*")
@@ -755,7 +763,8 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
         new MEJsonProcessDataTypeAttributes();
       tempProcess.setId(ConvertSBMLIdToCOBRAId(sbmlDataId));
       // add subreations to ProcessData
-      Map<String, Double> subreactions = new HashMap<String, Double>();
+      LinkedHashMap<String, Double> subreactions =
+        new LinkedHashMap<String, Double>();
       List<XMLNode> subreactionReferences =
         sbmlAnnotation.getChildElement(reactionPlugin, "*")
                       .getChildElement(listSubreactionReferences, "*")
@@ -805,7 +814,8 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
         new MEJsonProcessDataTypeAttributes();
       tempProcess.setId(ConvertSBMLIdToCOBRAId(sbmlDataId));
       // add subreations to ProcessData
-      Map<String, Double> subreactions = new HashMap<String, Double>();
+      LinkedHashMap<String, Double> subreactions =
+        new LinkedHashMap<String, Double>();
       List<XMLNode> subreactionReferences =
         sbmlAnnotation.getChildElement(reactionPlugin, "*")
                       .getChildElement(listSubreactionReferences, "*")
@@ -819,23 +829,14 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
       }
       tempProcessTypeAttributes.setSubreactions(subreactions);
       // add unprocessed Protein
-      for (SpeciesReference species : reaction.getListOfReactants()) {
-        // check if current product is a protein
-        if (listTranslated.contains(species.getSpecies())) {
-          tempProcessTypeAttributes.setUnprocessed_protein_id(
-            ConvertSBMLIdToCOBRAId(species.getSpecies()));
-          break;
-        }
-      }
+      tempProcessTypeAttributes.setUnprocessed_protein_id(
+        ConvertSBMLIdToCOBRAId(
+          sbmlAnnotation.getChildElement(reactionPlugin, "*")
+                        .getAttrValue(unprocessed)));
       // add processed Protein
-      for (SpeciesReference species : reaction.getListOfProducts()) {
-        // check if current product is a protein
-        if (listProcessed.contains(species.getSpecies())) {
-          tempProcessTypeAttributes.setProcessed_protein_id(
-            ConvertSBMLIdToCOBRAId(species.getSpecies()));
-          break;
-        }
-      }
+      tempProcessTypeAttributes.setProcessed_protein_id(ConvertSBMLIdToCOBRAId(
+        sbmlAnnotation.getChildElement(reactionPlugin, "*")
+                      .getAttrValue(processed)));
       tempProcessTypeAttributes.setBiomass_type(
         sbmlAnnotation.getChildElement(reactionPlugin, "*")
                       .getAttrValue(biomassType));
@@ -846,8 +847,8 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
         Double.valueOf(sbmlAnnotation.getChildElement(reactionPlugin, "*")
                                      .getAttrValue(propensityScaling)));
       // add Translocations to ProcessData
-      Map<String, Double> translocationMultipliers =
-        new HashMap<String, Double>();
+      LinkedHashMap<String, Double> translocationMultipliers =
+        new LinkedHashMap<String, Double>();
       List<String> translocationList = new ArrayList<String>();
       List<XMLNode> translocationReferences =
         sbmlAnnotation.getChildElement(reactionPlugin, "*")
@@ -872,7 +873,8 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
         translocationMultipliers);
       tempProcessTypeAttributes.setTranslocation(translocationList);
       // add EquilibriumConstants to ProcessData
-      Map<String, Double> keqFolding = new HashMap<String, Double>();
+      LinkedHashMap<String, Double> keqFolding =
+        new LinkedHashMap<String, Double>();
       List<XMLNode> EquilibriumConstantReferences =
         sbmlAnnotation.getChildElement(reactionPlugin, "*")
                       .getChildElement(listEquilibrium, "*")
@@ -886,7 +888,8 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
       }
       tempProcessTypeAttributes.setKeq_folding(keqFolding);
       // add RateConstants to ProcessData
-      Map<String, Double> kFolding = new HashMap<String, Double>();
+      LinkedHashMap<String, Double> kFolding =
+        new LinkedHashMap<String, Double>();
       List<XMLNode> RateConstantReferences =
         sbmlAnnotation.getChildElement(reactionPlugin, "*")
                       .getChildElement(listRateConstant, "*")
@@ -900,7 +903,8 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
       }
       tempProcessTypeAttributes.setK_folding(kFolding);
       // add surface area to ProcessData
-      Map<String, Double> surfaceArea = new HashMap<String, Double>();
+      LinkedHashMap<String, Double> surfaceArea =
+        new LinkedHashMap<String, Double>();
       if (sbmlAnnotation.getChildElement(reactionPlugin, "*")
                         .hasAttr(surfaceAreaInner)) {
         surfaceArea.put(saInner,
@@ -933,7 +937,8 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
         new MEJsonProcessDataTypeAttributes();
       tempProcess.setId(ConvertSBMLIdToCOBRAId(sbmlDataId));
       // add subreations to ProcessData
-      Map<String, Double> subreactions = new HashMap<String, Double>();
+      LinkedHashMap<String, Double> subreactions =
+        new LinkedHashMap<String, Double>();
       List<XMLNode> subreactionReferences =
         sbmlAnnotation.getChildElement(reactionPlugin, "*")
                       .getChildElement(listSubreactionReferences, "*")
@@ -947,24 +952,22 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
       }
       tempProcessTypeAttributes.setSubreactions(subreactions);
       // set stoichiometry in Process Data
-      Map<String, Double> stoichiometry = new HashMap<String, Double>();
-      for (SpeciesReference species : reaction.getListOfReactants()) {
-        // check if current reactant is a protein
-        if (listTranslated.contains(species.getSpecies())) {
-          stoichiometry.put(ConvertSBMLIdToCOBRAId(species.getSpecies()),
-            species.getStoichiometry());
-        }
+      LinkedHashMap<String, Double> stoichiometries =
+        new LinkedHashMap<String, Double>();
+      List<XMLNode> stoichiometricReferences =
+        sbmlAnnotation.getChildElement(reactionPlugin, "*")
+                      .getChildElement(listStoichiometricReferences, "*")
+                      .getChildElements(stoichiometricRef, "*");
+      for (Iterator<XMLNode> stoichiometricIter =
+        stoichiometricReferences.iterator(); stoichiometricIter.hasNext();) {
+        XMLNode sto = stoichiometricIter.next();
+        stoichiometries.put(ConvertSBMLIdToCOBRAId(sto.getAttrValue(subunit)),
+          Double.valueOf(sto.getAttrValue(stoichiometry)));
       }
-      tempProcessTypeAttributes.setStoichiometry(stoichiometry);
+      tempProcessTypeAttributes.setStoichiometry(stoichiometries);
       // add Complex to Process Data
-      for (SpeciesReference species : reaction.getListOfProducts()) {
-        // check if current product is a complex
-        if (listComplex.contains(species.getSpecies())) {
-          tempProcessTypeAttributes.setComplex_id(
-            ConvertSBMLIdToCOBRAId(species.getSpecies()));
-          break;
-        }
-      }
+      tempProcessTypeAttributes.setComplex_id(
+        ConvertSBMLIdToCOBRAId(sbmlComplexId));
       tempProcessType.setComplexData(tempProcessTypeAttributes);
       tempProcess.setProcessDataType(tempProcessType);
       processData.add(tempProcess);

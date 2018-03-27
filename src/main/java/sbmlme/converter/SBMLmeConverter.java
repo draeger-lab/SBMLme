@@ -16,7 +16,26 @@ import de.unirostock.sems.cbarchive.CombineArchiveException;
 
 /**
  * Contains the main method for the bidirectional conversion between an SBMLme
- * and a COBRAme model.
+ * and a COBRAme model via the command line.
+ * <p>
+ * The standalone .jar file uses this class as its entry point when running it
+ * via the command line.
+ * For the conversion the path to the input file (in SBML or JSON format) has to
+ * be given with the 'input' option. A path for the output files also needs to
+ * be given in all cases with the 'output' option.
+ * </p>
+ * <p>
+ * For the conversion from JSON to SBML the name of the model is required, which
+ * can be given with the 'model' option.
+ * </p>
+ * <p>
+ * The conversion from SBML to JSON has two additional required options:
+ * 'direction' to set the direction to SBML to JSON and 'sbol' which is given
+ * the path to the SBOL file of the model.
+ * </p>
+ * There are two optional options: 'tidy' to indicate that the output file(s)
+ * should contain additional intends to be easier readable by humans and
+ * 'validation' to validate the created SBML model.
  * 
  * @author Marc A. Voigt
  */

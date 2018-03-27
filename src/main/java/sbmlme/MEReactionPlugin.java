@@ -1,6 +1,7 @@
 package sbmlme;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -483,7 +484,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     String dataId, double upperBound, double lowerBound,
     List<String> speciesIds, List<String> coefficients,
     double objectiveCoefficient, String variableKind, String sequence,
-    Map<String, Double> subreactionMap)
+    LinkedHashMap<String, Double> subreactionMap)
     throws ParseException, SBOLValidationException {
     id = createSBMLConformId(id);
     dataId = createSBMLConformId(dataId);
@@ -598,7 +599,7 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     String dataId, double upperBound, double lowerBound,
     List<String> speciesIds, List<String> coefficients,
     double objectiveCoefficient, String variableKind, String sequence,
-    Map<String, Double> subreactionMap)
+    LinkedHashMap<String, Double> subreactionMap)
     throws ParseException, SBOLValidationException {
     id = createSBMLConformId(id);
     dataId = createSBMLConformId(dataId);
@@ -712,8 +713,9 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     Objective objective, String id, String name, String dataId,
     double upperBound, double lowerBound, double keff, List<String> speciesIds,
     List<String> coefficients, double objectiveCoefficient, String variableKind,
-    Map<String, Double> subreactionMap, String synthetase, String codon,
-    String aminoAcid) throws ParseException, SBOLValidationException {
+    LinkedHashMap<String, Double> subreactionMap, String synthetase,
+    String codon, String aminoAcid)
+    throws ParseException, SBOLValidationException {
     id = createSBMLConformId(id);
     dataId = createSBMLConformId(dataId);
     Reaction tempReaction = model.createReaction(id);
@@ -840,6 +842,10 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
    * @param biomassType
    *        the id of the biomass type added by the subreactions of the
    *        reaction, may be null
+   * @param processed
+   *        the id of the modified species
+   * @param unprocessed
+   *        the id of the species that is modified by the reaction
    * @throws ParseException
    */
   public void createPostTranslationReaction(Model model,
@@ -847,12 +853,13 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     String dataId, double upperBound, double lowerBound,
     List<String> speciesIds, List<String> coefficients,
     double objectiveCoefficient, String variableKind,
-    Map<String, Double> subreactionMap, double aggregationPropensity,
+    LinkedHashMap<String, Double> subreactionMap, double aggregationPropensity,
     List<String> translocation, List<Double> multipliers,
     double propensityScaling, List<String> surfaceArea,
     List<Double> surfaceAreaValue, List<String> keqFolding,
     List<Double> keqValues, List<String> kFolding, List<Double> kValues,
-    String biomassType) throws ParseException {
+    String biomassType, String processed, String unprocessed)
+    throws ParseException {
     id = createSBMLConformId(id);
     dataId = createSBMLConformId(dataId);
     Reaction tempReaction = model.createReaction(id);
@@ -884,6 +891,8 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     MEReactionPlugin meReaction = new MEReactionPlugin();
     meReaction.setVariableKind(variableKind);
     meReaction.setDataId(dataId);
+    meReaction.setProcessed(createSBMLConformId(processed));
+    meReaction.setUnprocessed(createSBMLConformId(unprocessed));
     meReaction.setAggregationPropensity(String.valueOf(aggregationPropensity));
     meReaction.setBiomassType(biomassType);
     if (subreactionMap != null) {
@@ -989,7 +998,8 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
     String dataId, String complexId, double upperBound, double lowerBound,
     List<String> speciesIds, List<String> coefficients,
     double objectiveCoefficient, String variableKind,
-    Map<String, Double> subreactionMap) throws ParseException {
+    LinkedHashMap<String, Double> subreactionMap,
+    LinkedHashMap<String, Double> stoichiometricMap) throws ParseException {
     id = createSBMLConformId(id);
     dataId = createSBMLConformId(dataId);
     complexId = createSBMLConformId(complexId);
@@ -1032,6 +1042,16 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
           entry.getKey(), entry.getValue().intValue()));
       }
       meReaction.addChild(listSubRef);
+    }
+    if (stoichiometricMap != null) {
+      // add stoichiometry of subunits to the annotations
+      StoichiometricReference stoReference = new StoichiometricReference();
+      XMLNode listStoRef = stoReference.ListOfStoichiometricReference();
+      for (Map.Entry<String, Double> entry : stoichiometricMap.entrySet()) {
+        listStoRef.addChild(stoReference.createStoichiometricReference(
+          entry.getKey(), entry.getValue().intValue()));
+      }
+      meReaction.addChild(listStoRef);
     }
     tempReaction.appendAnnotation(meReaction);
   }
@@ -1224,6 +1244,26 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
 
 
   /**
+   * Returns whether the attribute "unprocessedProteinId" is set.
+   * 
+   * @return whether the attribute "unprocessedProteinId" is set.
+   */
+  public boolean isSetUnprocessed() {
+    return isSetAttribute(MEConstants.unprocessed);
+  }
+
+
+  /**
+   * Returns whether the attribute "processedProteinId" is set.
+   * 
+   * @return whether the attribute "processedProteinId" is set.
+   */
+  public boolean isSetProcessed() {
+    return isSetAttribute(MEConstants.processed);
+  }
+
+
+  /**
    * Returns whether the attribute "complexId" is set.
    * 
    * @return whether the attribute "complexId" is set.
@@ -1365,6 +1405,32 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
   public String getComplexId() {
     if (isSetComplexId()) {
       return getAttribute(MEConstants.complexId);
+    }
+    return "";
+  }
+
+
+  /**
+   * Returns the value of the attribute "unprocessedProteinId".
+   * 
+   * @return the value of the attribute "unprocessedProteinId".
+   */
+  public String getUnprocessed() {
+    if (isSetUnprocessed()) {
+      return getAttribute(MEConstants.unprocessed);
+    }
+    return "";
+  }
+
+
+  /**
+   * Returns the value of the attribute "processedProteinId".
+   * 
+   * @return the value of the attribute "processedProteinId".
+   */
+  public String getProcessed() {
+    if (isSetProcessed()) {
+      return getAttribute(MEConstants.processed);
     }
     return "";
   }
@@ -1577,6 +1643,40 @@ public class MEReactionPlugin extends MEAbstractXMLNodePlugin
    */
   public int setSynthetase(String value) {
     return setAttribute(MEConstants.synthetase, value);
+  }
+
+
+  /**
+   * Sets the value of the attribute "unprocessedProteinId".
+   * <p>
+   * The optional attribute "unprocessedProteinId" contains the id of a species
+   * that is the precursor of the processed protein. This attribute is mandatory
+   * when the reaction is of type "PostTranslationReaction".
+   * </p>
+   * 
+   * @param value
+   *        the id of the precursor of the species
+   * @return
+   */
+  public int setUnprocessed(String value) {
+    return setAttribute(MEConstants.unprocessed, value);
+  }
+
+
+  /**
+   * Sets the value of the attribute "processedProteinId".
+   * <p>
+   * The optional attribute "processedProteinId" contains the id of the species
+   * that is modified by the reaction. This attribute is mandatory
+   * when the reaction is of type "PostTranslationReaction".
+   * </p>
+   * 
+   * @param value
+   *        the id of the processed species
+   * @return
+   */
+  public int setProcessed(String value) {
+    return setAttribute(MEConstants.processed, value);
   }
 
 

@@ -5,10 +5,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.xml.stream.XMLStreamException;
@@ -95,7 +94,8 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
     JsonNode globalInfo = null;
     // helper map for mapping ProcessData Ids to indices in List<JsonNode>
     // processData for quickly connecting reaction with ProcessData object
-    Map<String, Integer> processDataIndices = new HashMap<String, Integer>();
+    LinkedHashMap<String, Integer> processDataIndices =
+      new LinkedHashMap<String, Integer>();
     // list for ProcessData objects which won't be used in the iteration through
     // the reactions list (StoichiometricData, SubreactionData,
     // TranslocationData)
@@ -162,9 +162,6 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
     }
     System.out.println("reactions: " + String.valueOf(reactions.size()));
     System.out.println("metabolites: " + String.valueOf(metabolites.size()));
-    System.out.println("processData: "
-      + String.valueOf(processData.size() + processDataSBML.size()));
-    // System.out.println(metabolites.get(1));
     // setting up documents
     // create new SBML and SBOL documents and set their namespaces
     SBMLDocument doc = new SBMLDocument(3, 1);
@@ -339,7 +336,8 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
     meProcessData = meProcessData.createMEProcessData();
     for (JsonNode entry : processDataSBML) {
       if (entry.get(processDataType).has(StoichiometricData)) {
-        Map<String, Double> subreactionMap = new HashMap<String, Double>();
+        LinkedHashMap<String, Double> subreactionMap =
+          new LinkedHashMap<String, Double>();
         List<String> speciesReferences = new ArrayList<String>();
         List<Double> stoichiometries = new ArrayList<Double>();
         // fill map for SubreactionReferences
@@ -368,8 +366,8 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
           subreactionMap, speciesReferences, stoichiometries);
       } else if (entry.get(processDataType).has(SubreactionData)) {
         List<String> enzymes = new ArrayList<String>();
-        Map<String, Integer> elementContributions =
-          new HashMap<String, Integer>();
+        LinkedHashMap<String, Integer> elementContributions =
+          new LinkedHashMap<String, Integer>();
         List<String> speciesReferences = new ArrayList<String>();
         List<Integer> stoichiometries = new ArrayList<Integer>();
         // prepare list for enzymes
@@ -477,7 +475,8 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
    */
   public void addReactionsFromJSON(Model model, SBOLDocument sbol,
     GroupsModelPlugin groups, Objective objective, List<JsonNode> reactions,
-    List<JsonNode> processData, Map<String, Integer> processDataIndices)
+    List<JsonNode> processData,
+    LinkedHashMap<String, Integer> processDataIndices)
     throws ParseException, SBOLValidationException {
     // create ME Reactions
     MEReactionPlugin meReactionPlugin = new MEReactionPlugin();
@@ -553,7 +552,8 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
         // add TranscriptionReaction to model
         List<String> speciesIds = new ArrayList<String>();
         List<String> coefficients = new ArrayList<String>();
-        Map<String, Double> subreactionMap = new HashMap<String, Double>();
+        LinkedHashMap<String, Double> subreactionMap =
+          new LinkedHashMap<String, Double>();
         String dataId = entry.get(reactionType).get(transcription)
                              .get(transcription_data).asText();
         // get ProcessData object
@@ -584,7 +584,8 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
         // add TranslationReaction to model
         List<String> speciesIds = new ArrayList<String>();
         List<String> coefficients = new ArrayList<String>();
-        Map<String, Double> subreactionMap = new HashMap<String, Double>();
+        LinkedHashMap<String, Double> subreactionMap =
+          new LinkedHashMap<String, Double>();
         String dataId = entry.get(reactionType).get(translation)
                              .get(translation_data).asText();
         // get ProcessData object
@@ -615,7 +616,8 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
         // add tRNAChargingReaction to model
         List<String> speciesIds = new ArrayList<String>();
         List<String> coefficients = new ArrayList<String>();
-        Map<String, Double> subreactionMap = new HashMap<String, Double>();
+        LinkedHashMap<String, Double> subreactionMap =
+          new LinkedHashMap<String, Double>();
         String dataId =
           entry.get(reactionType).get(tRNACharging).get(tRNA_data).asText();
         // get ProcessData object
@@ -648,7 +650,10 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
         // add ComplexFormation Reaction
         List<String> speciesIds = new ArrayList<String>();
         List<String> coefficients = new ArrayList<String>();
-        Map<String, Double> subreactionMap = new HashMap<String, Double>();
+        LinkedHashMap<String, Double> subreactionMap =
+          new LinkedHashMap<String, Double>();
+        LinkedHashMap<String, Double> stoichiometricMap =
+          new LinkedHashMap<String, Double>();
         String dataId = entry.get(reactionType).get(complexFormation)
                              .get(complex_data_id).asText();
         String complexId = entry.get(reactionType).get(complexFormation)
@@ -670,17 +675,26 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
           subreactionMap.put(currentEntry.getKey(),
             currentEntry.getValue().asDouble());
         }
+        for (Iterator<Entry<String, JsonNode>> elementEntry =
+          processDataEntry.get(stoichiometry).fields(); elementEntry
+                                                                    .hasNext();) {
+          Entry<String, JsonNode> currentEntry = elementEntry.next();
+          stoichiometricMap.put(currentEntry.getKey(),
+            currentEntry.getValue().asDouble());
+        }
         meReactionPlugin.createComplexFormationReaction(model, groups,
           objective, entry.get(id).textValue(), entry.get(name).textValue(),
           dataId, complexId, entry.get(upper_bound).asDouble(),
           entry.get(lower_Bound).asDouble(), speciesIds, coefficients,
           entry.get(objectiveCoefficient).asDouble(),
-          entry.get(variable_kind).textValue(), subreactionMap);
+          entry.get(variable_kind).textValue(), subreactionMap,
+          stoichiometricMap);
       } else if (entry.get(reactionType).has(postTranslationReaction)) {
         // add PostTranslationReaction to model
         List<String> speciesIds = new ArrayList<String>();
         List<String> coefficients = new ArrayList<String>();
-        Map<String, Double> subreactionMap = new HashMap<String, Double>();
+        LinkedHashMap<String, Double> subreactionMap =
+          new LinkedHashMap<String, Double>();
         List<String> translocationList = new ArrayList<String>();
         List<Double> multipliers = new ArrayList<Double>();
         List<String> keqFolding = new ArrayList<String>();
@@ -752,7 +766,9 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
           translocationList, multipliers,
           processDataEntry.get(propensity_scaling).asDouble(), surfaceArea,
           surfaceAreaValue, keqFolding, keqValues, kFolding, kValues,
-          processDataEntry.get(biomass_type).textValue());
+          processDataEntry.get(biomass_type).textValue(),
+          processDataEntry.get(processed_protein).textValue(),
+          processDataEntry.get(unprocessed_protein).textValue());
       }
     }
   }

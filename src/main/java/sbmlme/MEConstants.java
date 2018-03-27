@@ -18,12 +18,13 @@ public interface MEConstants {
   public static final String name                     = "name";
   // needed for species and reactions
   public static final String sequence                 = "sequence";
+  public static final String unprocessed              = "unprocessedProteinId";
+  public static final String processed                = "processedProteinId";
   // needed for reactions and data
   public static final String keff                     = "keff";
   public static final String subreaction              = "subreaction";
   // Attributes for extended Species
   public static final String genomePos                = "genomePosition";
-  public static final String unprocessed              = "unprocessedProteinId";
   public static final String speciesRef               = "meSpeciesReference";
   public static final String speciesPlugin            = "meSpeciesPlugin";
   // Attributes for extended Reactions
@@ -62,6 +63,7 @@ public interface MEConstants {
   // Attributes for elements of ListOfSubreactionReference for extended
   // Reactions and ListOfReactants/Products
   public static final String stoichiometry            = "stoichiometry";
+  public static final String subunit                  = "subunit";
   // Attributes for elements of ListOfEquilibriumConstants/RateConstants
   public static final String temperature              = "temperature";
   public static final String rate                     = "rate";

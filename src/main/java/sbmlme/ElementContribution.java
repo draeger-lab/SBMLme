@@ -1,5 +1,6 @@
 package sbmlme;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.sbml.jsbml.util.StringTools;
@@ -48,7 +49,7 @@ public class ElementContribution extends MEAbstractXMLNodePlugin
    * @return the XMLNode containing the list of ElementContribution
    */
   public XMLNode createListOfElementContributions(
-    Map<String, Integer> elementContributions) {
+    LinkedHashMap<String, Integer> elementContributions) {
     XMLNode list = ListOfElementContributions();
     for (Map.Entry<String, Integer> entry : elementContributions.entrySet()) {
       ElementContribution tempIter = new ElementContribution();

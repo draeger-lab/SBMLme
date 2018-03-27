@@ -1,5 +1,6 @@
 package sbmlme;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -66,7 +67,7 @@ public class StoichiometricData extends MEAbstractXMLNodePlugin
    * @return the XMLNode of the created StoichiometricData object
    */
   public XMLNode createStoichiometricData(String id, Double lowerFluxBound,
-    Double upperFluxBound, Map<String, Double> subreactionMap,
+    Double upperFluxBound, LinkedHashMap<String, Double> subreactionMap,
     List<String> speciesReferences, List<Double> stoichiometries) {
     StoichiometricData stoichiometricData = new StoichiometricData();
     stoichiometricData.setId(createSBMLConformId(id));
