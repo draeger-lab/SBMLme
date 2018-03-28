@@ -5,4 +5,4 @@ Encoding ME models in SBML
 
 # API docmentation
 
-https://draeger-lab.github.io/SBML-ME/
+https://draeger-lab.github.io/SBMLme/
