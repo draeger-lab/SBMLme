@@ -40,48 +40,6 @@ public class EnzymeInformation extends MEAbstractXMLNodePlugin
 
 
   /**
-   * Create a list of EnzymeInformation with a single child for a
-   * {@link SubreactionData} object in the list of SubreactionData.
-   * 
-   * @param enzymeReference
-   *        the id of the enzyme
-   * @return the XMLNode that contains the list of enzyme information
-   */
-  public XMLNode createEnzymeInformation(String enzymeReference) {
-    XMLNode list = ListOfEnzymeInformations();
-    EnzymeInformation reference = new EnzymeInformation();
-    reference.setEnzymeRef(createSBMLConformId(enzymeReference));
-    list.addChild(reference);
-    return list;
-  }
-
-
-  /**
-   * Create a List of EnzymeInformation with a single child for a
-   * {@link SubreactionData} object in the list of TranslocationData.
-   * 
-   * @param enzymeReference
-   *        the id of the enzyme
-   * @param fixedKeff
-   *        whether the enzyme has a fixed turnover rate
-   * @param lengthDependent
-   *        whether the energy cost of the coupling is dependent on the protein
-   *        length
-   * @return the XMLNode that contains the list of enzyme information
-   */
-  public XMLNode createEnzymeInformation(String enzymeReference,
-    boolean fixedKeff, boolean lengthDependent) {
-    XMLNode list = ListOfEnzymeInformations();
-    EnzymeInformation reference = new EnzymeInformation();
-    reference.setEnzymeRef(createSBMLConformId(enzymeReference));
-    reference.setFixedKeff(String.valueOf(fixedKeff));
-    reference.setLengthDependent(String.valueOf(lengthDependent));
-    list.addChild(reference);
-    return list;
-  }
-
-
-  /**
    * Create a List of EnzymeInformation from a list of enzymes for a
    * {@link SubreactionData} object in the list of SubreactionData.
    * 

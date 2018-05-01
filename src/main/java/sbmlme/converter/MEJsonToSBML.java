@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -90,12 +93,9 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
     // lists for main classes in COBRAme
     List<JsonNode> reactions = new ArrayList<JsonNode>();
     List<JsonNode> metabolites = new ArrayList<JsonNode>();
-    List<JsonNode> processData = new ArrayList<JsonNode>();
+    LinkedHashMap<String, JsonNode> processData =
+      new LinkedHashMap<String, JsonNode>();
     JsonNode globalInfo = null;
-    // helper map for mapping ProcessData Ids to indices in List<JsonNode>
-    // processData for quickly connecting reaction with ProcessData object
-    LinkedHashMap<String, Integer> processDataIndices =
-      new LinkedHashMap<String, Integer>();
     // list for ProcessData objects which won't be used in the iteration through
     // the reactions list (StoichiometricData, SubreactionData,
     // TranslocationData)
@@ -150,9 +150,7 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
               processDataSBML.add(tempNode);
             } else {
               // includes generic Data although it will currently not be used
-              processData.add(tempNode);
-              processDataIndices.put(tempNode.get(id).textValue(),
-                processData.size() - 1);
+              processData.put(tempNode.get(id).textValue(), tempNode);
             }
           }
         }
@@ -199,8 +197,8 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
     addMEProcessDataFromJSON(model, processDataSBML);
     // add reactions to documents
     System.out.println("adding reactions to model");
-    addReactionsFromJSON(model, sbol, groups, objective, reactions, processData,
-      processDataIndices);
+    addReactionsFromJSON(model, sbol, groups, objective, reactions,
+      processData);
     // write combine archive
     System.out.println("Reactions in SBML model: " + model.getReactionCount());
     System.out.println("Species in SBML model: " + model.getSpeciesCount());
@@ -210,22 +208,26 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
       System.out.println("Validate SBML document");
       doc.checkConsistencyOffline();
       System.out.println(doc.getErrorLog().getValidationErrors());
+      Path path = Paths.get(output + "_validationErrors.txt");
+      byte[] byteWrite =
+        doc.getErrorLog().getValidationErrors().toString().getBytes();
+      Files.write(path, byteWrite);
     }
-    System.out.println("write model to CombineArchive");
+    System.out.println("write model to COMBINE archive");
     // write to CombineArchive
     if (tidy) {
       TidySBMLWriter tidySBMLWriter = new TidySBMLWriter();
-      tidySBMLWriter.write(doc, output + ".sbml");
+      tidySBMLWriter.write(doc, output + ".sbex");
     } else {
       SBMLWriter SBMLWriter = new SBMLWriter();
-      SBMLWriter.write(doc, output + ".sbml");
+      SBMLWriter.write(doc, output + ".sbex");
     }
     // SBOL Test
-    sbol.write(output + ".sbol");
+    sbol.write(output + ".sbox ");
     CombineArchive ca = new CombineArchive(new File(output + ".zip"));
-    ca.addEntry(new File(""), new File(output + ".sbml"),
+    ca.addEntry(new File(""), new File(output + ".sbex"),
       new URI("http://identifiers.org/combine.specifications/sbml"));
-    ca.addEntry(new File(""), new File(output + ".sbol"),
+    ca.addEntry(new File(""), new File(output + ".sbox"),
       new URI("http://identifiers.org/combine.specifications/sbol"));
     ca.pack();
     ca.close();
@@ -253,6 +255,12 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
     MESpeciesPlugin meSpeciesPlugin = new MESpeciesPlugin();
     for (JsonNode species : metabolites) {
       if (species.get(metaboliteType).has(transcribedGene)) {
+        String tempStrand = null;
+        if (species.get(metaboliteType).get(transcribedGene)
+                   .get(strand) != null) {
+          tempStrand = species.get(metaboliteType).get(transcribedGene)
+                              .get(strand).textValue();
+        }
         meSpeciesPlugin.createMESequenceSpecies(model,
           species.get(id).textValue(), species.get(formula).textValue(),
           species.get(name).textValue(), species.get(compartment).textValue(),
@@ -261,9 +269,10 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
                  .get(nucleotide_sequence).textValue(),
           species.get(metaboliteType).get(transcribedGene).get(rna_type)
                  .textValue(),
-          species.get(metaboliteType).get(transcribedGene).get(strand)
-                 .textValue(),
+          tempStrand,
           species.get(metaboliteType).get(transcribedGene).get(left_pos)
+                 .asInt(),
+          species.get(metaboliteType).get(transcribedGene).get(right_pos)
                  .asInt(),
           groups, transcribedGene);
       } else if (species.get(metaboliteType).has(processedProtein)) {
@@ -369,7 +378,7 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
         LinkedHashMap<String, Integer> elementContributions =
           new LinkedHashMap<String, Integer>();
         List<String> speciesReferences = new ArrayList<String>();
-        List<Integer> stoichiometries = new ArrayList<Integer>();
+        List<Double> stoichiometries = new ArrayList<Double>();
         // prepare list for enzymes
         // several cases in COBRAme: null, single String, (empty) List
         // first case: is null (nullnode)?
@@ -402,7 +411,7 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
                .fields(); stoichiometryEntry.hasNext();) {
           Entry<String, JsonNode> currentEntry = stoichiometryEntry.next();
           speciesReferences.add(currentEntry.getKey());
-          stoichiometries.add(currentEntry.getValue().asInt());
+          stoichiometries.add(currentEntry.getValue().asDouble());
         }
         // add SubreactionData
         meProcessData.addSubreactionData(meProcessData,
@@ -465,18 +474,14 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
    * @param reactions
    *        the list of reactions from the JSON file
    * @param processData
-   *        the list of process data objects that encode additional reaction
+   *        the map of process data objects that encode additional reaction
    *        specific information
-   * @param processDataIndices
-   *        the map with indices of the processData list for easier traversing
-   *        the processData list
    * @throws ParseException
    * @throws SBOLValidationException
    */
   public void addReactionsFromJSON(Model model, SBOLDocument sbol,
     GroupsModelPlugin groups, Objective objective, List<JsonNode> reactions,
-    List<JsonNode> processData,
-    LinkedHashMap<String, Integer> processDataIndices)
+    LinkedHashMap<String, JsonNode> processData)
     throws ParseException, SBOLValidationException {
     // create ME Reactions
     MEReactionPlugin meReactionPlugin = new MEReactionPlugin();
@@ -558,8 +563,7 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
                              .get(transcription_data).asText();
         // get ProcessData object
         JsonNode processDataEntry =
-          processData.get(processDataIndices.get(dataId)).get(processDataType)
-                     .get(transcriptionData);
+          processData.get(dataId).get(processDataType).get(transcriptionData);
         for (Iterator<Entry<String, JsonNode>> elementEntry =
           entry.get(metabolitesField).fields(); elementEntry.hasNext();) {
           Entry<String, JsonNode> currentEntry = elementEntry.next();
@@ -590,8 +594,8 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
                              .get(translation_data).asText();
         // get ProcessData object
         JsonNode processDataEntry =
-          processData.get(processDataIndices.get(dataId)).get(processDataType)
-                     .get(translationData);
+          processData.get(dataId).get(processDataType).get(translationData);
+        // fill stoichiometry lists
         for (Iterator<Entry<String, JsonNode>> elementEntry =
           entry.get(metabolitesField).fields(); elementEntry.hasNext();) {
           Entry<String, JsonNode> currentEntry = elementEntry.next();
@@ -622,8 +626,7 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
           entry.get(reactionType).get(tRNACharging).get(tRNA_data).asText();
         // get ProcessData object
         JsonNode processDataEntry =
-          processData.get(processDataIndices.get(dataId)).get(processDataType)
-                     .get(tRNAData);
+          processData.get(dataId).get(processDataType).get(tRNAData);
         for (Iterator<Entry<String, JsonNode>> elementEntry =
           entry.get(metabolitesField).fields(); elementEntry.hasNext();) {
           Entry<String, JsonNode> currentEntry = elementEntry.next();
@@ -660,8 +663,7 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
                                 .get(complex_id_).asText();
         // get ProcessData object
         JsonNode processDataEntry =
-          processData.get(processDataIndices.get(dataId)).get(processDataType)
-                     .get(complexData);
+          processData.get(dataId).get(processDataType).get(complexData);
         for (Iterator<Entry<String, JsonNode>> elementEntry =
           entry.get(metabolitesField).fields(); elementEntry.hasNext();) {
           Entry<String, JsonNode> currentEntry = elementEntry.next();
@@ -707,8 +709,7 @@ public class MEJsonToSBML implements MEConstants, MEJsonConstants {
                              .get(posttranslation_data).asText();
         // get ProcessData object
         JsonNode processDataEntry =
-          processData.get(processDataIndices.get(dataId)).get(processDataType)
-                     .get(posttranslationData);
+          processData.get(dataId).get(processDataType).get(posttranslationData);
         for (Iterator<Entry<String, JsonNode>> elementEntry =
           entry.get(metabolitesField).fields(); elementEntry.hasNext();) {
           Entry<String, JsonNode> currentEntry = elementEntry.next();

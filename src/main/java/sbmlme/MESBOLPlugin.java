@@ -43,10 +43,14 @@ public class MESBOLPlugin implements MEConstants {
    *        "DNA",...
    * @param ori
    *        the orientation of the sequence on the genome
+   * @param left
+   *        start position of the sequence in the genome
+   * @param right
+   *        end position of the sequence in the genome
    * @throws SBOLValidationException
    */
   public void createSBOLSequenceWithAnnotation(SBOLDocument sbol, String id,
-    String sequence, String role, OrientationType ori)
+    String sequence, String role, OrientationType ori, int left, int right)
     throws SBOLValidationException {
     URI encoding = null;
     URI type = null;
@@ -87,8 +91,19 @@ public class MESBOLPlugin implements MEConstants {
       sbol.getComponentDefinition(id, versionOne)
           .addRole(sbo.getURIbyName(proteinComplex));
     }
-    sbol.getComponentDefinition(id, versionOne).createSequenceAnnotation(
-      id + sbolAnnotation, id + sbolLoc, 1, seq.length(), ori);
+    // COBRAme allows null values for left and and right, these are invalid in
+    // SBOL and need to be changed
+    if (right == 0) {
+      left = 1;
+      right = sequence.length();
+    }
+    if (ori != null) {
+      sbol.getComponentDefinition(id, versionOne).createSequenceAnnotation(
+        id + sbolAnnotation, id + sbolLoc, 1, right - left, ori);
+    } else {
+      sbol.getComponentDefinition(id, versionOne).createSequenceAnnotation(
+        id + sbolAnnotation, id + sbolLoc, 1, right - left);
+    }
   }
 
 

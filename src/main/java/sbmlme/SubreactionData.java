@@ -63,7 +63,7 @@ public class SubreactionData extends MEAbstractXMLNodePlugin
   public XMLNode createSubreactionData(String id, double keff,
     List<String> enzymeReferences,
     LinkedHashMap<String, Integer> elementContributions,
-    List<String> speciesReferences, List<Integer> stoichiometries) {
+    List<String> speciesReferences, List<Double> stoichiometries) {
     SubreactionData subreactionData = new SubreactionData();
     subreactionData.setId(createSBMLConformId(id));
     subreactionData.setKeff(String.valueOf(keff));

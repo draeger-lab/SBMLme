@@ -342,15 +342,15 @@ public class ExampleModel implements MEConstants {
     meSpeciesPlugin.createMESequenceSpecies(model, "RNA_b0001", "", "c",
       "C722H820N288O528P76", sbol,
       "TCCTCTGTAGTTCAGTCGGTAGAACGGCGGACTGTTAATCCGTATGTCACTGGTTCGAGTCCAGTCAGAGGAGCCA",
-      "tRNA", "+", 2042572, groups, "transcribed");
+      "tRNA", "+", 2042572, 2042648, groups, "transcribed");
     meSpeciesPlugin.createMESequenceSpecies(model, "RNA_b0002", "", "c",
       "C1346H1521N547O979P141", sbol,
       "ATGAAACGCACTTTTCAACCGTCTGTACTGAAGCGCAACCGTTCTCACGGCTTCCGTGCTCGTATGGCTACTAAAAATGGTCGTCAGGTTCTGGCACGTCGTCGTGCTAAAGGCCGCGCTCGTCTGACCGTTTCTAAGTAA",
-      "mRNA", "+", 3882358, groups, "transcribed");
+      "mRNA", "+", 3882358, 3882491, groups, "transcribed");
     meSpeciesPlugin.createMESequenceSpecies(model, "RNA_b0003", "", "c",
       "C722H820N288O528P76", sbol,
       "GTGGTTAAGCTCGCATTTCCCAGGGAGTTACGCTTGTTAACTCCCAGTCAATTCACATTCGTCTTCCAGCAGCCACAACGGGCTGGCACGCCGCAAATTACCATTCTCGGCCGCCTGAATTCGCTGGGGCATCCCCGTATCGGTCTTACAGTCGCCAAGAAAAACGTTCGACGCGCCCATGAACGCAATCGGATTAAACGTCTGACGCGTGAAAGCTTCCGTCTGCGCCAACATGAACTCCCGGCTATGGATTTCGTGGTGGTGGCGAAAAAAGGGGTTGCCGACCTCGATAACCGTGCTCTCTCGGAAGCGTTGGAAAAATTATGGCGCCGCCACTGTCGCCTGGCTCGCGGGTCCTGA",
-      "mRNA", "+", 3882515, groups, "transcribed");
+      "mRNA", "+", 3882515, 3882875, groups, "transcribed");
     meSpeciesPlugin.createMESpecies(model, "RNA_degradosome",
       "C40683H65406Mg6N11875O12685S200Zn2", "", "c", groups, "complex");
     // replace id due to -
@@ -423,7 +423,7 @@ public class ExampleModel implements MEConstants {
       Arrays.asList("generic_TUF"), null,
       Arrays.asList("generic_tRNA_AUG_met__L_c", "h2o_c", "gdp_c", "atp_c",
         "ppi_c", "gtp_c", "h_c", "pi_c", "amp_c"),
-      Arrays.asList(-1, -2, 1, -1, 1, -1, 2, 1, 1));
+      Arrays.asList(-1.0, -2.0, 1.0, -1.0, 1.0, -1.0, 2.0, 1.0, 1.0));
     LinkedHashMap<String, Integer> elementContribution =
       new LinkedHashMap<String, Integer>();
     elementContribution.put("O", -1);
@@ -432,7 +432,7 @@ public class ExampleModel implements MEConstants {
       Arrays.asList("SelA_deca_mod_10:pydx5p", "SelB_mono"),
       elementContribution,
       Arrays.asList("pi_c", "h_c", "generic_tRNA_UGA_cys__L_c", "selnp_c"),
-      Arrays.asList(1, 1, -1, -1));
+      Arrays.asList(1.0, 1.0, -1.0, -1.0));
     // create ME Reactions
     MEReactionPlugin meReactionPlugin = new MEReactionPlugin();
     LinkedHashMap<String, Double> subreactionMap =
@@ -748,13 +748,13 @@ public class ExampleModel implements MEConstants {
     // write
     //
     TidySBMLWriter tidySBMLWriter = new TidySBMLWriter();
-    tidySBMLWriter.write(doc, "example/ExampleModel.sbml");
+    tidySBMLWriter.write(doc, "example/ExampleModel.sbex");
     // SBOL Test
-    sbol.write("example/ExampleModel.sbol");
+    sbol.write("example/ExampleModel.sbox");
     CombineArchive ca = new CombineArchive(new File("ExampleArchive.zip"));
-    ca.addEntry(new File("example"), new File("example/ExampleModel.sbml"),
+    ca.addEntry(new File("example"), new File("example/ExampleModel.sbex"),
       new URI("http://identifiers.org/combine.specifications/sbml"));
-    ca.addEntry(new File("example"), new File("example/ExampleModel.sbol"),
+    ca.addEntry(new File("example"), new File("example/ExampleModel.sbox"),
       new URI("http://identifiers.org/combine.specifications/sbol"));
     ca.pack();
     ca.close();

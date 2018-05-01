@@ -208,6 +208,8 @@ public class MESpeciesPlugin extends MEAbstractXMLNodePlugin
    *        the strand on the genome that the sequence is located on
    * @param genomePosition
    *        the position on the genome where the sequence starts
+   * @param sequenceEnd
+   *        the position on the genome where the sequence ends
    * @param groups
    *        the GroupsModelPlugin of the SBML model
    * @param groupName
@@ -217,7 +219,7 @@ public class MESpeciesPlugin extends MEAbstractXMLNodePlugin
    */
   public void createMESequenceSpecies(Model model, String id, String formula,
     String name, String compartment, SBOLDocument sbol, String sequence,
-    String role, String orientation, int genomePosition,
+    String role, String orientation, int genomePosition, int sequenceEnd,
     GroupsModelPlugin groups, String groupName) throws SBOLValidationException {
     // make valid SBML id
     id = createSBMLConformId(id);
@@ -232,14 +234,33 @@ public class MESpeciesPlugin extends MEAbstractXMLNodePlugin
     }
     MESBOLPlugin meSBOL = new MESBOLPlugin();
     OrientationType ori = null;
-    if ((orientation == "+") || (orientation == "inline")
-      || (orientation == "INLINE") || (orientation == "Inline")
-      || (orientation == "Forward") || (orientation == "FORWARD")) {
-      ori = OrientationType.INLINE;
+    // TODO: rework of the converter package required before this code can be
+    // used.
+    // Currently this would cause the strand attribute to be missing in the
+    // converted JSON if the original JSON has value null. This would make the
+    // JSON invalid.
+    /**
+     * if (orientation != null) {
+     * if (orientation.equals("+")) {
+     * ori = OrientationType.INLINE;
+     * } else if (orientation.equals("-")) {
+     * ori = OrientationType.REVERSECOMPLEMENT;
+     * }
+     * }
+     **/
+    // set also null values to reverse complement. Should be replaced after
+    // converter rework.
+    if (orientation != null) {
+      if (orientation.equals("+")) {
+        ori = OrientationType.INLINE;
+      } else {
+        ori = OrientationType.REVERSECOMPLEMENT;
+      }
     } else {
       ori = OrientationType.REVERSECOMPLEMENT;
     }
-    meSBOL.createSBOLSequenceWithAnnotation(sbol, id, sequence, role, ori);
+    meSBOL.createSBOLSequenceWithAnnotation(sbol, id, sequence, role, ori,
+      genomePosition, sequenceEnd);
     MESpeciesPlugin seqME = new MESpeciesPlugin();
     seqME.setSequence(sbol.getDefaultURIprefix() + id);
     seqME.setGenomePos(Integer.toString(genomePosition));

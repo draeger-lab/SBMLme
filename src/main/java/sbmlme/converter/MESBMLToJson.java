@@ -314,8 +314,13 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
                          member.getIdRef() + sbolAnnotation)
                        .getLocation(member.getIdRef() + sbolLoc);
       // set Positions on genome
-      speciesTypeAttributes.setLeftPos(leftPos);
-      speciesTypeAttributes.setRightPos(leftPos + range.getEnd());
+      // dummy rna can have left, right and strand of null, which cannot be
+      // represented correctly in SBOL
+      if (range.getEnd() == 1) {
+      } else {
+        speciesTypeAttributes.setLeftPos(leftPos);
+        speciesTypeAttributes.setRightPos(leftPos + range.getEnd());
+      }
       URI rnaURI =
         (URI) sbolDoc.getComponentDefinition(java.net.URI.create(sbolId))
                      .getRoles().toArray()[0];
@@ -331,10 +336,14 @@ public class MESBMLToJson implements MEJsonConstants, MEConstants {
         speciesTypeAttributes.setRNAType(rRNA);
       }
       // set Strand
-      if (range.getOrientation().equals(OrientationType.INLINE)) {
-        speciesTypeAttributes.setStrand("+");
+      if (range.getOrientation() == null) {
+        speciesTypeAttributes.setStrand(null);
       } else {
-        speciesTypeAttributes.setStrand("-");
+        if (range.getOrientation().equals(OrientationType.INLINE)) {
+          speciesTypeAttributes.setStrand("+");
+        } else {
+          speciesTypeAttributes.setStrand("-");
+        }
       }
       speciesType.setTranscribedGene(speciesTypeAttributes);
     }
